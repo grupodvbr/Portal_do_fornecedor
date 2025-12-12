@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fornecedor • Cotações</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --p:#0b1e39;
+  --bg:#f4f6fa;
+  --card:#fff;
+  --border:#d6d9e0;
+  --radius:10px;
+  --line:#e6e9ef;
+}
+
+*{box-sizing:border-box;font-family:Inter}
+
+body{
+  margin:0;
+  background:var(--bg);
+  padding:20px;
+}
+
+h1{color:var(--p);margin-bottom:16px}
+
+/* ================= LOGIN ================= */
+.login{
+  max-width:420px;
+  margin:60px auto;
+  background:#fff;
+  padding:30px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+
+.login input{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+}
+
+.login button{
+  width:100%;
+  padding:12px;
+  background:var(--p);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.hidden{display:none}
+
+/* ================= DESKTOP ================= */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-bottom:12px;
+  padding:14px;
+}
+
+.card h3{
+  margin:0 0 8px;
+  font-size:14px;
+  font-weight:700;
+}
+
+.item{
+  display:grid;
+  grid-template-columns: 120px 1fr 120px 140px;
+  gap:10px;
+  padding:8px 0;
+  border-top:1px solid var(--line);
+  align-items:center;
+  font-size:13px;
+}
+
+.item:first-child{border-top:none}
+
+.item input,
+.item textarea{
+  width:100%;
+  padding:6px;
+  font-size:13px;
+  border-radius:6px;
+  border:1px solid var(--border);
+}
+
+.item textarea{resize:none;height:34px}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  .item{
+    grid-template-columns:1fr;
+    gap:6px;
+    padding:10px 0;
+  }
+
+  .item b{font-size:14px}
+  .item small{font-size:12px;color:#555}
+
+  .item input,
+  .item textarea{
+    font-size:14px;
+    padding:10px;
+  }
+}
+
+.actions{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+}
+
+.actions button{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn-clear{background:#eee}
+</style>
+</head>
+
+<body>
+
+<div id="login" class="login">
+  <h1>Fornecedor</h1>
+  <input id="doc" placeholder="CPF ou CNPJ">
+  <input id="senha" type="password" placeholder="Senha">
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<div id="painel" class="hidden">
+  <h1>Minhas Cotações</h1>
+  <div id="lista"></div>
+
+  <div class="actions">
+    <button class="btn-clear" onclick="limparLocal()">Limpar</button>
+  </div>
+</div>
+
+<script>
+const sb = supabase.createClient(
+  "https://mblvyircwsaxaslklzky.supabase.co",
+  "sb_publishable_oN2CuBzXHaUF7NHYS_M7aw_tBqVeD-x"
+);
+
+let fornecedor=null;
+
+/* ================= MÁSCARAS ================= */
+doc.oninput=()=>{
+  let v=doc.value.replace(/\D/g,"");
+  if(v.length<=11){
+    doc.value=v.replace(/(\d{3})(\d)/,"$1.$2")
+      .replace(/(\d{3})(\d)/,"$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+  }else{
+    doc.value=v.replace(/^(\d{2})(\d)/,"$1.$2")
+      .replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3")
+      .replace(/\.(\d{3})(\d)/,".$1/$2")
+      .replace(/(\d{4})(\d)/,"$1-$2");
+  }
+};
+
+function maskMoney(v){
+  v=v.replace(/\D/g,"");
+  v=(v/100).toFixed(2)+"";
+  return v.replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
+}
+
+/* ================= LOGIN ================= */
+async function entrar(){
+  let d=doc.value.replace(/\D/g,"");
+  if(senha.value!==d.substring(0,4)) return alert("Senha incorreta");
+
+  let {data}=await sb.from("empresas").select("*").eq("doc",doc.value).single();
+  if(!data) return alert("Fornecedor não encontrado");
+
+  fornecedor=data;
+  login.classList.add("hidden");
+  painel.classList.remove("hidden");
+  carregar();
+}
+
+/* ================= CARREGAR ================= */
+async function carregar(){
+  const {data}=await sb.from("cotacoes")
+    .select(`
+      id,
+      licitacao:licitacao_id(codigo),
+      itens:cotacoes_itens(
+        id,
+        valor_unit,
+        observacao,
+        item:item_id(item_tr,especificacao,quant_min,quant_max)
+      )
+    `)
+    .eq("fornecedor_id",fornecedor.id);
+
+  lista.innerHTML="";
+
+  data.forEach(c=>{
+    let card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<h3>Licitação ${c.licitacao.codigo}</h3>`;
+
+    c.itens.forEach(it=>{
+      let key=`cot_${it.id}`;
+      let cache=JSON.parse(localStorage.getItem(key)||"{}");
+
+      card.innerHTML+=`
+        <div class="item">
+          <div>
+            <b>${it.item.item_tr}</b><br>
+            <small>${it.item.especificacao}</small>
+          </div>
+          <small>Min ${it.item.quant_min} | Máx ${it.item.quant_max}</small>
+          <input value="${cache.valor||""}"
+            placeholder="Valor"
+            oninput="this.value=maskMoney(this.value); salvarLocal(${it.id})">
+          <textarea placeholder="Obs"
+            oninput="salvarLocal(${it.id})">${cache.obs||""}</textarea>
+        </div>
+      `;
+    });
+
+    lista.appendChild(card);
+  });
+}
+
+/* ================= LOCAL STORAGE ================= */
+function salvarLocal(id){
+  let el=[...document.querySelectorAll(".item")].find(i=>i.innerHTML.includes(`(${id})`));
+}
+
+function limparLocal(){
+  Object.keys(localStorage)
+    .filter(k=>k.startsWith("cot_"))
+    .forEach(k=>localStorage.removeItem(k));
+  alert("Dados locais limpos");
+  location.reload();
+}
+</script>
+
+</body>
+</html>
