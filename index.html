@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Fornecedor • Cotações</title>
+<title>Fornecedor • Minhas Cotações</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
   --border:#d6d9e0;
   --radius:10px;
   --line:#e6e9ef;
+  --warn:#c62828;
 }
 
 *{box-sizing:border-box;font-family:Inter}
@@ -26,9 +27,10 @@ body{
   padding:20px;
 }
 
-h1{color:var(--p);margin-bottom:16px}
+h1{color:var(--p);margin-bottom:14px}
+.hidden{display:none}
 
-/* ================= LOGIN ================= */
+/* LOGIN */
 .login{
   max-width:420px;
   margin:60px auto;
@@ -57,37 +59,34 @@ h1{color:var(--p);margin-bottom:16px}
   cursor:pointer;
 }
 
-.hidden{display:none}
-
-/* ================= DESKTOP ================= */
+/* CARD */
 .card{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  margin-bottom:12px;
+  margin-bottom:16px;
   padding:14px;
 }
 
 .card h3{
-  margin:0 0 8px;
   font-size:14px;
-  font-weight:700;
+  margin:0 0 10px;
+  color:var(--p);
 }
 
+/* ITEM */
 .item{
   display:grid;
-  grid-template-columns: 120px 1fr 120px 140px;
+  grid-template-columns:140px 1fr 140px 140px 180px;
   gap:10px;
-  padding:8px 0;
+  padding:10px 0;
   border-top:1px solid var(--line);
-  align-items:center;
   font-size:13px;
 }
 
 .item:first-child{border-top:none}
 
-.item input,
-.item textarea{
+.item input,.item textarea{
   width:100%;
   padding:6px;
   font-size:13px;
@@ -95,47 +94,42 @@ h1{color:var(--p);margin-bottom:16px}
   border:1px solid var(--border);
 }
 
-.item textarea{resize:none;height:34px}
+.item textarea{resize:none;height:32px}
 
-/* ================= MOBILE ================= */
-@media(max-width:768px){
-  .item{
-    grid-template-columns:1fr;
-    gap:6px;
-    padding:10px 0;
-  }
-
-  .item b{font-size:14px}
-  .item small{font-size:12px;color:#555}
-
-  .item input,
-  .item textarea{
-    font-size:14px;
-    padding:10px;
-  }
+.req{
+  border-color:var(--warn);
+  background:#fff5f5;
 }
 
+/* MOBILE */
+@media(max-width:900px){
+  .item{grid-template-columns:1fr}
+}
+
+/* ACTIONS */
 .actions{
-  margin-top:10px;
   display:flex;
   gap:10px;
+  margin-top:20px;
 }
 
 .actions button{
-  padding:8px 14px;
+  padding:10px 18px;
   border:none;
   border-radius:8px;
   font-weight:600;
   cursor:pointer;
 }
 
+.btn-send{background:#0b1e39;color:#fff}
 .btn-clear{background:#eee}
+.btn-logout{background:#bbb}
 </style>
 </head>
 
 <body>
 
-<div id="login" class="login">
+<div id="login" class="login hidden">
   <h1>Fornecedor</h1>
   <input id="doc" placeholder="CPF ou CNPJ">
   <input id="senha" type="password" placeholder="Senha">
@@ -143,11 +137,13 @@ h1{color:var(--p);margin-bottom:16px}
 </div>
 
 <div id="painel" class="hidden">
-  <h1>Minhas Cotações</h1>
+  <h1>FOODS TIME – DELÍCIA GOURMET</h1>
   <div id="lista"></div>
 
   <div class="actions">
-    <button class="btn-clear" onclick="limparLocal()">Limpar</button>
+    <button class="btn-send" onclick="enviar()">Enviar Cotação</button>
+    <button class="btn-clear" onclick="limpar()">Limpar</button>
+    <button class="btn-logout" onclick="sair()">Sair</button>
   </div>
 </div>
 
@@ -157,30 +153,22 @@ const sb = supabase.createClient(
   "sb_publishable_oN2CuBzXHaUF7NHYS_M7aw_tBqVeD-x"
 );
 
-let fornecedor=null;
+let fornecedor = JSON.parse(localStorage.getItem("fornecedor_logado"));
 
-/* ================= MÁSCARAS ================= */
-doc.oninput=()=>{
-  let v=doc.value.replace(/\D/g,"");
-  if(v.length<=11){
-    doc.value=v.replace(/(\d{3})(\d)/,"$1.$2")
-      .replace(/(\d{3})(\d)/,"$1.$2")
-      .replace(/(\d{3})(\d{1,2})$/,"$1-$2");
-  }else{
-    doc.value=v.replace(/^(\d{2})(\d)/,"$1.$2")
-      .replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3")
-      .replace(/\.(\d{3})(\d)/,".$1/$2")
-      .replace(/(\d{4})(\d)/,"$1-$2");
-  }
-};
+if(fornecedor){
+  iniciar();
+}else{
+  login.classList.remove("hidden");
+}
 
+/* ===== UTIL ===== */
 function maskMoney(v){
   v=v.replace(/\D/g,"");
-  v=(v/100).toFixed(2)+"";
+  v=(v/100).toFixed(2);
   return v.replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
 }
 
-/* ================= LOGIN ================= */
+/* ===== LOGIN ===== */
 async function entrar(){
   let d=doc.value.replace(/\D/g,"");
   if(senha.value!==d.substring(0,4)) return alert("Senha incorreta");
@@ -188,50 +176,65 @@ async function entrar(){
   let {data}=await sb.from("empresas").select("*").eq("doc",doc.value).single();
   if(!data) return alert("Fornecedor não encontrado");
 
+  localStorage.setItem("fornecedor_logado",JSON.stringify(data));
   fornecedor=data;
+  iniciar();
+}
+
+function iniciar(){
   login.classList.add("hidden");
   painel.classList.remove("hidden");
   carregar();
 }
 
-/* ================= CARREGAR ================= */
+/* ===== CARREGAR ===== */
 async function carregar(){
-  const {data}=await sb.from("cotacoes")
+  const {data} = await sb
+    .from("cotacoes")
     .select(`
       id,
-      licitacao:licitacao_id(codigo),
-      itens:cotacoes_itens(
+      cotacoes_itens (
         id,
         valor_unit,
+        marca,
         observacao,
-        item:item_id(item_tr,especificacao,quant_min,quant_max)
+        item:item_id (
+          item_tr,
+          especificacao,
+          quant_min,
+          quant_max
+        )
       )
     `)
-    .eq("fornecedor_id",fornecedor.id);
+    .eq("fornecedor_id", fornecedor.id)
+    .eq("status", "ativa");
 
   lista.innerHTML="";
 
   data.forEach(c=>{
     let card=document.createElement("div");
     card.className="card";
-    card.innerHTML=`<h3>Licitação ${c.licitacao.codigo}</h3>`;
+    card.innerHTML=`<h3>Cotação em andamento</h3>`;
 
-    c.itens.forEach(it=>{
-      let key=`cot_${it.id}`;
+    c.cotacoes_itens.forEach(it=>{
+      let key=`resp_${it.id}`;
       let cache=JSON.parse(localStorage.getItem(key)||"{}");
 
       card.innerHTML+=`
         <div class="item">
-          <div>
-            <b>${it.item.item_tr}</b><br>
-            <small>${it.item.especificacao}</small>
-          </div>
-          <small>Min ${it.item.quant_min} | Máx ${it.item.quant_max}</small>
-          <input value="${cache.valor||""}"
-            placeholder="Valor"
-            oninput="this.value=maskMoney(this.value); salvarLocal(${it.id})">
-          <textarea placeholder="Obs"
-            oninput="salvarLocal(${it.id})">${cache.obs||""}</textarea>
+          <b>${it.item.item_tr}</b>
+          <span>${it.item.especificacao}</span>
+
+          <input placeholder="Marca"
+            value="${cache.marca||""}"
+            oninput="salvar('${key}','marca',this.value)">
+
+          <input placeholder="Valor"
+            value="${cache.valor||""}"
+            oninput="this.value=maskMoney(this.value); salvar('${key}','valor',this.value)">
+
+          <textarea placeholder="Observação"
+            oninput="salvar('${key}','obs',this.value)">${cache.obs||""}</textarea>
         </div>
       `;
     });
@@ -240,16 +243,72 @@ async function carregar(){
   });
 }
 
-/* ================= LOCAL STORAGE ================= */
-function salvarLocal(id){
-  let el=[...document.querySelectorAll(".item")].find(i=>i.innerHTML.includes(`(${id})`));
+/* ===== LOCAL ===== */
+function salvar(key,campo,v){
+  let o=JSON.parse(localStorage.getItem(key)||"{}");
+  o[campo]=v;
+  localStorage.setItem(key,JSON.stringify(o));
 }
 
-function limparLocal(){
-  Object.keys(localStorage)
-    .filter(k=>k.startsWith("cot_"))
-    .forEach(k=>localStorage.removeItem(k));
-  alert("Dados locais limpos");
+/* ===== ENVIAR (REGRA FINAL) ===== */
+async function enviar(){
+  let ops = Object.keys(localStorage).filter(k=>k.startsWith("resp_"));
+  let erro = false;
+
+  for(let k of ops){
+    let o = JSON.parse(localStorage.getItem(k));
+
+    let temAlgo =
+      (o.marca && o.marca.trim()) ||
+      (o.valor && o.valor.trim()) ||
+      (o.obs && o.obs.trim());
+
+    let completo =
+      (o.marca && o.marca.trim()) &&
+      (o.valor && o.valor.trim());
+
+    if(temAlgo && !completo){
+      erro = true;
+      break;
+    }
+  }
+
+  if(erro){
+    alert(
+      "⚠️ ATENÇÃO\n\n" +
+      "Se você preencher qualquer informação do item,\n" +
+      "é obrigatório informar:\n\n" +
+      "• MARCA\n" +
+      "• VALOR\n\n" +
+      "Ou deixe o item totalmente em branco."
+    );
+    return;
+  }
+
+  for(let k of ops){
+    let id = k.replace("resp_","");
+    let o = JSON.parse(localStorage.getItem(k));
+
+    await sb.from("cotacoes_itens").update({
+      valor_unit: o.valor ? Number(o.valor.replace(/\./g,"").replace(",", ".")) : null,
+      marca: o.marca || null,
+      observacao: o.obs || null
+    }).eq("id",id);
+
+    localStorage.removeItem(k);
+  }
+
+  alert("Cotação enviada com sucesso");
+}
+
+/* ===== OUTROS ===== */
+function limpar(){
+  Object.keys(localStorage).filter(k=>k.startsWith("resp_")).forEach(k=>localStorage.removeItem(k));
+  carregar();
+}
+
+function sair(){
+  localStorage.removeItem("fornecedor_logado");
   location.reload();
 }
 </script>
