@@ -1417,11 +1417,15 @@ function renderCotacoes(cotacoes){
 
   type="tel"
 
-  inputmode="numeric"
+  inputmode="decimal"
 
-  pattern="[0-9]*"
+  enterkeyhint="done"
 
   autocomplete="off"
+
+  autocorrect="off"
+
+  spellcheck="false"
 
   class="
     input
@@ -1899,11 +1903,6 @@ window.addEventListener(
 
 </script>
 
-
-
-
-
-  
 <div id="splash">
 
   <div class="splash-bg"></div>
@@ -1927,6 +1926,7 @@ window.addEventListener(
   </h1>
 
 </div>
+
 <script>
 
 if ('serviceWorker' in navigator) {
@@ -1947,16 +1947,10 @@ if ('serviceWorker' in navigator) {
 
 </script>
 
-
 <audio
   id="somNotify"
   src="notify.mp3">
 </audio>
 
-
-
-
-
-  
 </body>
 </html>
