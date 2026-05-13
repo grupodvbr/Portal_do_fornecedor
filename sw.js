@@ -1,22 +1,9 @@
-self.addEventListener('install', e => {
-  console.log('PWA instalado');
+self.addEventListener('install', () => {
+
+  console.log('SW instalado');
+
 });
 
-self.addEventListener('fetch', e => {});
-
-self.addEventListener('push', event => {
-
-  const data = event.data.json();
-
-  self.registration.showNotification(
-    data.title,
-    {
-      body: data.body,
-      icon: '/logo-192.png',
-      badge: '/logo-192.png',
-      vibrate: [200,100,200],
-      sound: '/notify.mp3'
-    }
-  );
+self.addEventListener('fetch', event => {
 
 });
