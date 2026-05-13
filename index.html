@@ -2329,6 +2329,36 @@ function money(v){
 
 sb.channel("cotacoes_realtime")
 
+/* ================= NOVA COTAÇÃO ================= */
+
+.on(
+  "postgres_changes",
+  {
+    event:"INSERT",
+    schema:"public",
+    table:"cotacoes"
+  },
+
+  payload => {
+
+    carregarCotacoes();
+
+    tocarSom();
+
+    mostrarNotificacao({
+
+      titulo:'🛒 Nova Cotação',
+
+      mensagem:
+      'Uma nova cotação foi enviada para você'
+
+    });
+
+  }
+)
+
+/* ================= UPDATE ================= */
+
 .on(
   "postgres_changes",
   {
@@ -2336,15 +2366,66 @@ sb.channel("cotacoes_realtime")
     schema:"public",
     table:"cotacoes"
   },
-payload => {
 
-  carregarCotacoes();
+  payload => {
 
-  tocarSom();
+    carregarCotacoes();
 
-  mostrarNotificacao(payload);
+    const oldStatus = String(
 
-}
+      payload.old.status || ''
+
+    ).toUpperCase();
+
+    const newStatus = String(
+
+      payload.new.status || ''
+
+    ).toUpperCase();
+
+    /* FINALIZADA */
+
+    if(
+      newStatus === 'FINALIZADA'
+      &&
+      oldStatus !== 'FINALIZADA'
+    ){
+
+      tocarSom();
+
+      mostrarNotificacao({
+
+        titulo:'🔒 Cotação Finalizada',
+
+        mensagem:
+        'Uma cotação foi encerrada'
+
+      });
+
+    }
+
+    /* REABERTA */
+
+    if(
+      oldStatus === 'FINALIZADA'
+      &&
+      newStatus !== 'FINALIZADA'
+    ){
+
+      tocarSom();
+
+      mostrarNotificacao({
+
+        titulo:'🔓 Cotação Reaberta',
+
+        mensagem:
+        'Uma cotação foi reaberta'
+
+      });
+
+    }
+
+  }
 )
 
 .subscribe();
@@ -2367,37 +2448,75 @@ async function ativarNotificacoes(){
 ativarNotificacoes();
 
 
-function tocarSom(){
+function tocarSom(tipo='nova'){
 
   const audio =
     document.getElementById(
       'somNotify'
     );
 
+  if(tipo === 'finalizada'){
+
+    audio.src =
+      'finalizada.mp3';
+
+  }else{
+
+    audio.src =
+      'notify.mp3';
+
+  }
+
   audio.play();
 
-}function mostrarNotificacao(payload){
+}
+  
+  
+  
+ function mostrarNotificacao(data){
 
-  if(Notification.permission !== 'granted')
-    return;
+  if(
+    Notification.permission !==
+    'granted'
+  ) return;
 
-  navigator.serviceWorker.ready.then(reg => {
+  navigator.serviceWorker.ready
+  .then(reg => {
 
     reg.showNotification(
-      'Nova movimentação',
+
+      data.titulo || 'Cotação Mercatto',
+
       {
+
         body:
-          'Uma cotação foi atualizada',
+          data.mensagem ||
+
+          'Nova atualização',
+
         icon:'logo-192.png',
+
         badge:'logo-192.png',
-        vibrate:[200,100,200]
+
+        vibrate:[
+
+          200,
+          100,
+          200
+
+        ],
+
+        tag:'cotacao-mercatto',
+
+        renotify:true
+
       }
+
     );
 
   });
 
 }
-
 
 
 
