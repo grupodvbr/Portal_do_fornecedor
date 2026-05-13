@@ -1641,18 +1641,13 @@ function renderCotacoes(cotacoes){
 
               <tr>
 
-                <th>Produto</th>
-                <th>Qtd</th>
-                <th>Und. Solic.</th>
-                <th>Marca</th>
-                <th>Preço Emb.</th>
-                <th>Unidade</th>
-                <th>Qtd Emb.</th>
-                <th>Preço Unit.</th>
-                <th>Total</th>
-                <th>Prazo</th>
-                <th>Observação</th>
-                <th>Status</th>
+<th>Produto</th>
+<th>Qtd</th>
+<th>Und.</th>
+<th>Valor Unit.</th>
+<th>Total</th>
+<th>Observação</th>
+<th>Status</th>
 
               </tr>
 
@@ -2170,12 +2165,11 @@ async function enviar(cotacaoId){
       || "{}"
     );
 
-    if(
-      !cache.preco_embalagem ||
-      !cache.marca
-    ){
-      continue;
-    }
+if(
+  !cache.preco_unitario
+){
+  continue;
+}
 
 const precoEmb = parseFloat(
 
@@ -2354,113 +2348,6 @@ payload => {
 )
 
 .subscribe();
-
-
-
-/* ================= REALTIME CALCULO ================= */
-
-function recalcularLinha(el){
-
-  const tr =
-    el.closest('tr');
-
-  const precoInput =
-
-    tr.querySelectorAll('input')[1];
-
-  const qtdEmbInput =
-
-    tr.querySelectorAll('input')[2];
-
-  const qtdSolicitada = Number(
-
-    tr.children[1]
-    .innerText
-
-  ) || 0;
-
-  const precoEmb = parseFloat(
-
-    String(
-      precoInput.value || 0
-    )
-
-    .replace(/\./g,'')
-    .replace(',','.')
-
-  ) || 0;
-
-  const qtdEmb = Number(
-
-    qtdEmbInput.value || 1
-
-  );
-
-  const precoUnit =
-
-    qtdEmb > 0
-
-    ? precoEmb / qtdEmb
-
-    : 0;
-
-  const total =
-
-    precoUnit * qtdSolicitada;
-
-  tr.children[7].innerHTML = `
-
-    <b style="color:#16a34a">
-
-      ${
-
-        precoUnit
-
-        ? 'R$ ' +
-
-          precoUnit
-          .toLocaleString('pt-BR',{
-
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-
-          })
-
-        : '-'
-
-      }
-
-    </b>
-
-  `;
-
-  tr.children[8].innerHTML = `
-
-    <b>
-
-      ${
-
-        total
-
-        ? 'R$ ' +
-
-          total
-          .toLocaleString('pt-BR',{
-
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-
-          })
-
-        : '-'
-
-      }
-
-    </b>
-
-  `;
-
-}
 
 
 
