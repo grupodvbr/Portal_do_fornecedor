@@ -1,316 +1,2200 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Fornecedor • Minhas Cotações</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Portal do Fornecedor • Mercatto</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =====================================================
+ROOT
+===================================================== */
+
 :root{
-  --p:#0b1e39;
-  --bg:#f4f6fa;
-  --card:#fff;
-  --border:#d6d9e0;
-  --radius:10px;
-  --line:#e6e9ef;
-  --warn:#c62828;
+
+  --bg:#eef2f7;
+
+  --card:#ffffff;
+
+  --line:#dbe3ec;
+
+  --line2:#edf2f7;
+
+  --text:#0f172a;
+
+  --muted:#64748b;
+
+  --primary:#020617;
+
+  --primary2:#0f172a;
+
+  --primary3:#1e293b;
+
+  --green:#16a34a;
+
+  --yellow:#ca8a04;
+
+  --red:#dc2626;
+
+  --blue:#2563eb;
+
+  --shadow:
+  0 10px 35px rgba(15,23,42,.06);
+
+  --shadowHover:
+  0 16px 45px rgba(15,23,42,.12);
+
 }
 
-*{box-sizing:border-box;font-family:Inter}
+/* =====================================================
+BASE
+===================================================== */
+
+*{
+
+  margin:0;
+  padding:0;
+
+  box-sizing:border-box;
+
+  font-family:Inter;
+
+}
+
+html{
+  scroll-behavior:smooth;
+}
 
 body{
-  margin:0;
+
   background:var(--bg);
-  padding:20px;
+
+  color:var(--text);
+
+  -webkit-font-smoothing:antialiased;
+
+  text-rendering:optimizeLegibility;
+
 }
 
-h1{color:var(--p);margin-bottom:14px}
-.hidden{display:none}
+/* =====================================================
+LOGIN
+===================================================== */
 
-/* LOGIN */
 .login{
-  max-width:420px;
-  margin:60px auto;
-  background:#fff;
-  padding:30px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-}
 
-.login input{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:8px;
-  border:1px solid var(--border);
-}
+  min-height:100vh;
 
-.login button{
-  width:100%;
-  padding:12px;
-  background:var(--p);
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* CARD */
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  margin-bottom:16px;
-  padding:14px;
-}
-
-.card h3{
-  font-size:14px;
-  margin:0 0 10px;
-  color:var(--p);
-}
-
-/* ITEM */
-.item{
-  display:grid;
-  grid-template-columns:140px 1fr 140px 140px 180px;
-  gap:10px;
-  padding:10px 0;
-  border-top:1px solid var(--line);
-  font-size:13px;
-}
-
-.item:first-child{border-top:none}
-
-.item input,.item textarea{
-  width:100%;
-  padding:6px;
-  font-size:13px;
-  border-radius:6px;
-  border:1px solid var(--border);
-}
-
-.item textarea{resize:none;height:32px}
-
-.req{
-  border-color:var(--warn);
-  background:#fff5f5;
-}
-
-/* MOBILE */
-@media(max-width:900px){
-  .item{grid-template-columns:1fr}
-}
-
-/* ACTIONS */
-.actions{
   display:flex;
-  gap:10px;
-  margin-top:20px;
+
+  justify-content:center;
+
+  align-items:center;
+
+  padding:24px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617 0%,
+    #0f172a 45%,
+    #1e293b 100%
+  );
+
+  position:relative;
+
+  overflow:hidden;
+
 }
 
-.actions button{
-  padding:10px 18px;
-  border:none;
-  border-radius:8px;
+.login::before{
+
+  content:'';
+
+  position:absolute;
+
+  width:700px;
+  height:700px;
+
+  border-radius:50%;
+
+  background:
+  radial-gradient(
+    circle,
+    rgba(255,255,255,.06),
+    transparent 70%
+  );
+
+  top:-320px;
+  right:-200px;
+
+}
+
+.login::after{
+
+  content:'';
+
+  position:absolute;
+
+  width:600px;
+  height:600px;
+
+  border-radius:50%;
+
+  background:
+  radial-gradient(
+    circle,
+    rgba(255,255,255,.04),
+    transparent 70%
+  );
+
+  bottom:-300px;
+  left:-150px;
+
+}
+
+.login-card{
+
+  width:100%;
+
+  max-width:440px;
+
+  background:
+  rgba(255,255,255,.96);
+
+  backdrop-filter:blur(14px);
+
+  border:1px solid rgba(255,255,255,.25);
+
+  border-radius:32px;
+
+  padding:34px;
+
+  position:relative;
+
+  z-index:2;
+
+  box-shadow:
+  0 30px 70px rgba(0,0,0,.25);
+
+}
+
+.logo{
+
+  width:82px;
+  height:82px;
+
+  border-radius:24px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #334155
+  );
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  margin-bottom:26px;
+
+  box-shadow:
+  0 12px 28px rgba(2,6,23,.25);
+
+}
+
+.logo img{
+
+  width:52px;
+
+  object-fit:contain;
+
+}
+
+.login-card h1{
+
+  font-size:34px;
+
+  font-weight:900;
+
+  letter-spacing:-.5px;
+
+  margin-bottom:10px;
+
+  color:#020617;
+
+}
+
+.login-card p{
+
+  font-size:14px;
+
+  color:var(--muted);
+
+  margin-bottom:26px;
+
+  line-height:1.5;
+
+}
+
+.login-card input{
+
+  width:100%;
+
+  height:58px;
+
+  border:1px solid var(--line);
+
+  border-radius:18px;
+
+  background:#f8fafc;
+
+  padding:0 18px;
+
+  outline:none;
+
+  margin-bottom:14px;
+
+  font-size:14px;
+
   font-weight:600;
-  cursor:pointer;
+
+  color:var(--text);
+
+  transition:.18s;
+
 }
 
-.btn-send{background:#0b1e39;color:#fff}
-.btn-clear{background:#eee}
-.btn-logout{background:#bbb}
+.login-card input::placeholder{
+
+  color:#94a3b8;
+
+}
+
+.login-card input:focus{
+
+  border-color:#2563eb;
+
+  background:white;
+
+  box-shadow:
+  0 0 0 5px rgba(37,99,235,.08);
+
+}
+
+.login-card button{
+
+  width:100%;
+
+  height:60px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #1e293b
+  );
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:.18s;
+
+  letter-spacing:.3px;
+
+}
+
+.login-card button:hover{
+
+  transform:translateY(-1px);
+
+  box-shadow:
+  0 14px 30px rgba(2,6,23,.22);
+
+}
+
+/* =====================================================
+APP
+===================================================== */
+
+.app{
+  display:none;
+}
+
+/* =====================================================
+TOP
+===================================================== */
+
+.top{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:999;
+
+  background:white;
+
+  border-bottom:1px solid var(--line);
+
+  box-shadow:var(--shadow);
+
+}
+
+.top-flex{
+
+  padding:20px 24px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+
+  flex-wrap:wrap;
+
+}
+
+.top h1{
+
+  font-size:30px;
+
+  font-weight:900;
+
+  letter-spacing:-.4px;
+
+  color:#020617;
+
+}
+
+.top small{
+
+  font-size:13px;
+
+  color:var(--muted);
+
+}
+
+.top-actions{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+/* =====================================================
+BUTTONS
+===================================================== */
+
+.btn{
+
+  height:46px;
+
+  border:none;
+
+  border-radius:14px;
+
+  padding:0 18px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+  cursor:pointer;
+
+  font-size:13px;
+
+  font-weight:900;
+
+  transition:.18s;
+
+  letter-spacing:.3px;
+
+}
+
+.btn:hover{
+
+  transform:translateY(-1px);
+
+}
+
+.btn:active{
+
+  transform:scale(.98);
+
+}
+
+.btn{
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #1e293b
+  );
+
+  color:white;
+
+}
+
+.btn:hover{
+
+  box-shadow:
+  0 14px 30px rgba(2,6,23,.2);
+
+}
+
+.btn-red{
+
+  background:
+  linear-gradient(
+    135deg,
+    #dc2626,
+    #991b1b
+  );
+
+}
+
+.btn-red:hover{
+
+  box-shadow:
+  0 14px 30px rgba(220,38,38,.2);
+
+}
+
+.btn-light{
+
+  background:#f1f5f9;
+
+  color:#020617;
+
+}
+
+/* =====================================================
+CONTAINER
+===================================================== */
+
+.container{
+
+  padding:10px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+
+}
+
+/* =====================================================
+CARD
+===================================================== */
+
+.card{
+
+  background:white;
+
+  border:1px solid var(--line);
+
+  border-radius:18px;
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
+
+  transition:.18s;
+
+}
+
+.card:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:var(--shadowHover);
+
+}
+
+/* =====================================================
+CARD TOP
+===================================================== */
+
+.card-top{
+
+  padding:12px 16px;
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+
+  flex-wrap:wrap;
+
+  border-bottom:1px solid var(--line);
+
+  background:
+  linear-gradient(
+    180deg,
+    #ffffff,
+    #fafbfd
+  );
+
+}
+
+.card-top h2{
+
+  font-size:18px;
+  font-weight:900;
+
+  color:#020617;
+
+  margin-bottom:6px;
+
+  letter-spacing:-.4px;
+
+}
+
+.card-top small{
+
+  font-size:11px;
+  color:var(--muted);
+
+}
+
+/* =====================================================
+STATUS
+===================================================== */
+
+.status{
+
+  padding:6px 10px;
+  border-radius:999px;
+
+  font-size:11px;
+
+  font-weight:900;
+
+  letter-spacing:.5px;
+
+  text-transform:uppercase;
+
+}
+
+.ativa{
+
+  background:#dcfce7;
+
+  color:#166534;
+
+}
+
+.respondida{
+
+  background:#fef3c7;
+
+  color:#92400e;
+
+}
+
+.finalizada{
+
+  background:#fee2e2;
+
+  color:#991b1b;
+
+}
+
+/* =====================================================
+TABLE
+===================================================== */
+
+.table-wrap{
+
+  overflow:auto;
+
+}
+
+.table-wrap::-webkit-scrollbar{
+  width:10px;
+  height:10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb{
+
+  background:#cbd5e1;
+
+  border-radius:20px;
+
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+
+  min-width:1450px;
+
+}
+
+thead{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:10;
+
+  background:#f8fafc;
+
+}
+
+th{
+
+  padding:9px 8px;
+
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+
+  text-align:left;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  letter-spacing:.6px;
+
+  color:#475569;
+
+  text-transform:uppercase;
+
+  white-space:nowrap;
+
+}
+
+th:last-child{
+  border-right:none;
+}
+
+td{
+
+  padding:7px 8px;
+
+  border-bottom:1px solid var(--line2);
+  border-right:1px solid var(--line2);
+
+  vertical-align:middle;
+
+  font-size:11px;
+
+  background:white;
+
+  transition:.12s;
+
+}
+
+td:last-child{
+  border-right:none;
+}
+
+tbody tr:hover td{
+
+  background:#f8fbff;
+
+}
+
+tbody tr:nth-child(even) td{
+
+  background:#fbfcfe;
+
+}
+
+/* =====================================================
+INPUT
+===================================================== */
+
+.input{
+
+  width:100%;
+
+  min-height:34px;
+
+  border:1px solid var(--line);
+
+  border-radius:10px;
+
+  background:#f8fafc;
+
+  padding:6px 8px;
+
+  font-size:11px;
+
+  font-weight:600;
+
+  color:var(--text);
+
+  outline:none;
+
+  transition:.18s;
+
+}
+
+.input:focus{
+
+  border-color:#2563eb;
+
+  background:white;
+
+  box-shadow:
+  0 0 0 4px rgba(37,99,235,.08);
+
+}
+
+.input::placeholder{
+
+  color:#94a3b8;
+
+}
+
+.money{
+  text-align:right;
+}
+
+.center{
+  text-align:center;
+}
+
+.readonly{
+
+  background:#f8fafc;
+
+  opacity:.7;
+
+  cursor:not-allowed;
+
+}
+
+/* =====================================================
+TEXTAREA
+===================================================== */
+
+textarea.input{
+
+  min-height:54px;
+
+  resize:vertical;
+
+  line-height:1.45;
+
+}
+
+/* =====================================================
+BADGES
+===================================================== */
+
+.badge{
+  padding:5px 8px;
+
+  border-radius:999px;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  width:max-content;
+
+  letter-spacing:.4px;
+
+  text-transform:uppercase;
+
+}
+
+.pending{
+
+  background:#fef3c7;
+
+  color:#92400e;
+
+}
+
+.done{
+
+  background:#dcfce7;
+
+  color:#166534;
+
+}
+
+/* =====================================================
+ACTIONS
+===================================================== */
+
+.actions{
+
+  padding:10px 14px;
+  display:flex;
+
+  justify-content:flex-end;
+
+  gap:12px;
+
+  border-top:1px solid var(--line);
+
+  background:
+  linear-gradient(
+    180deg,
+    #ffffff,
+    #fafbfd
+  );
+
+}
+
+/* =====================================================
+EMPTY
+===================================================== */
+
+.empty{
+
+  background:white;
+
+  border:1px solid var(--line);
+
+  border-radius:28px;
+
+  padding:90px;
+
+  text-align:center;
+
+  font-size:16px;
+
+  font-weight:700;
+
+  color:var(--muted);
+
+  box-shadow:var(--shadow);
+
+}
+
+/* =====================================================
+OVERLAY
+===================================================== */
+
+.overlay{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(255,255,255,.55);
+
+  backdrop-filter:blur(5px);
+
+  display:none;
+
+  justify-content:center;
+
+  align-items:center;
+
+  z-index:9999;
+
+}
+
+.overlay::after{
+
+  content:'';
+
+  width:84px;
+  height:84px;
+
+  border-radius:50%;
+
+  border:6px solid #dbe3ec;
+
+  border-top-color:#020617;
+
+  animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+/* =====================================================
+RESPONSIVO
+===================================================== */
+
+@media(max-width:1100px){
+
+  .top-flex{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+  }
+
+  .top-actions{
+
+    width:100%;
+
+    flex-wrap:wrap;
+
+  }
+
+  .btn{
+
+    flex:1;
+
+  }
+
+  .card-top{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+  }
+
+}
+
+@media(max-width:700px){
+
+  .container{
+
+    padding:14px;
+
+  }
+
+  .login-card{
+
+    padding:28px 22px;
+
+  }
+
+  .card{
+
+    border-radius:22px;
+
+  }
+
+  .card-top{
+
+    padding:18px;
+
+  }
+
+  .actions{
+
+    padding:18px;
+
+    flex-direction:column;
+
+  }
+
+  .actions .btn{
+
+    width:100%;
+
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div id="login" class="login hidden">
-  <h1>Fornecedor</h1>
-  <input id="doc" placeholder="CPF ou CNPJ">
-  <input id="senha" type="password" placeholder="Senha">
-  <button onclick="entrar()">Entrar</button>
+<!-- LOGIN -->
+
+<div class="login" id="login">
+
+  <div class="login-card">
+
+    <div class="logo">
+      M
+    </div>
+
+    <h1>Portal do Fornecedor</h1>
+
+    <p>
+      Acesse suas cotações
+    </p>
+
+    <input
+      id="cnpj"
+      placeholder="CNPJ"
+    >
+
+    <input
+      id="senha"
+      type="password"
+      placeholder="Senha"
+    >
+
+    <button onclick="entrar()">
+      Entrar
+    </button>
+
+  </div>
+
 </div>
 
-<div id="painel" class="hidden">
-  <h1>FOODS TIME – DELÍCIA GOURMET</h1>
-  <div id="lista"></div>
+<!-- APP -->
 
-  <div class="actions">
-    <button class="btn-send" onclick="enviar()">Enviar Cotação</button>
-    <button class="btn-clear" onclick="limpar()">Limpar</button>
-    <button class="btn-logout" onclick="sair()">Sair</button>
+<div class="app" id="app">
+
+  <div class="top">
+
+    <div class="top-flex">
+
+      <div>
+
+        <h1 id="nomeFornecedor">
+          Fornecedor
+        </h1>
+
+        <small id="infoFornecedor"></small>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button
+          class="btn"
+          onclick="carregarCotacoes()">
+
+          Atualizar
+
+        </button>
+
+        <button
+          class="btn btn-red"
+          onclick="sair()">
+
+          Sair
+
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
+
+  <div
+    class="container"
+    id="listaCotacoes">
+  </div>
+
+</div>
+
+<!-- OVERLAY -->
+
+<div
+  class="overlay"
+  id="overlay">
+
+  Processando...
+
 </div>
 
 <script>
+
 const sb = supabase.createClient(
-  "https://mblvyircwsaxaslklzky.supabase.co",
-  "sb_publishable_oN2CuBzXHaUF7NHYS_M7aw_tBqVeD-x"
+  "https://dxkszikemntfusfyrzos.supabase.co",
+  "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
 );
 
-let fornecedor = JSON.parse(localStorage.getItem("fornecedor_logado"));
+let fornecedor = JSON.parse(
+  localStorage.getItem("fornecedor_logado")
+);
 
 if(fornecedor){
   iniciar();
-}else{
-  login.classList.remove("hidden");
 }
 
-/* ===== UTIL ===== */
-function maskMoney(v){
-  v=v.replace(/\D/g,"");
-  v=(v/100).toFixed(2);
-  return v.replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
-}
+/* ================= LOGIN ================= */
 
-/* ===== LOGIN ===== */
 async function entrar(){
-  let d=doc.value.replace(/\D/g,"");
-  if(senha.value!==d.substring(0,4)) return alert("Senha incorreta");
 
-  let {data}=await sb.from("empresas").select("*").eq("doc",doc.value).single();
-  if(!data) return alert("Fornecedor não encontrado");
+  const cnpj = document
+    .getElementById("cnpj")
+    .value
+    .replace(/\D/g,"");
 
-  localStorage.setItem("fornecedor_logado",JSON.stringify(data));
-  fornecedor=data;
-  iniciar();
-}
+  const senha = document
+    .getElementById("senha")
+    .value
+    .trim();
 
-function iniciar(){
-  login.classList.add("hidden");
-  painel.classList.remove("hidden");
-  carregar();
-}
+  overlay(true);
 
-/* ===== CARREGAR ===== */
-async function carregar(){
-  const {data} = await sb
-    .from("cotacoes")
-    .select(`
-      id,
-      cotacoes_itens (
-        id,
-        valor_unit,
-        marca,
-        observacao,
-        item:item_id (
-          item_tr,
-          especificacao,
-          quant_min,
-          quant_max
-        )
-      )
-    `)
-    .eq("fornecedor_id", fornecedor.id)
-    .eq("status", "ativa");
+  const { data } = await sb
 
-  lista.innerHTML="";
+    .from("fornecedores_mercatto")
 
-  data.forEach(c=>{
-    let card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`<h3>Cotação em andamento</h3>`;
+    .select("*")
+    .eq("ativo", true);
 
-    c.cotacoes_itens.forEach(it=>{
-      let key=`resp_${it.id}`;
-      let cache=JSON.parse(localStorage.getItem(key)||"{}");
+  overlay(false);
 
-      card.innerHTML+=`
-        <div class="item">
-          <b>${it.item.item_tr}</b>
-          <span>${it.item.especificacao}</span>
+  const encontrado = (data || [])
 
-          <input placeholder="Marca"
-            value="${cache.marca||""}"
-            oninput="salvar('${key}','marca',this.value)">
+    .find(f => {
 
-          <input placeholder="Valor"
-            value="${cache.valor||""}"
-            oninput="this.value=maskMoney(this.value); salvar('${key}','valor',this.value)">
+      return (
 
-          <textarea placeholder="Observação"
-            oninput="salvar('${key}','obs',this.value)">${cache.obs||""}</textarea>
-        </div>
-      `;
+        String(f.cnpj || "")
+        .replace(/\D/g,"")
+
+        === cnpj
+
+        &&
+
+        String(f.senha || "")
+        .trim()
+
+        === senha
+
+      );
+
     });
 
-    lista.appendChild(card);
-  });
-}
+  if(!encontrado){
 
-/* ===== LOCAL ===== */
-function salvar(key,campo,v){
-  let o=JSON.parse(localStorage.getItem(key)||"{}");
-  o[campo]=v;
-  localStorage.setItem(key,JSON.stringify(o));
-}
-
-/* ===== ENVIAR (REGRA FINAL) ===== */
-async function enviar(){
-  let ops = Object.keys(localStorage).filter(k=>k.startsWith("resp_"));
-  let erro = false;
-
-  for(let k of ops){
-    let o = JSON.parse(localStorage.getItem(k));
-
-    let temAlgo =
-      (o.marca && o.marca.trim()) ||
-      (o.valor && o.valor.trim()) ||
-      (o.obs && o.obs.trim());
-
-    let completo =
-      (o.marca && o.marca.trim()) &&
-      (o.valor && o.valor.trim());
-
-    if(temAlgo && !completo){
-      erro = true;
-      break;
-    }
-  }
-
-  if(erro){
     alert(
-      "⚠️ ATENÇÃO\n\n" +
-      "Se você preencher qualquer informação do item,\n" +
-      "é obrigatório informar:\n\n" +
-      "• MARCA\n" +
-      "• VALOR\n\n" +
-      "Ou deixe o item totalmente em branco."
+      "CNPJ ou senha inválidos"
     );
+
     return;
   }
 
-  for(let k of ops){
-    let id = k.replace("resp_","");
-    let o = JSON.parse(localStorage.getItem(k));
+  fornecedor = encontrado;
 
-    await sb.from("cotacoes_itens").update({
-      valor_unit: o.valor ? Number(o.valor.replace(/\./g,"").replace(",", ".")) : null,
-      marca: o.marca || null,
-      observacao: o.obs || null
-    }).eq("id",id);
+  localStorage.setItem(
+    "fornecedor_logado",
+    JSON.stringify(fornecedor)
+  );
 
-    localStorage.removeItem(k);
+  iniciar();
+}
+
+/* ================= INICIAR ================= */
+
+async function iniciar(){
+
+  document.getElementById("login")
+    .style.display = "none";
+
+  document.getElementById("app")
+    .style.display = "block";
+
+  document.getElementById("nomeFornecedor")
+    .innerText = fornecedor.nome;
+
+  document.getElementById("infoFornecedor")
+    .innerText = fornecedor.cnpj;
+
+  await carregarCotacoes();
+}
+
+/* ================= COTAÇÕES ================= */
+
+async function carregarCotacoes(){
+
+  overlay(true);
+
+  const { data, error } = await sb
+
+    .from("cotacoes")
+
+    .select("*")
+
+    .order(
+      "data_cotacao",
+      { ascending:false }
+    );
+
+  overlay(false);
+
+  if(error){
+
+    console.log(error);
+
+    alert("Erro ao carregar");
+
+    return;
   }
 
-  alert("Cotação enviada com sucesso");
+ const filtradas = (data || [])
+
+  .filter(c => {
+
+    /* NÃO MOSTRA FINALIZADAS */
+
+    if(
+      String(c.status || '')
+      .toUpperCase() === 'FINALIZADA'
+    ){
+      return false;
+    }
+
+    const itens =
+      c.itens_cotacao || [];
+
+    return itens.some(i => {
+
+      return (
+        i.fornecedores || []
+      ).some(f =>
+
+        f.fornecedor_id === fornecedor.id
+
+      );
+
+    });
+
+  });
+
+  renderCotacoes(filtradas);
 }
 
-/* ===== OUTROS ===== */
-function limpar(){
-  Object.keys(localStorage).filter(k=>k.startsWith("resp_")).forEach(k=>localStorage.removeItem(k));
-  carregar();
+/* ================= RENDER ================= */
+
+function renderCotacoes(cotacoes){
+
+  const lista =
+    document.getElementById(
+      "listaCotacoes"
+    );
+
+  lista.innerHTML = "";
+
+  if(!cotacoes.length){
+
+    lista.innerHTML = `
+
+      <div class="empty">
+
+        Nenhuma cotação disponível
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  cotacoes.forEach(c => {
+
+    const itens =
+      c.itens_cotacao || [];
+
+    const bloqueada =
+      c.status === "finalizada";
+
+    lista.innerHTML += `
+
+      <div class="card">
+
+        <div class="card-top">
+
+          <div>
+
+            <h2>
+              ${c.nome || "Cotação"}
+            </h2>
+
+            <small>
+              ${formatarData(c.data_cotacao)}
+            </small>
+
+          </div>
+
+          <div class="
+            status
+
+            ${
+              c.status === "finalizada"
+              ? "finalizada"
+
+              : c.status === "respondida"
+              ? "respondida"
+
+              : "ativa"
+            }
+          ">
+
+            ${(c.status || "ativa")
+              .toUpperCase()}
+
+          </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Produto</th>
+                <th>Qtd</th>
+                <th>Und. Solic.</th>
+                <th>Marca</th>
+                <th>Preço Emb.</th>
+                <th>Unidade</th>
+                <th>Qtd Emb.</th>
+                <th>Preço Unit.</th>
+                <th>Total</th>
+                <th>Prazo</th>
+                <th>Observação</th>
+                <th>Status</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${itens.map((i,index)=>{
+
+                const meuFornecedor =
+
+                  (i.fornecedores || [])
+
+                  .find(f =>
+
+                    f.fornecedor_id ===
+                    fornecedor.id
+
+                  );
+
+                if(!meuFornecedor)
+                  return "";
+
+                const key =
+                  "cot_"+c.id+"_"+index;
+
+                const cache = JSON.parse(
+
+                  localStorage.getItem(key)
+
+                  || JSON.stringify({
+
+                    preco_embalagem:
+                      meuFornecedor.preco_embalagem || "",
+
+                    marca:
+                      meuFornecedor.marca || "",
+
+                    obs:
+                      meuFornecedor.observacao || "",
+
+                    prazo:
+                      meuFornecedor.prazo || "",
+
+                    unidade:
+                      meuFornecedor.unidade || i.unidade || "UN",
+
+                    embalagem:
+                      meuFornecedor.quantidade_embalagem || 1
+
+                  })
+
+                );
+
+                const qtdEmb =
+                  Number(
+                    cache.embalagem || 1
+                  );
+
+                const precoEmb =
+                  Number(
+
+                    String(
+                      cache.preco_embalagem || 0
+                    )
+
+                    .replace(/\./g,"")
+                    .replace(",", ".")
+
+                  );
+
+                const precoUnit =
+                  qtdEmb > 0
+                  ? precoEmb / qtdEmb
+                  : 0;
+
+                const total =
+                  precoUnit *
+                  Number(i.qtd_solicitada || 0);
+
+                return `
+
+                  <tr>
+
+                    <!-- PRODUTO -->
+
+                    <td>
+
+                      <b>
+                        ${i.produto}
+                      </b>
+
+                    </td>
+
+                    <!-- QTD -->
+
+                    <td class="center">
+
+                      ${i.qtd_solicitada || 0}
+
+                    </td>
+
+                    <!-- UND -->
+
+                    <td>
+
+                      <b>
+                        ${i.unidade || "UN"}
+                      </b>
+
+                    </td>
+
+                    <!-- MARCA -->
+
+                    <td>
+
+                      <input
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
+
+                        value="${cache.marca || ""}"
+
+                        ${bloqueada ? "readonly" : ""}
+
+                        oninput="
+                          salvarLocal(
+                            '${key}',
+                            'marca',
+                            this.value
+                          )
+                        "
+                      >
+
+                    </td>
+
+                    <!-- PREÇO EMB -->
+
+                    <td>
+
+                      <input
+                        class="
+                          input
+                          money
+                          ${bloqueada ? "readonly" : ""}
+                        "
+
+                        value="${
+                          cache.preco_embalagem || ""
+                        }"
+
+                        ${bloqueada ? "readonly" : ""}
+
+oninput="
+
+  this.value = money(this.value);
+
+  salvarLocal(
+    '${key}',
+    'preco_embalagem',
+    this.value
+  );
+
+  recalcularLinha(this);
+
+"
+                      >
+
+                    </td>
+
+                    <!-- UNIDADE -->
+
+                    <td>
+
+                      <select
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
+
+                        ${bloqueada ? "disabled" : ""}
+
+                        onchange="
+                          salvarLocal(
+                            '${key}',
+                            'unidade',
+                            this.value
+                          )
+                        "
+
+                      >
+
+                        ${[
+                          "UN",
+                          "CX",
+                          "KG",
+                          "FD",
+                          "PCT",
+                          "L",
+                          "ML",
+                          "G"
+                        ].map(u=>`
+
+                          <option
+
+                            ${
+                              (
+                                cache.unidade || "UN"
+                              ) === u
+
+                              ? "selected"
+
+                              : ""
+                            }
+
+                          >
+
+                            ${u}
+
+                          </option>
+
+                        `).join("")}
+
+                      </select>
+
+                    </td>
+
+                    <!-- EMB -->
+
+                    <td>
+
+                      <input
+                        type="number"
+
+                        class="
+                          input
+                          center
+                          ${bloqueada ? "readonly" : ""}
+                        "
+
+                        value="${
+                          cache.embalagem || 1
+                        }"
+
+                        ${bloqueada ? "readonly" : ""}
+
+oninput="
+
+  salvarLocal(
+    '${key}',
+    'embalagem',
+    this.value
+  );
+
+  recalcularLinha(this);
+
+"
+                      >
+
+                    </td>
+
+                    <!-- PREÇO UNIT -->
+
+                    <td>
+
+                      <b style="
+                        color:#16a34a;
+                      ">
+
+                        ${
+                          precoUnit
+
+                          ? "R$ " +
+
+                            precoUnit
+                            .toFixed(2)
+                            .replace(".",",")
+
+                          : "-"
+                        }
+
+                      </b>
+
+                    </td>
+
+                    <!-- TOTAL -->
+
+                    <td>
+
+                      <b>
+
+                        ${
+                          total
+
+                          ? "R$ " +
+
+                            total
+                            .toFixed(2)
+                            .replace(".",",")
+
+                          : "-"
+                        }
+
+                      </b>
+
+                    </td>
+
+                    <!-- PRAZO -->
+
+                    <td>
+
+                      <input
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
+
+                        value="${cache.prazo || ""}"
+
+                        ${bloqueada ? "readonly" : ""}
+
+                        oninput="
+                          salvarLocal(
+                            '${key}',
+                            'prazo',
+                            this.value
+                          )
+                        "
+                      >
+
+                    </td>
+
+                    <!-- OBS -->
+
+                    <td>
+
+                      <textarea
+
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
+
+                        style="
+                          min-height:38px;
+                          resize:vertical;
+                        "
+
+                        ${bloqueada ? "readonly" : ""}
+
+                        oninput="
+                          salvarLocal(
+                            '${key}',
+                            'obs',
+                            this.value
+                          )
+                        "
+
+                      >${cache.obs || ""}</textarea>
+
+                    </td>
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                      <div class="
+                        badge
+
+                        ${
+                          meuFornecedor.preco_unitario
+                          ? "done"
+                          : "pending"
+                        }
+                      ">
+
+                        ${
+                          meuFornecedor.preco_unitario
+                          ? "RESPONDIDO"
+                          : "PENDENTE"
+                        }
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }).join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="actions">
+
+          ${
+            bloqueada
+
+            ? `
+
+              <div style="
+                font-size:13px;
+                font-weight:700;
+                color:#dc2626;
+              ">
+
+                Cotação finalizada.
+                Edição bloqueada.
+
+              </div>
+
+            `
+
+            : `
+
+              <button
+                class="btn btn-light"
+                onclick="limpar('${c.id}')">
+
+                Limpar
+
+              </button>
+
+              <button
+                class="btn"
+                onclick="enviar('${c.id}')">
+
+                Enviar Cotação
+
+              </button>
+
+            `
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
 }
+
+/* ================= LOCAL ================= */
+
+function salvarLocal(
+  key,
+  campo,
+  valor
+){
+
+  let obj = JSON.parse(
+    localStorage.getItem(key)
+    || "{}"
+  );
+
+  obj[campo] = valor;
+
+  localStorage.setItem(
+    key,
+    JSON.stringify(obj)
+  );
+
+}
+
+/* ================= ENVIAR ================= */
+
+async function enviar(cotacaoId){
+
+  overlay(true);
+
+  const { data } = await sb
+
+    .from("cotacoes")
+
+    .select("*")
+
+    .eq("id", cotacaoId)
+
+    .single();
+
+  let itens =
+    data.itens_cotacao || [];
+
+  for(let i=0; i<itens.length; i++){
+
+    const item = itens[i];
+
+    const fornecedorIndex =
+
+      (item.fornecedores || [])
+
+      .findIndex(f =>
+
+        f.fornecedor_id ===
+        fornecedor.id
+
+      );
+
+    if(fornecedorIndex === -1)
+      continue;
+
+    const key =
+      "cot_"+cotacaoId+"_"+i;
+
+    const cache = JSON.parse(
+      localStorage.getItem(key)
+      || "{}"
+    );
+
+    if(
+      !cache.preco_embalagem ||
+      !cache.marca
+    ){
+      continue;
+    }
+
+const precoEmb = parseFloat(
+
+  String(
+    cache.preco_embalagem || 0
+  )
+
+  .replace(/\./g,'')
+  .replace(',','.')
+
+) || 0;
+
+    const qtdEmb = Number(
+      cache.embalagem || 1
+    );
+
+    const precoUnit =
+      qtdEmb > 0
+      ? precoEmb / qtdEmb
+      : 0;
+
+    item.fornecedores[
+      fornecedorIndex
+    ] = {
+
+      ...item.fornecedores[
+        fornecedorIndex
+      ],
+
+      preco_embalagem:
+        precoEmb,
+
+      preco_unitario:
+        precoUnit,
+
+      preco_total:
+        precoUnit *
+        Number(
+          item.qtd_solicitada || 0
+        ),
+
+      marca:
+        cache.marca || "",
+
+      observacao:
+        cache.obs || "",
+
+      prazo:
+        cache.prazo || "",
+
+      unidade:
+        cache.unidade || "UN",
+
+      quantidade_embalagem:
+        qtdEmb,
+
+      respondido_em:
+        new Date()
+
+    };
+
+  }
+
+  await sb
+
+    .from("cotacoes")
+
+    .update({
+
+      itens_cotacao:itens,
+      atualizado_em:new Date(),
+      status:"respondida"
+
+    })
+
+    .eq("id", cotacaoId);
+
+  overlay(false);
+
+  alert(
+    "Cotação enviada com sucesso"
+  );
+
+  carregarCotacoes();
+}
+
+/* ================= LIMPAR ================= */
+
+function limpar(cotacaoId){
+
+  Object.keys(localStorage)
+
+    .filter(k =>
+
+      k.startsWith(
+        "cot_"+cotacaoId+"_"
+      )
+
+    )
+
+    .forEach(k => {
+
+      localStorage.removeItem(k);
+
+    });
+
+  carregarCotacoes();
+}
+
+/* ================= SAIR ================= */
 
 function sair(){
-  localStorage.removeItem("fornecedor_logado");
+
+  localStorage.removeItem(
+    "fornecedor_logado"
+  );
+
   location.reload();
 }
+
+/* ================= HELPERS ================= */
+
+function overlay(show){
+
+  document.getElementById("overlay")
+    .style.display =
+      show ? "flex" : "none";
+}
+
+function formatarData(data){
+
+  if(!data) return "-";
+
+  return new Date(data)
+    .toLocaleString("pt-BR");
+}
+
+function money(v){
+
+  if(!v) return '';
+
+  v = String(v)
+    .replace(/\D/g,'');
+
+  v = (Number(v) / 100)
+    .toLocaleString('pt-BR',{
+
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+
+    });
+
+  return v;
+
+}
+/* ================= REALTIME ================= */
+
+sb.channel("cotacoes_realtime")
+
+.on(
+  "postgres_changes",
+  {
+    event:"UPDATE",
+    schema:"public",
+    table:"cotacoes"
+  },
+payload => {
+
+  clearTimeout(window.reloadRealtime);
+
+  window.reloadRealtime = setTimeout(()=>{
+
+    carregarCotacoes();
+
+  }, 1500);
+
+}
+)
+
+.subscribe();
+
+
+
+/* ================= REALTIME CALCULO ================= */
+
+function recalcularLinha(el){
+
+  const tr =
+    el.closest('tr');
+
+  const precoInput =
+
+    tr.querySelectorAll('input')[1];
+
+  const qtdEmbInput =
+
+    tr.querySelectorAll('input')[2];
+
+  const qtdSolicitada = Number(
+
+    tr.children[1]
+    .innerText
+
+  ) || 0;
+
+  const precoEmb = parseFloat(
+
+    String(
+      precoInput.value || 0
+    )
+
+    .replace(/\./g,'')
+    .replace(',','.')
+
+  ) || 0;
+
+  const qtdEmb = Number(
+
+    qtdEmbInput.value || 1
+
+  );
+
+  const precoUnit =
+
+    qtdEmb > 0
+
+    ? precoEmb / qtdEmb
+
+    : 0;
+
+  const total =
+
+    precoUnit * qtdSolicitada;
+
+  tr.children[7].innerHTML = `
+
+    <b style="color:#16a34a">
+
+      ${
+
+        precoUnit
+
+        ? 'R$ ' +
+
+          precoUnit
+          .toLocaleString('pt-BR',{
+
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+
+          })
+
+        : '-'
+
+      }
+
+    </b>
+
+  `;
+
+  tr.children[8].innerHTML = `
+
+    <b>
+
+      ${
+
+        total
+
+        ? 'R$ ' +
+
+          total
+          .toLocaleString('pt-BR',{
+
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+
+          })
+
+        : '-'
+
+      }
+
+    </b>
+
+  `;
+
+}
+  
 </script>
 
 </body>
