@@ -1444,17 +1444,11 @@ function renderCotacoes(cotacoes){
 
 <input
 
-  type="tel"
+  type="text"
 
   inputmode="decimal"
 
-  enterkeyhint="done"
-
   autocomplete="off"
-
-  autocorrect="off"
-
-  spellcheck="false"
 
   class="
     input
@@ -1462,27 +1456,22 @@ function renderCotacoes(cotacoes){
     ${bloqueada ? "readonly" : ""}
   "
 
-  placeholder="Valor"
+  placeholder="0,00"
 
-      value="${
-        cache.preco_unitario || ""
-      }"
+  value="${
+    cache.preco_unitario || ""
+  }"
 
-      ${bloqueada ? "readonly" : ""}
+  ${bloqueada ? "readonly" : ""}
 
-      oninput="
+  oninput="
+    formatarMoeda(
+      this,
+      '${key}'
+    )
+  "
 
-        this.value = money(this.value);
-
-        salvarLocal(
-          '${key}',
-          'preco_unitario',
-          this.value
-        );
-
-      "
-
-    >
+>
 
     <input
 
@@ -1687,16 +1676,57 @@ if(
   continue;
 }
 
-const precoUnit = parseFloat(
+const precoUnit = Number(
 
   String(
-    cache.preco_unitario || 0
+    cache.preco_unitario || '0'
   )
 
+  .replace(/\s/g,'')
   .replace(/\./g,'')
   .replace(',','.')
 
 ) || 0;
+
+/* QUANTIDADE EMBALAGEM */
+
+const qtdEmbalagem = Number(
+
+  item.qtd_unidades ||
+
+  item.quantidade_embalagem ||
+
+  1
+
+);
+
+/* QUANTIDADE SOLICITADA */
+
+const qtdSolicitada = Number(
+  item.qtd_solicitada || 0
+);
+
+/* PREÇO EMBALAGEM */
+
+const precoEmbalagem = Number(
+
+  (
+    precoUnit *
+    qtdEmbalagem
+  ).toFixed(2)
+
+);
+
+/* TOTAL */
+
+const precoTotal = Number(
+
+  (
+    precoEmbalagem *
+    qtdSolicitada
+  ).toFixed(2)
+
+);
 
 item.fornecedores[
   fornecedorIndex
@@ -1709,17 +1739,20 @@ item.fornecedores[
   preco_unitario:
     precoUnit,
 
+  quantidade_embalagem:
+    qtdEmbalagem,
+
+  preco_embalagem:
+    precoEmbalagem,
+
   preco_total:
-    precoUnit *
-    Number(
-      item.qtd_solicitada || 0
-    ),
+    precoTotal,
 
   observacao:
     cache.obs || "",
 
   respondido_em:
-    new Date()
+    new Date().toISOString()
 
 };
     
@@ -1929,7 +1962,44 @@ mostrarNotificacao(
 .subscribe();
 
 
+function formatarMoeda(el,key){
 
+  let v = el.value || '';
+
+  v = v.replace(/\D/g,'');
+
+  if(!v){
+
+    el.value = '';
+
+    salvarLocal(
+      key,
+      'preco_unitario',
+      ''
+    );
+
+    return;
+  }
+
+  v = (
+    Number(v) / 100
+  ).toLocaleString(
+    'pt-BR',
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  );
+
+  el.value = v;
+
+  salvarLocal(
+    key,
+    'preco_unitario',
+    v
+  );
+
+}
 
 async function ativarNotificacoes(){
 
