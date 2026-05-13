@@ -873,22 +873,7 @@ textarea.input{
 BADGES
 ===================================================== */
 
-.badge{
-  padding:5px 8px;
 
-  border-radius:999px;
-
-  font-size:10px;
-
-  font-weight:900;
-
-  width:max-content;
-
-  letter-spacing:.4px;
-
-  text-transform:uppercase;
-
-}
 
 .pending{
 
@@ -1339,30 +1324,31 @@ LISTA LIMPA
 
 .item-cotacao{
 
-  display:flex;
+  padding:12px 14px;
 
-  flex-direction:column;
-
-  gap:10px;
-
-  padding:12px;
-
-  border-bottom:1px solid var(--line2);
+  border-bottom:1px solid #edf2f7;
 
 }
+
+
+
+
+  
 .item-cotacao:last-child{
 
   border-bottom:none;
 
 }
 
-.item-info{
+.linha-topo{
 
   display:flex;
 
+  justify-content:space-between;
+
   align-items:center;
 
-  justify-content:space-between;
+  margin-bottom:8px;
 
   gap:10px;
 
@@ -1390,18 +1376,15 @@ LISTA LIMPA
 
 }
 
-.item-bottom{
+.linha-inputs .input{
 
-  display:grid;
+  height:36px;
 
-  grid-template-columns:
-    110px
-    1fr
-    60px;
+  min-height:36px;
 
-  gap:8px;
+  border-radius:10px;
 
-  align-items:center;
+  font-size:12px;
 
 }
 
@@ -1435,13 +1418,7 @@ LISTA LIMPA
 
 
 
-.item-status{
 
-  display:flex;
-
-  justify-content:flex-end;
-
-}
 
 @media(max-width:700px){
 
@@ -1850,112 +1827,118 @@ function renderCotacoes(cotacoes){
 
     return `
 
-      <div class="item-cotacao">
 
-        <!-- PRODUTO -->
 
-        <div class="item-info">
 
-          <div class="produto">
 
-            ${i.produto}
 
-          </div>
 
-          <div class="meta">
 
-            ${i.qtd_solicitada || 0}
-            ${i.unidade || "UN"}
 
-          </div>
 
-        </div>
 
-<div class="item-bottom">
 
-  <!-- VALOR -->
 
-  <input
 
-    class="
-      input
-      money
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="item-cotacao">
+
+  <div class="linha-topo">
+
+    <div class="produto">
+
+      ${i.produto}
+
+    </div>
+
+    <div class="meta">
+
+      ${i.qtd_solicitada || 0}
+      ${i.unidade || "UN"}
+
+    </div>
+
+  </div>
+
+  <div class="linha-inputs">
+
+    <input
+
+      class="
+        input
+        money
+        ${bloqueada ? "readonly" : ""}
+      "
+
+      placeholder="Valor"
+
+      value="${
+        cache.preco_unitario || ""
+      }"
+
       ${bloqueada ? "readonly" : ""}
-    "
 
-    placeholder="R$"
+      oninput="
 
-    value="${
-      cache.preco_unitario || ""
-    }"
+        this.value = money(this.value);
 
-    ${bloqueada ? "readonly" : ""}
+        salvarLocal(
+          '${key}',
+          'preco_unitario',
+          this.value
+        );
 
-    oninput="
+      "
 
-      this.value = money(this.value);
+    >
 
-      salvarLocal(
-        '${key}',
-        'preco_unitario',
-        this.value
-      );
+    <input
 
-    "
+      class="
+        input
+        ${bloqueada ? "readonly" : ""}
+      "
 
-  >
+      placeholder="Obs"
 
-  <!-- OBS -->
+      value="${
+        cache.obs || ""
+      }"
 
-  <input
-
-    class="
-      input
       ${bloqueada ? "readonly" : ""}
-    "
 
-    placeholder="Obs"
+      oninput="
+        salvarLocal(
+          '${key}',
+          'obs',
+          this.value
+        )
+      "
 
-    value="${
-      cache.obs || ""
-    }"
-
-    ${bloqueada ? "readonly" : ""}
-
-    oninput="
-      salvarLocal(
-        '${key}',
-        'obs',
-        this.value
-      )
-    "
-
-  >
-
-  <!-- STATUS -->
-
-  <div class="
-    badge
-
-    ${
-      meuFornecedor.preco_unitario
-      ? "done"
-      : "pending"
-    }
-  ">
-
-    ${
-      meuFornecedor.preco_unitario
-      ? "OK"
-      : "..."
-    }
+    >
 
   </div>
 
 </div>
-
-
-
 
 
 
