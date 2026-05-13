@@ -1273,7 +1273,13 @@ RESPONSIVO
 }
 
 
+.logo img{
 
+  width:52px;
+
+  object-fit:contain;
+
+}
 
 
 
@@ -1301,9 +1307,13 @@ RESPONSIVO
 
   <div class="login-card">
 
-    <div class="logo">
-      M
-    </div>
+<div class="logo">
+
+  <img
+    src="logo-mercatto.png"
+  >
+
+</div>
 
     <h1>Portal do Fornecedor</h1>
 
@@ -2512,23 +2522,6 @@ function tocarSom(){
 
   
 </script>
-<script>
-<audio id="somNotify" src="notify.mp3"></audio>
-if ('serviceWorker' in navigator) {
-
-  navigator.serviceWorker
-    .register('./sw.js')
-
-    .then(() => {
-
-      console.log('PWA OK');
-
-    });
-
-}
-
-</script>
-
 <script>
 
 window.addEventListener(
