@@ -1339,24 +1339,17 @@ LISTA LIMPA
 
 .item-cotacao{
 
-  display:grid;
+  display:flex;
 
-  grid-template-columns:
-    1.2fr
-    .8fr
-    1fr
-    120px;
+  flex-direction:column;
 
-  gap:14px;
+  gap:10px;
 
-  align-items:center;
-
-  padding:14px 16px;
+  padding:12px;
 
   border-bottom:1px solid var(--line2);
 
 }
-
 .item-cotacao:last-child{
 
   border-bottom:none;
@@ -1367,17 +1360,21 @@ LISTA LIMPA
 
   display:flex;
 
-  flex-direction:column;
+  align-items:center;
 
-  gap:5px;
+  justify-content:space-between;
+
+  gap:10px;
 
 }
 
+  
+
 .produto{
 
-  font-size:14px;
+  font-size:13px;
 
-  font-weight:900;
+  font-weight:800;
 
   color:#020617;
 
@@ -1385,21 +1382,58 @@ LISTA LIMPA
 
 .meta{
 
-  font-size:12px;
-
-  font-weight:700;
+  font-size:11px;
 
   color:#64748b;
 
+  white-space:nowrap;
+
 }
 
-.item-obs textarea{
+.item-bottom{
+
+  display:grid;
+
+  grid-template-columns:
+    110px
+    1fr
+    60px;
+
+  gap:8px;
+
+  align-items:center;
+
+}
+
+.item-bottom .input{
+
+  height:38px;
+
+  min-height:38px;
+
+  border-radius:10px;
+
+  font-size:12px;
+
+}
+
+.item-bottom textarea{
+
+  height:42px;
 
   min-height:42px;
 
-  resize:none;
-
 }
+
+
+
+
+
+
+
+
+
+
 
 .item-status{
 
@@ -1409,17 +1443,20 @@ LISTA LIMPA
 
 }
 
-@media(max-width:900px){
+@media(max-width:700px){
 
-  .item-cotacao{
+  .item-bottom{
 
-    grid-template-columns:1fr;
+    grid-template-columns:
+      90px
+      1fr
+      52px;
 
   }
 
-  .item-status{
+  .produto{
 
-    justify-content:flex-start;
+    font-size:12px;
 
   }
 
@@ -1834,92 +1871,134 @@ function renderCotacoes(cotacoes){
 
         </div>
 
-        <!-- VALOR -->
+<div class="item-bottom">
 
-        <div class="item-valor">
+  <!-- VALOR -->
 
-          <input
+  <input
 
-            class="
-              input
-              money
-              ${bloqueada ? "readonly" : ""}
-            "
+    class="
+      input
+      money
+      ${bloqueada ? "readonly" : ""}
+    "
 
-            placeholder="Valor unitário"
+    placeholder="R$"
 
-            value="${
-              cache.preco_unitario || ""
-            }"
+    value="${
+      cache.preco_unitario || ""
+    }"
 
-            ${bloqueada ? "readonly" : ""}
+    ${bloqueada ? "readonly" : ""}
 
-            oninput="
+    oninput="
 
-              this.value = money(this.value);
+      this.value = money(this.value);
 
-              salvarLocal(
-                '${key}',
-                'preco_unitario',
-                this.value
-              );
+      salvarLocal(
+        '${key}',
+        'preco_unitario',
+        this.value
+      );
 
-            "
+    "
 
-          >
+  >
 
-        </div>
+  <!-- OBS -->
 
-        <!-- OBS -->
+  <input
 
-        <div class="item-obs">
+    class="
+      input
+      ${bloqueada ? "readonly" : ""}
+    "
 
-          <textarea
+    placeholder="Obs"
 
-            class="
-              input
-              ${bloqueada ? "readonly" : ""}
-            "
+    value="${
+      cache.obs || ""
+    }"
 
-            placeholder="Observação"
+    ${bloqueada ? "readonly" : ""}
 
-            ${bloqueada ? "readonly" : ""}
+    oninput="
+      salvarLocal(
+        '${key}',
+        'obs',
+        this.value
+      )
+    "
 
-            oninput="
-              salvarLocal(
-                '${key}',
-                'obs',
-                this.value
-              )
-            "
+  >
 
-          >${cache.obs || ""}</textarea>
+  <!-- STATUS -->
 
-        </div>
+  <div class="
+    badge
 
-        <!-- STATUS -->
+    ${
+      meuFornecedor.preco_unitario
+      ? "done"
+      : "pending"
+    }
+  ">
 
-        <div class="item-status">
+    ${
+      meuFornecedor.preco_unitario
+      ? "OK"
+      : "..."
+    }
 
-          <div class="
-            badge
+  </div>
 
-            ${
-              meuFornecedor.preco_unitario
-              ? "done"
-              : "pending"
-            }
-          ">
+</div>
 
-            ${
-              meuFornecedor.preco_unitario
-              ? "Respondido"
-              : "Pendente"
-            }
 
-          </div>
 
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
       </div>
 
