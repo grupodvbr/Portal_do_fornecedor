@@ -1105,6 +1105,38 @@ if(fornecedor){
 
 async function entrar(){
 
+  /* LIBERA ÁUDIO NO CLICK */
+
+  const audio =
+    document.getElementById(
+      'somNotify'
+    );
+
+  try{
+
+    audio.muted = true;
+
+    await audio.play();
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+    audio.muted = false;
+
+    console.log(
+      'Áudio liberado'
+    );
+
+  }catch(err){
+
+    console.log(
+      'Falha liberar áudio',
+      err
+    );
+
+  }
+
   const cnpj = document
     .getElementById("cnpj")
     .value
@@ -1164,10 +1196,8 @@ async function entrar(){
     JSON.stringify(fornecedor)
   );
 
-await liberarAudio();
-
-iniciar();}
-
+  iniciar();
+}
 /* ================= INICIAR ================= */
 
 async function iniciar(){
