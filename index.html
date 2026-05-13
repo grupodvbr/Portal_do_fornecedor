@@ -2079,13 +2079,11 @@ sb.channel("cotacoes_realtime")
   },
 payload => {
 
-  clearTimeout(window.reloadRealtime);
+  carregarCotacoes();
 
-  window.reloadRealtime = setTimeout(()=>{
+  tocarSom();
 
-    carregarCotacoes();
-
-  }, 1500);
+  mostrarNotificacao(payload);
 
 }
 )
@@ -2198,8 +2196,82 @@ function recalcularLinha(el){
   `;
 
 }
+
+
+
+
+async function ativarNotificacoes(){
+
+  const perm = await Notification.requestPermission();
+
+  if(perm === 'granted'){
+
+    console.log('Notificações permitidas');
+
+  }
+
+}
+
+ativarNotificacoes();
+
+
+function tocarSom(){
+
+  const audio =
+    document.getElementById(
+      'somNotify'
+    );
+
+  audio.play();
+
+}function mostrarNotificacao(payload){
+
+  if(Notification.permission !== 'granted')
+    return;
+
+  navigator.serviceWorker.ready.then(reg => {
+
+    reg.showNotification(
+      'Nova movimentação',
+      {
+        body:
+          'Uma cotação foi atualizada',
+        icon:'logo-192.png',
+        badge:'logo-192.png',
+        vibrate:[200,100,200]
+      }
+    );
+
+  });
+
+}
+
+
+
+
+
+
+
+
+
+
   
 </script>
+<script>
+<audio id="somNotify" src="notify.mp3"></audio>
+if ('serviceWorker' in navigator) {
 
+  navigator.serviceWorker
+    .register('./sw.js')
+
+    .then(() => {
+
+      console.log('PWA OK');
+
+    });
+
+}
+
+</script>
 </body>
 </html>
