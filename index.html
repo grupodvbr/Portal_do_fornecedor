@@ -1792,19 +1792,91 @@ sb.channel("cotacoes_realtime")
 .on(
   "postgres_changes",
   {
-    event:"UPDATE",
+    event:"*",
     schema:"public",
     table:"cotacoes"
   },
-payload => {
 
-  carregarCotacoes();
+  payload => {
 
-  tocarSom();
+    const nova =
+      payload.new || {};
 
-  mostrarNotificacao(payload);
+    const antiga =
+      payload.old || {};
 
-}
+    const itens =
+      nova.itens_cotacao || [];
+
+    /* VERIFICA SE É DO FORNECEDOR */
+
+    const pertenceAoFornecedor =
+
+      itens.some(i =>
+
+        (i.fornecedores || [])
+
+        .some(f =>
+
+          f.fornecedor_id ===
+          fornecedor.id
+
+        )
+
+      );
+
+    if(!pertenceAoFornecedor)
+      return;
+
+    carregarCotacoes();
+
+    let titulo =
+      'Cotação atualizada';
+
+    let mensagem =
+      'Existe uma nova movimentação';
+
+    /* NOVA COTAÇÃO */
+
+    if(payload.eventType === 'INSERT'){
+
+      titulo =
+        'Nova cotação';
+
+      mensagem =
+        'Você recebeu uma nova cotação';
+
+    }
+
+    /* STATUS ALTERADO */
+
+    if(
+
+      antiga.status !==
+      nova.status
+
+    ){
+
+      titulo =
+        'Status atualizado';
+
+      mensagem =
+        'Cotação: ' +
+        String(
+          nova.status || ''
+        ).toUpperCase();
+
+    }
+
+    tocarSom();
+
+    mostrarNotificacao(
+      titulo,
+      mensagem
+    );
+
+  }
+
 )
 
 .subscribe();
@@ -1836,29 +1908,53 @@ function tocarSom(){
 
   audio.play();
 
-}function mostrarNotificacao(payload){
+}
+  
+  
+  function mostrarNotificacao(
+  titulo,
+  mensagem
+){
 
-  if(Notification.permission !== 'granted')
+  if(
+    Notification.permission
+    !== 'granted'
+  ){
     return;
+  }
 
-  navigator.serviceWorker.ready.then(reg => {
+  navigator.serviceWorker.ready
+
+  .then(reg => {
 
     reg.showNotification(
-      'Nova movimentação',
+      titulo,
       {
-        body:
-          'Uma cotação foi atualizada',
+
+        body:mensagem,
+
         icon:'logo-192.png',
+
         badge:'logo-192.png',
-        vibrate:[200,100,200]
+
+        vibrate:[
+
+          200,
+          100,
+          200
+
+        ],
+
+        tag:'cotacao-mercatto',
+
+        renotify:true
+
       }
     );
 
   });
 
 }
-
-
 
 
 
