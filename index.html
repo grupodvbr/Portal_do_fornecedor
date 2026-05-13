@@ -2445,16 +2445,6 @@ window.addEventListener(
 
 
   
-</body>
-
-
-
-
-
-
-
-
-
 <div id="splash">
 
   <div class="splash-bg"></div>
@@ -2478,12 +2468,36 @@ window.addEventListener(
   </h1>
 
 </div>
+<script>
+
+if ('serviceWorker' in navigator) {
+
+  navigator.serviceWorker
+
+    .register('/sw.js')
+
+    .then(() => {
+
+      console.log(
+        'PWA instalado'
+      );
+
+    });
+
+}
+
+</script>
 
 
+<audio
+  id="somNotify"
+  src="notify.mp3">
+</audio>
 
 
 
 
 
   
+</body>
 </html>
