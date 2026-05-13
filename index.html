@@ -1325,7 +1325,105 @@ RESPONSIVO
 }
 
 
+/* =====================================================
+LISTA LIMPA
+===================================================== */
 
+.cotacao-lista{
+
+  display:flex;
+
+  flex-direction:column;
+
+}
+
+.item-cotacao{
+
+  display:grid;
+
+  grid-template-columns:
+    1.2fr
+    .8fr
+    1fr
+    120px;
+
+  gap:14px;
+
+  align-items:center;
+
+  padding:14px 16px;
+
+  border-bottom:1px solid var(--line2);
+
+}
+
+.item-cotacao:last-child{
+
+  border-bottom:none;
+
+}
+
+.item-info{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:5px;
+
+}
+
+.produto{
+
+  font-size:14px;
+
+  font-weight:900;
+
+  color:#020617;
+
+}
+
+.meta{
+
+  font-size:12px;
+
+  font-weight:700;
+
+  color:#64748b;
+
+}
+
+.item-obs textarea{
+
+  min-height:42px;
+
+  resize:none;
+
+}
+
+.item-status{
+
+  display:flex;
+
+  justify-content:flex-end;
+
+}
+
+@media(max-width:900px){
+
+  .item-cotacao{
+
+    grid-template-columns:1fr;
+
+  }
+
+  .item-status{
+
+    justify-content:flex-start;
+
+  }
+
+}
 
 
 
@@ -1676,222 +1774,160 @@ function renderCotacoes(cotacoes){
 
         </div>
 
-        <div class="table-wrap">
+      <div class="cotacao-lista">
 
-          <table>
+  ${itens.map((i,index)=>{
 
-            <thead>
+    const meuFornecedor =
 
-              <tr>
+      (i.fornecedores || [])
 
-<th>Produto</th>
-<th>Qtd</th>
-<th>Und.</th>
-<th>Valor Unit.</th>
-<th>Total</th>
-<th>Observação</th>
-<th>Status</th>
+      .find(f =>
 
-              </tr>
+        f.fornecedor_id ===
+        fornecedor.id
 
-            </thead>
+      );
 
-            <tbody>
+    if(!meuFornecedor)
+      return "";
 
-              ${itens.map((i,index)=>{
+    const key =
+      "cot_"+c.id+"_"+index;
 
-                const meuFornecedor =
+    const cache = JSON.parse(
 
-                  (i.fornecedores || [])
+      localStorage.getItem(key)
 
-                  .find(f =>
+      || JSON.stringify({
 
-                    f.fornecedor_id ===
-                    fornecedor.id
+        preco_unitario:
+          meuFornecedor.preco_unitario || "",
 
-                  );
+        obs:
+          meuFornecedor.observacao || ""
 
-                if(!meuFornecedor)
-                  return "";
+      })
 
-                const key =
-                  "cot_"+c.id+"_"+index;
+    );
 
-                const cache = JSON.parse(
+    return `
 
-                  localStorage.getItem(key)
+      <div class="item-cotacao">
 
-                  || JSON.stringify({
+        <!-- PRODUTO -->
 
-                    preco_embalagem:
-                      meuFornecedor.preco_embalagem || "",
+        <div class="item-info">
 
-                    marca:
-                      meuFornecedor.marca || "",
+          <div class="produto">
 
-                    obs:
-                      meuFornecedor.observacao || "",
+            ${i.produto}
 
-                    prazo:
-                      meuFornecedor.prazo || "",
+          </div>
 
-                    unidade:
-                      meuFornecedor.unidade || i.unidade || "UN",
+          <div class="meta">
 
-                    embalagem:
-                      meuFornecedor.quantidade_embalagem || 1
+            ${i.qtd_solicitada || 0}
+            ${i.unidade || "UN"}
 
-                  })
-
-                );
-
-                const qtdEmb =
-                  Number(
-                    cache.embalagem || 1
-                  );
-
-                const precoEmb =
-                  Number(
-
-                    String(
-                      cache.preco_embalagem || 0
-                    )
-
-                    .replace(/\./g,"")
-                    .replace(",", ".")
-
-                  );
-
-                const precoUnit =
-                  qtdEmb > 0
-                  ? precoEmb / qtdEmb
-                  : 0;
-
-                const total =
-                  precoUnit *
-                  Number(i.qtd_solicitada || 0);
-
-                return `
-
-                  <tr>
-
-                    <!-- PRODUTO -->
-
-                    <td>
-
-                      <b>
-                        ${i.produto}
-                      </b>
-
-                    </td>
-
-                    <!-- QTD -->
-
-                    <td class="center">
-
-                      ${i.qtd_solicitada || 0}
-
-                    </td>
-
-                    <!-- UND -->
-
-                    <td>
-
-                      <b>
-                        ${i.unidade || "UN"}
-                      </b>
-
-                    </td>
-
-                    <td>
-
-                      <input
-                        class="
-                          input
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        value="${cache.prazo || ""}"
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          salvarLocal(
-                            '${key}',
-                            'prazo',
-                            this.value
-                          )
-                        "
-                      >
-
-                    </td>
-
-                    <!-- OBS -->
-
-                    <td>
-
-                      <textarea
-
-                        class="
-                          input
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        style="
-                          min-height:38px;
-                          resize:vertical;
-                        "
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          salvarLocal(
-                            '${key}',
-                            'obs',
-                            this.value
-                          )
-                        "
-
-                      >${cache.obs || ""}</textarea>
-
-                    </td>
-
-                    <!-- STATUS -->
-
-                    <td>
-
-                      <div class="
-                        badge
-
-                        ${
-                          meuFornecedor.preco_unitario
-                          ? "done"
-                          : "pending"
-                        }
-                      ">
-
-                        ${
-                          meuFornecedor.preco_unitario
-                          ? "RESPONDIDO"
-                          : "PENDENTE"
-                        }
-
-                      </div>
-
-                    </td>
-
-                  </tr>
-
-                `;
-
-              }).join("")}
-
-            </tbody>
-
-          </table>
+          </div>
 
         </div>
 
+        <!-- VALOR -->
+
+        <div class="item-valor">
+
+          <input
+
+            class="
+              input
+              money
+              ${bloqueada ? "readonly" : ""}
+            "
+
+            placeholder="Valor unitário"
+
+            value="${
+              cache.preco_unitario || ""
+            }"
+
+            ${bloqueada ? "readonly" : ""}
+
+            oninput="
+
+              this.value = money(this.value);
+
+              salvarLocal(
+                '${key}',
+                'preco_unitario',
+                this.value
+              );
+
+            "
+
+          >
+
+        </div>
+
+        <!-- OBS -->
+
+        <div class="item-obs">
+
+          <textarea
+
+            class="
+              input
+              ${bloqueada ? "readonly" : ""}
+            "
+
+            placeholder="Observação"
+
+            ${bloqueada ? "readonly" : ""}
+
+            oninput="
+              salvarLocal(
+                '${key}',
+                'obs',
+                this.value
+              )
+            "
+
+          >${cache.obs || ""}</textarea>
+
+        </div>
+
+        <!-- STATUS -->
+
+        <div class="item-status">
+
+          <div class="
+            badge
+
+            ${
+              meuFornecedor.preco_unitario
+              ? "done"
+              : "pending"
+            }
+          ">
+
+            ${
+              meuFornecedor.preco_unitario
+              ? "Respondido"
+              : "Pendente"
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("")}
+
+</div>
         <div class="actions">
 
           ${
