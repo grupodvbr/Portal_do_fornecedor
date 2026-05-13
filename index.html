@@ -671,10 +671,9 @@ table{
 
   border-collapse:collapse;
 
-  min-width:1450px;
+  min-width:100%;
 
 }
-
 thead{
 
   position:sticky;
@@ -716,7 +715,7 @@ th:last-child{
 
 td{
 
-  padding:7px 8px;
+  padding:5px 8px;
 
   border-bottom:1px solid var(--line2);
   border-right:1px solid var(--line2);
@@ -746,7 +745,47 @@ tbody tr:nth-child(even) td{
   background:#fbfcfe;
 
 }
+th:nth-child(2),
+td:nth-child(2){
 
+  width:90px;
+
+}
+
+th:nth-child(3),
+td:nth-child(3){
+
+  width:90px;
+
+}
+
+th:nth-child(4),
+td:nth-child(4){
+
+  width:260px;
+
+}
+
+th:nth-child(5),
+td:nth-child(5){
+
+  width:170px;
+
+}
+
+th:nth-child(6),
+td:nth-child(6){
+
+  width:240px;
+
+}
+
+th:nth-child(7),
+td:nth-child(7){
+
+  width:120px;
+
+}
 /* =====================================================
 INPUT
 ===================================================== */
@@ -818,11 +857,11 @@ TEXTAREA
 
 textarea.input{
 
-  min-height:54px;
+  min-height:40px;
 
-  resize:vertical;
+  height:40px;
 
-  line-height:1.45;
+  resize:none;
 
 }
 
