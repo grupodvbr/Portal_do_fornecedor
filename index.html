@@ -1097,10 +1097,11 @@ let fornecedor = JSON.parse(
   localStorage.getItem("fornecedor_logado")
 );
 
+let ultimoEvento = 0;
+
 if(fornecedor){
   iniciar();
 }
-
 /* ================= LOGIN ================= */
 
 async function entrar(){
@@ -1859,53 +1860,68 @@ sb.channel("cotacoes_realtime")
     if(!pertenceAoFornecedor)
       return;
 
-    carregarCotacoes();
+   carregarCotacoes();
 
-    let titulo =
-      'Cotação atualizada';
+let titulo =
+  'Cotação atualizada';
 
-    let mensagem =
-      'Existe uma nova movimentação';
+let mensagem =
+  'Existe uma nova movimentação';
 
-    /* NOVA COTAÇÃO */
+/* NOVA COTAÇÃO */
 
-    if(payload.eventType === 'INSERT'){
+if(payload.eventType === 'INSERT'){
 
-      titulo =
-        'Nova cotação';
+  titulo =
+    'Nova cotação';
 
-      mensagem =
-        'Você recebeu uma nova cotação';
+  mensagem =
+    'Você recebeu uma nova cotação';
 
-    }
+}
 
-    /* STATUS ALTERADO */
+/* STATUS ALTERADO */
 
-    if(
+if(
 
-      antiga.status !==
-      nova.status
+  antiga.status !==
+  nova.status
 
-    ){
+){
 
-      titulo =
-        'Status atualizado';
+  titulo =
+    'Status atualizado';
 
-      mensagem =
-        'Cotação: ' +
-        String(
-          nova.status || ''
-        ).toUpperCase();
+  mensagem =
+    'Cotação: ' +
+    String(
+      nova.status || ''
+    ).toUpperCase();
 
-    }
+}
 
-    tocarSom();
+const agora = Date.now();
 
-    mostrarNotificacao(
-      titulo,
-      mensagem
-    );
+if(
 
+  agora - ultimoEvento
+
+  > 3000
+
+){
+
+  tocarSom();
+
+  ultimoEvento = agora;
+
+}
+
+mostrarNotificacao(
+  titulo,
+  mensagem
+);
+
+    
   }
 
 )
@@ -1978,18 +1994,29 @@ function tocarSom(){
       'somNotify'
     );
 
+  if(!audio)
+    return;
+
   audio.currentTime = 0;
 
   audio.play()
 
-    .catch(err => {
+  .then(()=>{
 
-      console.log(
-        'Erro áudio:',
-        err
-      );
+    console.log(
+      'Som tocando'
+    );
 
-    });
+  })
+
+  .catch(err => {
+
+    console.log(
+      'Erro áudio:',
+      err
+    );
+
+  });
 
 }
   
