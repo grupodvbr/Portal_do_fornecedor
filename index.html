@@ -1098,14 +1098,48 @@ let fornecedor = JSON.parse(
 );
 
 let ultimoEvento = 0;
-
+let audioLiberado = false;
 if(fornecedor){
   iniciar();
 }
 /* ================= LOGIN ================= */
 
 async function entrar(){
+if(!audioLiberado){
 
+  const audio =
+    document.getElementById(
+      'somNotify'
+    );
+
+  try{
+
+    audio.muted = true;
+
+    await audio.play();
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+    audio.muted = false;
+
+    audioLiberado = true;
+
+    console.log(
+      'Áudio liberado'
+    );
+
+  }catch(err){
+
+    console.log(
+      'Erro liberar áudio',
+      err
+    );
+
+  }
+
+}
   /* LIBERA ÁUDIO NO CLICK */
 
   const audio =
@@ -1989,6 +2023,9 @@ async function liberarAudio(){
 
 function tocarSom(){
 
+  if(!audioLiberado)
+    return;
+
   const audio =
     document.getElementById(
       'somNotify'
@@ -2000,14 +2037,6 @@ function tocarSom(){
   audio.currentTime = 0;
 
   audio.play()
-
-  .then(()=>{
-
-    console.log(
-      'Som tocando'
-    );
-
-  })
 
   .catch(err => {
 
