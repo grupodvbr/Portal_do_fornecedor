@@ -2,8 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+<meta
+  name="viewport"
+  content="
+    width=device-width,
+    initial-scale=1,
+    maximum-scale=1,
+    user-scalable=no
+  "
+/>
 <title>Portal do Fornecedor • Mercatto</title>
 <link rel="manifest" href="manifest.json">
 
@@ -1035,6 +1042,254 @@ RESPONSIVO
 
 }
 
+
+
+
+
+
+/* ================= SPLASH ================= */
+
+#splash{
+
+  position:fixed;
+
+  inset:0;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #071226,
+    #0f172a
+  );
+
+  z-index:999999;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  overflow:hidden;
+
+  transition:1s;
+
+}
+
+.splash-bg{
+
+  position:absolute;
+
+  width:900px;
+  height:900px;
+
+  border-radius:50%;
+
+  background:
+  radial-gradient(
+    circle,
+    rgba(37,99,235,.18),
+    transparent 70%
+  );
+
+  animation:
+  rotateBg 10s linear infinite;
+
+}
+
+@keyframes rotateBg{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+.pulse{
+
+  position:absolute;
+
+  width:260px;
+  height:260px;
+
+  border-radius:50%;
+
+  border:2px solid
+  rgba(37,99,235,.2);
+
+  animation:
+  pulseAnim 2s infinite;
+
+}
+
+@keyframes pulseAnim{
+
+  0%{
+
+    transform:scale(.8);
+    opacity:0;
+
+  }
+
+  50%{
+
+    opacity:1;
+
+  }
+
+  100%{
+
+    transform:scale(1.4);
+    opacity:0;
+
+  }
+
+}
+
+.cart-loader{
+
+  width:120px;
+  height:120px;
+
+  border-radius:32px;
+
+  border:3px solid
+  rgba(37,99,235,.35);
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  backdrop-filter:blur(10px);
+
+  background:
+  rgba(255,255,255,.03);
+
+  box-shadow:
+  0 20px 60px rgba(37,99,235,.2);
+
+  z-index:2;
+
+}
+
+.cart-line{
+
+  width:52px;
+  height:8px;
+
+  border-radius:20px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #2563eb,
+    #60a5fa
+  );
+
+  margin:6px 0;
+
+  animation:
+  lineMove 1s infinite;
+
+}
+
+.delay{
+  animation-delay:.15s;
+}
+
+.delay2{
+  animation-delay:.3s;
+}
+
+@keyframes lineMove{
+
+  0%{
+
+    transform:translateX(-18px);
+    opacity:.2;
+
+  }
+
+  50%{
+
+    transform:translateX(18px);
+    opacity:1;
+
+  }
+
+  100%{
+
+    transform:translateX(-18px);
+    opacity:.2;
+
+  }
+
+}
+
+#splash h1{
+
+  margin-top:26px;
+
+  font-size:34px;
+
+  font-weight:900;
+
+  letter-spacing:-1px;
+
+  color:white;
+
+  z-index:2;
+
+  animation:
+  fadeText 2s infinite alternate;
+
+}
+
+@keyframes fadeText{
+
+  from{
+
+    opacity:.6;
+
+  }
+
+  to{
+
+    opacity:1;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 </style>
 </head>
 
@@ -2273,5 +2528,82 @@ if ('serviceWorker' in navigator) {
 }
 
 </script>
+
+<script>
+
+window.addEventListener(
+  'load',
+  () => {
+
+    setTimeout(()=>{
+
+      const splash =
+        document.getElementById(
+          'splash'
+        );
+
+      splash.style.opacity = '0';
+
+      splash.style.pointerEvents =
+        'none';
+
+      setTimeout(()=>{
+
+        splash.remove();
+
+      },1000);
+
+    },2200);
+
+  }
+);
+
+</script>
+
+
+
+
+
+  
 </body>
+
+
+
+
+
+
+
+
+
+<div id="splash">
+
+  <div class="splash-bg"></div>
+
+  <div class="pulse"></div>
+
+  <div class="cart-loader">
+
+    <div class="cart-line"></div>
+
+    <div class="cart-line delay"></div>
+
+    <div class="cart-line delay2"></div>
+
+  </div>
+
+  <h1>
+
+    Cotação Mercatto
+
+  </h1>
+
+</div>
+
+
+
+
+
+
+
+  
 </html>
