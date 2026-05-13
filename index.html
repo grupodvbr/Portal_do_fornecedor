@@ -1413,15 +1413,23 @@ function renderCotacoes(cotacoes){
 
   <div class="linha-inputs">
 
-    <input
+<input
 
-      class="
-        input
-        money
-        ${bloqueada ? "readonly" : ""}
-      "
+  type="tel"
 
-      placeholder="Valor"
+  inputmode="numeric"
+
+  pattern="[0-9]*"
+
+  autocomplete="off"
+
+  class="
+    input
+    money
+    ${bloqueada ? "readonly" : ""}
+  "
+
+  placeholder="Valor"
 
       value="${
         cache.preco_unitario || ""
@@ -1646,10 +1654,10 @@ if(
   continue;
 }
 
-const precoEmb = parseFloat(
+const precoUnit = parseFloat(
 
   String(
-    cache.preco_embalagem || 0
+    cache.preco_unitario || 0
   )
 
   .replace(/\./g,'')
@@ -1657,55 +1665,31 @@ const precoEmb = parseFloat(
 
 ) || 0;
 
-    const qtdEmb = Number(
-      cache.embalagem || 1
-    );
+item.fornecedores[
+  fornecedorIndex
+] = {
 
-    const precoUnit =
-      qtdEmb > 0
-      ? precoEmb / qtdEmb
-      : 0;
+  ...item.fornecedores[
+    fornecedorIndex
+  ],
 
-    item.fornecedores[
-      fornecedorIndex
-    ] = {
+  preco_unitario:
+    precoUnit,
 
-      ...item.fornecedores[
-        fornecedorIndex
-      ],
+  preco_total:
+    precoUnit *
+    Number(
+      item.qtd_solicitada || 0
+    ),
 
-      preco_embalagem:
-        precoEmb,
+  observacao:
+    cache.obs || "",
 
-      preco_unitario:
-        precoUnit,
+  respondido_em:
+    new Date()
 
-      preco_total:
-        precoUnit *
-        Number(
-          item.qtd_solicitada || 0
-        ),
-
-      marca:
-        cache.marca || "",
-
-      observacao:
-        cache.obs || "",
-
-      prazo:
-        cache.prazo || "",
-
-      unidade:
-        cache.unidade || "UN",
-
-      quantidade_embalagem:
-        qtdEmb,
-
-      respondido_em:
-        new Date()
-
-    };
-
+};
+    
   }
 
   await sb
