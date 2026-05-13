@@ -29,17 +29,14 @@ ROOT
 :root{
 
   --bg:#f3f6fb;
-
   --card:#ffffff;
-
   --line:#e2e8f0;
-
   --text:#0f172a;
-
   --muted:#64748b;
-
   --primary:#020617;
-
+  --green:#16a34a;
+  --red:#dc2626;
+  --yellow:#ca8a04;
   --blue:#2563eb;
 
 }
@@ -59,6 +56,12 @@ BASE
 
 }
 
+html{
+
+  scroll-behavior:smooth;
+
+}
+
 body{
 
   background:var(--bg);
@@ -66,6 +69,201 @@ body{
   color:var(--text);
 
   -webkit-font-smoothing:antialiased;
+
+  text-rendering:optimizeLegibility;
+
+}
+
+/* =====================================================
+LOGIN
+===================================================== */
+
+.login{
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  padding:24px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #0f172a,
+    #1e293b
+  );
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+.login::before{
+
+  content:'';
+
+  position:absolute;
+
+  width:700px;
+  height:700px;
+
+  border-radius:50%;
+
+  background:
+  radial-gradient(
+    circle,
+    rgba(255,255,255,.06),
+    transparent 70%
+  );
+
+  top:-320px;
+  right:-200px;
+
+}
+
+.login-card{
+
+  width:100%;
+  max-width:420px;
+
+  background:
+  rgba(255,255,255,.96);
+
+  backdrop-filter:blur(14px);
+
+  border-radius:28px;
+
+  padding:30px 24px;
+
+  position:relative;
+
+  z-index:2;
+
+  box-shadow:
+  0 30px 70px rgba(0,0,0,.25);
+
+}
+
+.logo{
+
+  width:74px;
+  height:74px;
+
+  border-radius:22px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #334155
+  );
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  margin-bottom:20px;
+
+}
+
+.logo img{
+
+  width:46px;
+
+  object-fit:contain;
+
+}
+
+.login-card h1{
+
+  font-size:28px;
+
+  font-weight:900;
+
+  color:#020617;
+
+  margin-bottom:8px;
+
+}
+
+.login-card p{
+
+  font-size:13px;
+
+  color:#64748b;
+
+  margin-bottom:22px;
+
+  line-height:1.5;
+
+}
+
+.login-card input{
+
+  width:100%;
+
+  height:54px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:#f1f5f9;
+
+  padding:0 16px;
+
+  outline:none;
+
+  margin-bottom:12px;
+
+  font-size:13px;
+
+  font-weight:600;
+
+}
+
+.login-card input:focus{
+
+  background:white;
+
+  box-shadow:
+  0 0 0 4px
+  rgba(37,99,235,.08);
+
+}
+
+.login-card button{
+
+  width:100%;
+
+  height:56px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #020617,
+    #1e293b
+  );
+
+  color:white;
+
+  font-size:14px;
+
+  font-weight:900;
+
+  cursor:pointer;
 
 }
 
@@ -97,7 +295,7 @@ TOP
 
 .top-flex{
 
-  padding:12px 14px;
+  padding:12px;
 
   display:flex;
 
@@ -125,12 +323,12 @@ TOP
 
   font-size:11px;
 
-  color:var(--muted);
+  color:#64748b;
 
 }
 
 /* =====================================================
-ACTIONS
+TOP ACTIONS
 ===================================================== */
 
 .top-actions{
@@ -142,6 +340,10 @@ ACTIONS
   gap:6px;
 
 }
+
+/* =====================================================
+BUTTONS
+===================================================== */
 
 .btn{
 
@@ -169,7 +371,7 @@ ACTIONS
 
 .btn:hover{
 
-  opacity:.9;
+  opacity:.92;
 
 }
 
@@ -213,9 +415,9 @@ CARD
 
   border-radius:18px;
 
-  overflow:hidden;
-
   border:1px solid var(--line);
+
+  overflow:hidden;
 
 }
 
@@ -255,7 +457,7 @@ CARD TOP
 
   font-size:11px;
 
-  color:var(--muted);
+  color:#64748b;
 
 }
 
@@ -332,7 +534,7 @@ ITEM
 }
 
 /* =====================================================
-LINHA TOPO
+TOPO ITEM
 ===================================================== */
 
 .linha-topo{
@@ -405,9 +607,9 @@ INPUTS
 
   font-weight:700;
 
-  color:#020617;
-
   outline:none;
+
+  color:#020617;
 
 }
 
@@ -442,7 +644,7 @@ INPUTS
 }
 
 /* =====================================================
-ACTIONS CARD
+ACTIONS
 ===================================================== */
 
 .actions{
@@ -467,7 +669,7 @@ EMPTY
 
   background:white;
 
-  border-radius:20px;
+  border-radius:18px;
 
   border:1px solid var(--line);
 
@@ -493,7 +695,8 @@ OVERLAY
 
   inset:0;
 
-  background:rgba(255,255,255,.55);
+  background:
+  rgba(255,255,255,.55);
 
   backdrop-filter:blur(5px);
 
@@ -511,8 +714,8 @@ OVERLAY
 
   content:'';
 
-  width:70px;
-  height:70px;
+  width:68px;
+  height:68px;
 
   border-radius:50%;
 
@@ -764,28 +967,17 @@ SPLASH
 
 #splash h1{
 
-  margin-top:26px;
+  margin-top:24px;
 
   font-size:28px;
 
   font-weight:900;
 
-  letter-spacing:-1px;
-
   color:white;
 
-  z-index:2;
+  letter-spacing:-1px;
 
 }
-
-.logo img{
-
-  width:52px;
-
-  object-fit:contain;
-
-}
-
 
 
 
