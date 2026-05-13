@@ -1164,8 +1164,9 @@ async function entrar(){
     JSON.stringify(fornecedor)
   );
 
-  iniciar();
-}
+await liberarAudio();
+
+iniciar();}
 
 /* ================= INICIAR ================= */
 
@@ -1899,6 +1900,47 @@ async function ativarNotificacoes(){
 ativarNotificacoes();
 
 
+let audioLiberado = false;
+
+async function liberarAudio(){
+
+  if(audioLiberado)
+    return;
+
+  const audio =
+    document.getElementById(
+      'somNotify'
+    );
+
+  try{
+
+    audio.volume = 0;
+
+    await audio.play();
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+    audio.volume = 1;
+
+    audioLiberado = true;
+
+    console.log(
+      'Áudio liberado'
+    );
+
+  }catch(err){
+
+    console.log(
+      'Bloqueado:',
+      err
+    );
+
+  }
+
+}
+
 function tocarSom(){
 
   const audio =
@@ -1906,7 +1948,18 @@ function tocarSom(){
       'somNotify'
     );
 
-  audio.play();
+  audio.currentTime = 0;
+
+  audio.play()
+
+    .catch(err => {
+
+      console.log(
+        'Erro áudio:',
+        err
+      );
+
+    });
 
 }
   
