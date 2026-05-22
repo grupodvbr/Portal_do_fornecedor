@@ -525,6 +525,8 @@ ITEM
 
   border-bottom:1px solid #edf2f7;
 
+  background:white;
+
 }
 
 .item-cotacao:last-child{
@@ -541,8 +543,6 @@ TOPO ITEM
 
   display:flex;
 
-  justify-content:space-between;
-
   align-items:center;
 
   gap:10px;
@@ -553,6 +553,14 @@ TOPO ITEM
 
 .produto{
 
+  display:flex;
+
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  gap:6px;
+
   font-size:14px;
 
   font-weight:800;
@@ -560,7 +568,6 @@ TOPO ITEM
   color:#020617;
 
 }
-
 .meta{
 
   font-size:11px;
@@ -1351,207 +1358,133 @@ function renderCotacoes(cotacoes){
 
       <div class="cotacao-lista">
 
-  ${itens.map((i,index)=>{
+        ${itens.map((i,index)=>{
 
-    const meuFornecedor =
+          const meuFornecedor =
 
-      (i.fornecedores || [])
+            (i.fornecedores || [])
 
-      .find(f =>
+            .find(f =>
 
-        f.fornecedor_id ===
-        fornecedor.id
+              f.fornecedor_id ===
+              fornecedor.id
 
-      );
+            );
 
-    if(!meuFornecedor)
-      return "";
+          if(!meuFornecedor)
+            return "";
 
-    const key =
-      "cot_"+c.id+"_"+index;
+          const key =
+            "cot_"+c.id+"_"+index;
 
-    const cache = JSON.parse(
+          const cache = JSON.parse(
 
-      localStorage.getItem(key)
+            localStorage.getItem(key)
 
-      || JSON.stringify({
+            || JSON.stringify({
 
-        preco_unitario:
-          meuFornecedor.preco_unitario || "",
+              preco_unitario:
+                meuFornecedor.preco_unitario || "",
 
-        obs:
-          meuFornecedor.observacao || ""
+              obs:
+                meuFornecedor.observacao || ""
 
-      })
+            })
 
-    );
+          );
 
-    return `
+          return `
 
+            <div class="item-cotacao">
 
+              <div class="linha-topo">
 
 
 
+<div class="produto">
 
+  <span style="
+    font-weight:900;
+    color:#2563eb;
+    margin-right:6px;
+    text-transform:uppercase;
+  ">
+    ${i.unidade || "UN"}
+  </span>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="item-cotacao">
-
-  <div class="linha-topo">
-
-    <div class="produto">
-
-      ${i.produto}
-
-    </div>
-
-    <div class="meta">
-
-      ${i.qtd_solicitada || 0}
-      ${i.unidade || "UN"}
-
-    </div>
-
-  </div>
-
-  <div class="linha-inputs">
-
-<input
-
-  type="text"
-
-  inputmode="decimal"
-
-  autocomplete="off"
-
-  class="
-    input
-    money
-    ${bloqueada ? "readonly" : ""}
-  "
-
-  placeholder="0,00"
-
-  value="${
-    cache.preco_unitario || ""
-  }"
-
-  ${bloqueada ? "readonly" : ""}
-
-  oninput="
-    formatarMoeda(
-      this,
-      '${key}'
-    )
-  "
-
->
-
-    <input
-
-      class="
-        input
-        ${bloqueada ? "readonly" : ""}
-      "
-
-      placeholder="Obs"
-
-      value="${
-        cache.obs || ""
-      }"
-
-      ${bloqueada ? "readonly" : ""}
-
-      oninput="
-        salvarLocal(
-          '${key}',
-          'obs',
-          this.value
-        )
-      "
-
-    >
-
-  </div>
+  ${i.produto}
 
 </div>
 
+              </div>
 
+              <div class="linha-inputs">
 
+                <input
 
+                  type="text"
 
+                  inputmode="decimal"
 
+                  autocomplete="off"
 
+                  class="
+                    input
+                    money
+                    ${bloqueada ? "readonly" : ""}
+                  "
 
+                  placeholder="0,00"
 
+                  value="${
+                    cache.preco_unitario || ""
+                  }"
 
+                  ${bloqueada ? "readonly" : ""}
 
+                  oninput="
+                    formatarMoeda(
+                      this,
+                      '${key}'
+                    )
+                  "
 
+                >
 
+                <input
 
+                  class="
+                    input
+                    ${bloqueada ? "readonly" : ""}
+                  "
 
+                  placeholder="Obs"
 
+                  value="${
+                    cache.obs || ""
+                  }"
 
+                  ${bloqueada ? "readonly" : ""}
 
+                  oninput="
+                    salvarLocal(
+                      '${key}',
+                      'obs',
+                      this.value
+                    )
+                  "
 
+                >
 
+              </div>
 
+            </div>
 
+          `;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+        }).join("")}
 
       </div>
-
-    `;
-
-  }).join("")}
-
-</div>
         <div class="actions">
 
           ${
