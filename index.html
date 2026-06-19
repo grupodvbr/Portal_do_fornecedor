@@ -987,7 +987,110 @@ SPLASH
 }
 
 
+/* =====================================================
+MENOR PREÇO DOS OUTROS FORNECEDORES
+===================================================== */
 
+.menor-preco-box{
+
+  margin-top:10px;
+
+  border-radius:14px;
+
+  padding:10px 12px;
+
+  border:1px solid #dbeafe;
+
+  background:
+  linear-gradient(
+    135deg,
+    #eff6ff,
+    #ffffff
+  );
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+.menor-preco-info{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:3px;
+
+  min-width:0;
+
+}
+
+.menor-preco-label{
+
+  font-size:10px;
+
+  font-weight:900;
+
+  color:#2563eb;
+
+  text-transform:uppercase;
+
+  letter-spacing:.3px;
+
+}
+
+.menor-preco-fornecedor{
+
+  font-size:13px;
+
+  font-weight:900;
+
+  color:#020617;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+}
+
+.menor-preco-valor{
+
+  font-size:16px;
+
+  font-weight:1000;
+
+  color:#16a34a;
+
+  white-space:nowrap;
+
+}
+
+.menor-preco-vazio{
+
+  margin-top:10px;
+
+  border-radius:14px;
+
+  padding:10px 12px;
+
+  background:#f8fafc;
+
+  border:1px dashed #cbd5e1;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  color:#64748b;
+
+}
 
   
 </style>
@@ -1106,6 +1209,8 @@ let fornecedor = JSON.parse(
 
 let ultimoEvento = 0;
 
+let mapaFornecedores = {};
+
 if(fornecedor){
   iniciar();
 }
@@ -1222,9 +1327,64 @@ async function iniciar(){
   document.getElementById("infoFornecedor")
     .innerText = fornecedor.cnpj;
 
+  await carregarMapaFornecedores();
+
   await carregarCotacoes();
 }
 
+/* ================= MAPA DE FORNECEDORES ================= */
+
+async function carregarMapaFornecedores(){
+
+  const { data, error } = await sb
+
+    .from("fornecedores_mercatto")
+
+    .select("id,nome,cnpj,contato");
+
+  if(error){
+
+    console.log(
+      "Erro ao carregar fornecedores",
+      error
+    );
+
+    mapaFornecedores = {};
+
+    return;
+  }
+
+  mapaFornecedores = {};
+
+  (data || []).forEach(f => {
+
+    mapaFornecedores[f.id] = {
+
+      id:f.id,
+
+      nome:
+        f.nome ||
+        f.contato ||
+        "Fornecedor",
+
+      cnpj:
+        f.cnpj || ""
+
+    };
+
+  });
+
+}
+
+
+
+
+
+
+
+
+
+  
 /* ================= COTAÇÕES ================= */
 
 async function carregarCotacoes(){
@@ -1478,6 +1638,8 @@ function renderCotacoes(cotacoes){
 
               </div>
 
+              ${htmlMenorPrecoOutrosFornecedores(i)}
+
             </div>
 
           `;
@@ -1536,6 +1698,210 @@ function renderCotacoes(cotacoes){
 
 }
 
+
+
+
+
+
+
+/* ================= MENOR PREÇO DOS OUTROS FORNECEDORES ================= */
+
+function htmlMenorPrecoOutrosFornecedores(item){
+
+  const menor =
+    calcularMenorPrecoOutrosFornecedores(item);
+
+  if(!menor){
+
+    return `
+
+      <div class="menor-preco-vazio">
+
+        Ainda não existe preço lançado por outro fornecedor.
+
+      </div>
+
+    `;
+
+  }
+
+  return `
+
+    <div class="menor-preco-box">
+
+      <div class="menor-preco-info">
+
+        <div class="menor-preco-label">
+
+          Menor valor dos outros fornecedores
+
+        </div>
+
+        <div class="menor-preco-fornecedor">
+
+          ${escaparHtml(menor.nomeFornecedor)}
+
+        </div>
+
+      </div>
+
+      <div class="menor-preco-valor">
+
+        ${formatarReal(menor.preco)}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+function calcularMenorPrecoOutrosFornecedores(item){
+
+  const fornecedores =
+    item.fornecedores || [];
+
+  const outrosComPreco = fornecedores
+
+    .filter(f => {
+
+      if(
+        String(f.fornecedor_id) ===
+        String(fornecedor.id)
+      ){
+        return false;
+      }
+
+      const preco =
+        normalizarNumeroPreco(
+          f.preco_unitario
+        );
+
+      return preco > 0;
+
+    })
+
+    .map(f => {
+
+      const fornecedorCadastro =
+        mapaFornecedores[
+          f.fornecedor_id
+        ] || {};
+
+      const nomeFornecedor =
+
+        f.fornecedor_nome ||
+
+        f.nome_fornecedor ||
+
+        f.nome ||
+
+        f.razao_social ||
+
+        fornecedorCadastro.nome ||
+
+        "Fornecedor não identificado";
+
+      return {
+
+        fornecedor_id:
+          f.fornecedor_id,
+
+        nomeFornecedor:
+          nomeFornecedor,
+
+        preco:
+          normalizarNumeroPreco(
+            f.preco_unitario
+          )
+
+      };
+
+    })
+
+    .sort((a,b) => {
+
+      return a.preco - b.preco;
+
+    });
+
+  return outrosComPreco[0] || null;
+
+}
+
+function normalizarNumeroPreco(valor){
+
+  if(
+    valor === null ||
+    valor === undefined ||
+    valor === ""
+  ){
+    return 0;
+  }
+
+  if(typeof valor === "number"){
+
+    return Number(valor) || 0;
+
+  }
+
+  return Number(
+
+    String(valor)
+
+      .replace(/\s/g,"")
+
+      .replace(/\./g,"")
+
+      .replace(",",".")
+
+  ) || 0;
+
+}
+
+function formatarReal(valor){
+
+  return Number(valor || 0)
+
+    .toLocaleString(
+      "pt-BR",
+      {
+        style:"currency",
+        currency:"BRL"
+      }
+    );
+
+}
+
+function escaparHtml(texto){
+
+  return String(texto || "")
+
+    .replace(/&/g,"&amp;")
+
+    .replace(/</g,"&lt;")
+
+    .replace(/>/g,"&gt;")
+
+    .replace(/"/g,"&quot;")
+
+    .replace(/'/g,"&#039;");
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  
 /* ================= LOCAL ================= */
 
 function salvarLocal(
