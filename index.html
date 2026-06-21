@@ -1,1163 +1,1137 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8" />
-<meta
-  name="viewport"
-  content="
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="
     width=device-width,
     initial-scale=1,
     maximum-scale=1,
     user-scalable=no
-  "
-/>
-<title>Portal do Fornecedor • Mercatto</title>
-<link rel="manifest" href="manifest.json">
+  " />
+  <title>Portal do Fornecedor • Mercatto</title>
+  <link rel="manifest" href="manifest.json">
 
-<meta name="theme-color" content="#020617">
+  <meta name="theme-color" content="#020617">
 
-<link rel="apple-touch-icon" href="logo-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="apple-touch-icon" href="logo-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-
-/* =====================================================
+  <style>
+    /* =====================================================
 ROOT
 ===================================================== */
 
-:root{
+    :root {
 
-  --bg:#f3f6fb;
-  --card:#ffffff;
-  --line:#e2e8f0;
-  --text:#0f172a;
-  --muted:#64748b;
-  --primary:#020617;
-  --green:#16a34a;
-  --red:#dc2626;
-  --yellow:#ca8a04;
-  --blue:#2563eb;
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --line: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #020617;
+      --green: #16a34a;
+      --red: #dc2626;
+      --yellow: #ca8a04;
+      --blue: #2563eb;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 BASE
 ===================================================== */
 
-*{
+    * {
 
-  margin:0;
-  padding:0;
+      margin: 0;
+      padding: 0;
 
-  box-sizing:border-box;
+      box-sizing: border-box;
 
-  font-family:Inter,sans-serif;
+      font-family: Inter, sans-serif;
 
-}
+    }
 
-html{
+    html {
 
-  scroll-behavior:smooth;
+      scroll-behavior: smooth;
 
-}
+    }
 
-body{
+    body {
 
-  background:var(--bg);
+      background: var(--bg);
 
-  color:var(--text);
+      color: var(--text);
 
-  -webkit-font-smoothing:antialiased;
+      -webkit-font-smoothing: antialiased;
 
-  text-rendering:optimizeLegibility;
+      text-rendering: optimizeLegibility;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 LOGIN
 ===================================================== */
 
-.login{
+    .login {
 
-  min-height:100vh;
+      min-height: 100vh;
 
-  display:flex;
+      display: flex;
 
-  justify-content:center;
+      justify-content: center;
 
-  align-items:center;
+      align-items: center;
 
-  padding:24px;
+      padding: 24px;
 
-  background:
-  linear-gradient(
-    135deg,
-    #020617,
-    #0f172a,
-    #1e293b
-  );
+      background:
+        linear-gradient(135deg,
+          #020617,
+          #0f172a,
+          #1e293b);
 
-  position:relative;
+      position: relative;
 
-  overflow:hidden;
+      overflow: hidden;
 
-}
+    }
 
-.login::before{
+    .login::before {
 
-  content:'';
+      content: '';
 
-  position:absolute;
+      position: absolute;
 
-  width:700px;
-  height:700px;
+      width: 700px;
+      height: 700px;
 
-  border-radius:50%;
+      border-radius: 50%;
 
-  background:
-  radial-gradient(
-    circle,
-    rgba(255,255,255,.06),
-    transparent 70%
-  );
+      background:
+        radial-gradient(circle,
+          rgba(255, 255, 255, .06),
+          transparent 70%);
 
-  top:-320px;
-  right:-200px;
+      top: -320px;
+      right: -200px;
 
-}
+    }
 
-.login-card{
+    .login-card {
 
-  width:100%;
-  max-width:420px;
+      width: 100%;
+      max-width: 420px;
 
-  background:
-  rgba(255,255,255,.96);
+      background:
+        rgba(255, 255, 255, .96);
 
-  backdrop-filter:blur(14px);
+      backdrop-filter: blur(14px);
 
-  border-radius:28px;
+      border-radius: 28px;
 
-  padding:30px 24px;
+      padding: 30px 24px;
 
-  position:relative;
+      position: relative;
 
-  z-index:2;
+      z-index: 2;
 
-  box-shadow:
-  0 30px 70px rgba(0,0,0,.25);
+      box-shadow:
+        0 30px 70px rgba(0, 0, 0, .25);
 
-}
+    }
 
-.logo{
+    .logo {
 
-  width:74px;
-  height:74px;
+      width: 74px;
+      height: 74px;
 
-  border-radius:22px;
+      border-radius: 22px;
 
-  background:
-  linear-gradient(
-    135deg,
-    #020617,
-    #334155
-  );
+      background:
+        linear-gradient(135deg,
+          #020617,
+          #334155);
 
-  display:flex;
+      display: flex;
 
-  align-items:center;
+      align-items: center;
 
-  justify-content:center;
+      justify-content: center;
 
-  margin-bottom:20px;
+      margin-bottom: 20px;
 
-}
+    }
 
-.logo img{
+    .logo img {
 
-  width:46px;
+      width: 46px;
 
-  object-fit:contain;
+      object-fit: contain;
 
-}
+    }
 
-.login-card h1{
+    .login-card h1 {
 
-  font-size:28px;
+      font-size: 28px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  color:#020617;
+      color: #020617;
 
-  margin-bottom:8px;
+      margin-bottom: 8px;
 
-}
+    }
 
-.login-card p{
+    .login-card p {
 
-  font-size:13px;
+      font-size: 13px;
 
-  color:#64748b;
+      color: #64748b;
 
-  margin-bottom:22px;
+      margin-bottom: 22px;
 
-  line-height:1.5;
+      line-height: 1.5;
 
-}
+    }
 
-.login-card input{
+    .login-card input {
 
-  width:100%;
+      width: 100%;
 
-  height:54px;
+      height: 54px;
 
-  border:none;
+      border: none;
 
-  border-radius:16px;
+      border-radius: 16px;
 
-  background:#f1f5f9;
+      background: #f1f5f9;
 
-  padding:0 16px;
+      padding: 0 16px;
 
-  outline:none;
+      outline: none;
 
-  margin-bottom:12px;
+      margin-bottom: 12px;
 
-  font-size:13px;
+      font-size: 13px;
 
-  font-weight:600;
+      font-weight: 600;
 
-}
+    }
 
-.login-card input:focus{
+    .login-card input:focus {
 
-  background:white;
+      background: white;
 
-  box-shadow:
-  0 0 0 4px
-  rgba(37,99,235,.08);
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, .08);
 
-}
+    }
 
-.login-card button{
+    .login-card button {
 
-  width:100%;
+      width: 100%;
 
-  height:56px;
+      height: 56px;
 
-  border:none;
+      border: none;
 
-  border-radius:16px;
+      border-radius: 16px;
 
-  background:
-  linear-gradient(
-    135deg,
-    #020617,
-    #1e293b
-  );
+      background:
+        linear-gradient(135deg,
+          #020617,
+          #1e293b);
 
-  color:white;
+      color: white;
 
-  font-size:14px;
+      font-size: 14px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  cursor:pointer;
+      cursor: pointer;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 APP
 ===================================================== */
 
-.app{
-  display:none;
-}
+    .app {
+      display: none;
+    }
 
-/* =====================================================
+    /* =====================================================
 TOP
 ===================================================== */
 
-.top{
+    .top {
 
-  position:sticky;
+      position: sticky;
 
-  top:0;
+      top: 0;
 
-  z-index:999;
+      z-index: 999;
 
-  background:white;
+      background: white;
 
-  border-bottom:1px solid var(--line);
+      border-bottom: 1px solid var(--line);
 
-}
+    }
 
-.top-flex{
+    .top-flex {
 
-  padding:12px;
+      padding: 12px;
 
-  display:flex;
+      display: flex;
 
-  justify-content:space-between;
+      justify-content: space-between;
 
-  align-items:center;
+      align-items: center;
 
-  gap:12px;
+      gap: 12px;
 
-}
+    }
 
-.top h1{
+    .top h1 {
 
-  font-size:18px;
+      font-size: 18px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  color:#020617;
+      color: #020617;
 
-  margin-bottom:2px;
+      margin-bottom: 2px;
 
-}
+    }
 
-.top small{
+    .top small {
 
-  font-size:11px;
+      font-size: 11px;
 
-  color:#64748b;
+      color: #64748b;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 TOP ACTIONS
 ===================================================== */
 
-.top-actions{
+    .top-actions {
 
-  display:flex;
+      display: flex;
 
-  align-items:center;
+      align-items: center;
 
-  gap:6px;
+      gap: 6px;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 BUTTONS
 ===================================================== */
 
-.btn{
+    .btn {
 
-  height:34px;
+      height: 34px;
 
-  padding:0 12px;
+      padding: 0 12px;
 
-  border:none;
+      border: none;
 
-  border-radius:10px;
+      border-radius: 10px;
 
-  background:#020617;
+      background: #020617;
 
-  color:white;
+      color: white;
 
-  font-size:11px;
+      font-size: 11px;
 
-  font-weight:800;
+      font-weight: 800;
 
-  cursor:pointer;
+      cursor: pointer;
 
-  transition:.15s;
+      transition: .15s;
 
-}
+    }
 
-.btn:hover{
+    .btn:hover {
 
-  opacity:.92;
+      opacity: .92;
 
-}
+    }
 
-.btn-red{
+    .btn-red {
 
-  background:#dc2626;
+      background: #dc2626;
 
-}
+    }
 
-.btn-light{
+    .btn-light {
 
-  background:#f1f5f9;
+      background: #f1f5f9;
 
-  color:#020617;
+      color: #020617;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 CONTAINER
 ===================================================== */
 
-.container{
+    .container {
 
-  padding:10px;
+      padding: 10px;
 
-  display:flex;
+      display: flex;
 
-  flex-direction:column;
+      flex-direction: column;
 
-  gap:10px;
+      gap: 10px;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 CARD
 ===================================================== */
 
-.card{
+    .card {
 
-  background:white;
+      background: white;
 
-  border-radius:18px;
+      border-radius: 18px;
 
-  border:1px solid var(--line);
+      border: 1px solid var(--line);
 
-  overflow:hidden;
+      overflow: hidden;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 CARD TOP
 ===================================================== */
 
-.card-top{
+    .card-top {
 
-  padding:12px 14px;
+      padding: 12px 14px;
 
-  display:flex;
+      display: flex;
 
-  justify-content:space-between;
+      justify-content: space-between;
 
-  align-items:center;
+      align-items: center;
 
-  gap:10px;
+      gap: 10px;
 
-  border-bottom:1px solid var(--line);
+      border-bottom: 1px solid var(--line);
 
-}
+    }
 
-.card-top h2{
+    .card-top h2 {
 
-  font-size:15px;
+      font-size: 15px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  color:#020617;
+      color: #020617;
 
-  margin-bottom:3px;
+      margin-bottom: 3px;
 
-}
+    }
 
-.card-top small{
+    .card-top small {
 
-  font-size:11px;
+      font-size: 11px;
 
-  color:#64748b;
+      color: #64748b;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 STATUS
 ===================================================== */
 
-.status{
+    .status {
 
-  padding:5px 10px;
+      padding: 5px 10px;
 
-  border-radius:999px;
+      border-radius: 999px;
 
-  font-size:10px;
+      font-size: 10px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  text-transform:uppercase;
+      text-transform: uppercase;
 
-}
+    }
 
-.ativa{
+    .ativa {
 
-  background:#dcfce7;
+      background: #dcfce7;
 
-  color:#166534;
+      color: #166534;
 
-}
+    }
 
-.respondida{
+    .respondida {
 
-  background:#fef3c7;
+      background: #fef3c7;
 
-  color:#92400e;
+      color: #92400e;
 
-}
+    }
 
-.finalizada{
+    .finalizada {
 
-  background:#fee2e2;
+      background: #fee2e2;
 
-  color:#991b1b;
+      color: #991b1b;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 LISTA
 ===================================================== */
 
-.cotacao-lista{
+    .cotacao-lista {
 
-  display:flex;
+      display: flex;
 
-  flex-direction:column;
+      flex-direction: column;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 ITEM
 ===================================================== */
 
-.item-cotacao{
+    .item-cotacao {
 
-  padding:14px;
+      padding: 14px;
 
-  border-bottom:1px solid #edf2f7;
+      border-bottom: 1px solid #edf2f7;
 
-  background:white;
+      background: white;
 
-}
+    }
 
-.item-cotacao:last-child{
+    .item-cotacao:last-child {
 
-  border-bottom:none;
+      border-bottom: none;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 TOPO ITEM
 ===================================================== */
 
-.linha-topo{
+    .linha-topo {
 
-  display:flex;
+      display: flex;
 
-  align-items:center;
+      align-items: center;
 
-  gap:10px;
+      gap: 10px;
 
-  margin-bottom:10px;
+      margin-bottom: 10px;
 
-}
+    }
 
-.produto{
+    .produto {
 
-  display:flex;
+      display: flex;
 
-  align-items:center;
+      align-items: center;
 
-  flex-wrap:wrap;
+      flex-wrap: wrap;
 
-  gap:6px;
+      gap: 6px;
 
-  font-size:14px;
+      font-size: 14px;
 
-  font-weight:800;
+      font-weight: 800;
 
-  color:#020617;
+      color: #020617;
 
-}
-.meta{
+    }
 
-  font-size:11px;
+    .meta {
 
-  font-weight:700;
+      font-size: 11px;
 
-  color:#64748b;
+      font-weight: 700;
 
-  white-space:nowrap;
+      color: #64748b;
 
-}
+      white-space: nowrap;
 
-/* =====================================================
+    }
+
+    /* =====================================================
 INPUTS
 ===================================================== */
 
-.linha-inputs{
+    .linha-inputs {
 
-  display:grid;
+      display: grid;
 
-  grid-template-columns:
-    100px
-    1fr;
+      grid-template-columns:
+        100px 1fr;
 
-  gap:8px;
+      gap: 8px;
 
-}
+    }
 
-.linha-inputs input{
+    .linha-inputs input {
 
-  width:100%;
+      width: 100%;
 
-  height:38px;
+      height: 38px;
 
-  border:none;
+      border: none;
 
-  border-radius:12px;
+      border-radius: 12px;
 
-  background:#f1f5f9;
+      background: #f1f5f9;
 
-  padding:0 12px;
+      padding: 0 12px;
 
-  font-size:12px;
+      font-size: 12px;
 
-  font-weight:700;
+      font-weight: 700;
 
-  outline:none;
+      outline: none;
 
-  color:#020617;
+      color: #020617;
 
-}
+    }
 
-.linha-inputs input::placeholder{
+    .linha-inputs input::placeholder {
 
-  color:#94a3b8;
+      color: #94a3b8;
 
-}
+    }
 
-.linha-inputs input:focus{
+    .linha-inputs input:focus {
 
-  background:white;
+      background: white;
 
-  box-shadow:
-  0 0 0 3px
-  rgba(37,99,235,.08);
+      box-shadow:
+        0 0 0 3px rgba(37, 99, 235, .08);
 
-}
+    }
 
-.money{
+    .money {
 
-  text-align:right;
+      text-align: right;
 
-}
+    }
 
-.readonly{
+    .readonly {
 
-  opacity:.7;
+      opacity: .7;
 
-  cursor:not-allowed;
+      cursor: not-allowed;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 ACTIONS
 ===================================================== */
 
-.actions{
+    .actions {
 
-  padding:12px 14px;
+      padding: 12px 14px;
 
-  display:flex;
+      display: flex;
 
-  justify-content:flex-end;
+      justify-content: flex-end;
 
-  gap:8px;
+      gap: 8px;
 
-  border-top:1px solid var(--line);
+      border-top: 1px solid var(--line);
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 EMPTY
 ===================================================== */
 
-.empty{
+    .empty {
 
-  background:white;
+      background: white;
 
-  border-radius:18px;
+      border-radius: 18px;
 
-  border:1px solid var(--line);
+      border: 1px solid var(--line);
 
-  padding:70px 20px;
+      padding: 70px 20px;
 
-  text-align:center;
+      text-align: center;
 
-  font-size:14px;
+      font-size: 14px;
 
-  font-weight:700;
+      font-weight: 700;
 
-  color:#64748b;
+      color: #64748b;
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 OVERLAY
 ===================================================== */
 
-.overlay{
+    .overlay {
 
-  position:fixed;
+      position: fixed;
 
-  inset:0;
+      inset: 0;
 
-  background:
-  rgba(255,255,255,.55);
+      background:
+        rgba(255, 255, 255, .55);
 
-  backdrop-filter:blur(5px);
+      backdrop-filter: blur(5px);
 
-  display:none;
+      display: none;
 
-  justify-content:center;
+      justify-content: center;
 
-  align-items:center;
+      align-items: center;
 
-  z-index:9999;
+      z-index: 9999;
 
-}
+    }
 
-.overlay::after{
+    .overlay::after {
 
-  content:'';
+      content: '';
 
-  width:68px;
-  height:68px;
+      width: 68px;
+      height: 68px;
 
-  border-radius:50%;
+      border-radius: 50%;
 
-  border:5px solid #dbe3ec;
+      border: 5px solid #dbe3ec;
 
-  border-top-color:#020617;
+      border-top-color: #020617;
 
-  animation:spin .8s linear infinite;
+      animation: spin .8s linear infinite;
 
-}
+    }
 
-@keyframes spin{
+    @keyframes spin {
 
-  to{
-    transform:rotate(360deg);
-  }
+      to {
+        transform: rotate(360deg);
+      }
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 RESPONSIVO
 ===================================================== */
 
-@media(max-width:700px){
+    @media(max-width:700px) {
 
-  .top-flex{
+      .top-flex {
 
-    padding:10px;
+        padding: 10px;
 
-  }
+      }
 
-  .top h1{
+      .top h1 {
 
-    font-size:16px;
+        font-size: 16px;
 
-  }
+      }
 
-  .linha-inputs{
+      .linha-inputs {
 
-    grid-template-columns:
-      90px
-      1fr;
+        grid-template-columns:
+          90px 1fr;
 
-  }
+      }
 
-  .btn{
+      .btn {
 
-    height:32px;
+        height: 32px;
 
-    padding:0 10px;
+        padding: 0 10px;
 
-    font-size:10px;
+        font-size: 10px;
 
-  }
+      }
 
-}
+    }
 
-/* =====================================================
+    /* =====================================================
 SPLASH
 ===================================================== */
 
-#splash{
+    #splash {
 
-  position:fixed;
+      position: fixed;
 
-  inset:0;
+      inset: 0;
 
-  background:
-  linear-gradient(
-    135deg,
-    #020617,
-    #071226,
-    #0f172a
-  );
+      background:
+        linear-gradient(135deg,
+          #020617,
+          #071226,
+          #0f172a);
 
-  z-index:999999;
+      z-index: 999999;
 
-  display:flex;
+      display: flex;
 
-  flex-direction:column;
+      flex-direction: column;
 
-  align-items:center;
+      align-items: center;
 
-  justify-content:center;
+      justify-content: center;
 
-  overflow:hidden;
+      overflow: hidden;
 
-  transition:1s;
+      transition: 1s;
 
-}
+    }
 
-.splash-bg{
+    .splash-bg {
 
-  position:absolute;
+      position: absolute;
 
-  width:900px;
-  height:900px;
+      width: 900px;
+      height: 900px;
 
-  border-radius:50%;
+      border-radius: 50%;
 
-  background:
-  radial-gradient(
-    circle,
-    rgba(37,99,235,.18),
-    transparent 70%
-  );
+      background:
+        radial-gradient(circle,
+          rgba(37, 99, 235, .18),
+          transparent 70%);
 
-  animation:
-  rotateBg 10s linear infinite;
+      animation:
+        rotateBg 10s linear infinite;
 
-}
+    }
 
-@keyframes rotateBg{
+    @keyframes rotateBg {
 
-  from{
-    transform:rotate(0deg);
-  }
+      from {
+        transform: rotate(0deg);
+      }
 
-  to{
-    transform:rotate(360deg);
-  }
+      to {
+        transform: rotate(360deg);
+      }
 
-}
+    }
 
-.pulse{
+    .pulse {
 
-  position:absolute;
+      position: absolute;
 
-  width:260px;
-  height:260px;
+      width: 260px;
+      height: 260px;
 
-  border-radius:50%;
+      border-radius: 50%;
 
-  border:2px solid
-  rgba(37,99,235,.2);
+      border: 2px solid rgba(37, 99, 235, .2);
 
-  animation:
-  pulseAnim 2s infinite;
+      animation:
+        pulseAnim 2s infinite;
 
-}
+    }
 
-@keyframes pulseAnim{
+    @keyframes pulseAnim {
 
-  0%{
+      0% {
 
-    transform:scale(.8);
-    opacity:0;
+        transform: scale(.8);
+        opacity: 0;
 
-  }
+      }
 
-  50%{
+      50% {
 
-    opacity:1;
+        opacity: 1;
 
-  }
+      }
 
-  100%{
+      100% {
 
-    transform:scale(1.4);
-    opacity:0;
+        transform: scale(1.4);
+        opacity: 0;
 
-  }
+      }
 
-}
+    }
 
-.cart-loader{
+    .cart-loader {
 
-  width:120px;
-  height:120px;
+      width: 120px;
+      height: 120px;
 
-  border-radius:32px;
+      border-radius: 32px;
 
-  border:3px solid
-  rgba(37,99,235,.35);
+      border: 3px solid rgba(37, 99, 235, .35);
 
-  display:flex;
+      display: flex;
 
-  flex-direction:column;
+      flex-direction: column;
 
-  justify-content:center;
+      justify-content: center;
 
-  align-items:center;
+      align-items: center;
 
-  backdrop-filter:blur(10px);
+      backdrop-filter: blur(10px);
 
-  background:
-  rgba(255,255,255,.03);
+      background:
+        rgba(255, 255, 255, .03);
 
-  box-shadow:
-  0 20px 60px rgba(37,99,235,.2);
+      box-shadow:
+        0 20px 60px rgba(37, 99, 235, .2);
 
-  z-index:2;
+      z-index: 2;
 
-}
+    }
 
-.cart-line{
+    .cart-line {
 
-  width:52px;
-  height:8px;
+      width: 52px;
+      height: 8px;
 
-  border-radius:20px;
+      border-radius: 20px;
 
-  background:
-  linear-gradient(
-    90deg,
-    #2563eb,
-    #60a5fa
-  );
+      background:
+        linear-gradient(90deg,
+          #2563eb,
+          #60a5fa);
 
-  margin:6px 0;
+      margin: 6px 0;
 
-  animation:
-  lineMove 1s infinite;
+      animation:
+        lineMove 1s infinite;
 
-}
+    }
 
-.delay{
-  animation-delay:.15s;
-}
+    .delay {
+      animation-delay: .15s;
+    }
 
-.delay2{
-  animation-delay:.3s;
-}
+    .delay2 {
+      animation-delay: .3s;
+    }
 
-@keyframes lineMove{
+    @keyframes lineMove {
 
-  0%{
+      0% {
 
-    transform:translateX(-18px);
-    opacity:.2;
+        transform: translateX(-18px);
+        opacity: .2;
 
-  }
+      }
 
-  50%{
+      50% {
 
-    transform:translateX(18px);
-    opacity:1;
+        transform: translateX(18px);
+        opacity: 1;
 
-  }
+      }
 
-  100%{
+      100% {
 
-    transform:translateX(-18px);
-    opacity:.2;
+        transform: translateX(-18px);
+        opacity: .2;
 
-  }
+      }
 
-}
+    }
 
-#splash h1{
+    #splash h1 {
 
-  margin-top:24px;
+      margin-top: 24px;
 
-  font-size:28px;
+      font-size: 28px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  color:white;
+      color: white;
 
-  letter-spacing:-1px;
+      letter-spacing: -1px;
 
-}
+    }
 
 
-/* =====================================================
+    /* =====================================================
 MENOR PREÇO DOS OUTROS FORNECEDORES
 ===================================================== */
 
-.menor-preco-box{
+    .menor-preco-box {
 
-  margin-top:10px;
+      margin-top: 10px;
 
-  border-radius:14px;
+      border-radius: 14px;
 
-  padding:10px 12px;
+      padding: 10px 12px;
 
-  border:1px solid #dbeafe;
+      border: 1px solid #dbeafe;
 
-  background:
-  linear-gradient(
-    135deg,
-    #eff6ff,
-    #ffffff
-  );
+      background:
+        linear-gradient(135deg,
+          #eff6ff,
+          #ffffff);
 
-  display:flex;
+      display: flex;
 
-  justify-content:space-between;
+      justify-content: space-between;
 
-  align-items:center;
+      align-items: center;
 
-  gap:10px;
+      gap: 10px;
 
-}
+    }
 
-.menor-preco-info{
+    .menor-preco-info {
 
-  display:flex;
+      display: flex;
 
-  flex-direction:column;
+      flex-direction: column;
 
-  gap:3px;
+      gap: 3px;
 
-  min-width:0;
+      min-width: 0;
 
-}
+    }
 
-.menor-preco-label{
+    .menor-preco-label {
 
-  font-size:10px;
+      font-size: 10px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  color:#2563eb;
+      color: #2563eb;
 
-  text-transform:uppercase;
+      text-transform: uppercase;
 
-  letter-spacing:.3px;
+      letter-spacing: .3px;
 
-}
+    }
 
-.menor-preco-fornecedor{
+    .menor-preco-fornecedor {
 
-  font-size:13px;
+      font-size: 13px;
 
-  font-weight:900;
+      font-weight: 900;
 
-  color:#020617;
+      color: #020617;
 
-  white-space:nowrap;
+      white-space: nowrap;
 
-  overflow:hidden;
+      overflow: hidden;
 
-  text-overflow:ellipsis;
+      text-overflow: ellipsis;
 
-}
+    }
 
-.menor-preco-valor{
+    .menor-preco-valor {
 
-  font-size:16px;
+      font-size: 16px;
 
-  font-weight:1000;
+      font-weight: 1000;
 
-  color:#16a34a;
+      color: #16a34a;
 
-  white-space:nowrap;
+      white-space: nowrap;
 
-}
+    }
 
-.menor-preco-vazio{
+    .menor-preco-vazio {
 
-  margin-top:10px;
+      margin-top: 10px;
 
-  border-radius:14px;
+      border-radius: 14px;
 
-  padding:10px 12px;
+      padding: 10px 12px;
 
-  background:#f8fafc;
+      background: #f8fafc;
 
-  border:1px dashed #cbd5e1;
+      border: 1px dashed #cbd5e1;
 
-  font-size:11px;
+      font-size: 11px;
 
-  font-weight:800;
+      font-weight: 800;
 
-  color:#64748b;
+      color: #64748b;
 
-}
-
-  
-</style>
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+  <!-- LOGIN -->
 
-<div class="login" id="login">
+  <div class="login" id="login">
 
-  <div class="login-card">
+    <div class="login-card">
 
-<div class="logo">
+      <div class="logo">
 
-  <img
+        <img
     src="logo-mercatto.png"
   >
 
-</div>
+      </div>
 
-    <h1>Portal do Fornecedor</h1>
+      <h1>Portal do Fornecedor</h1>
 
-    <p>
-      Acesse suas cotações para a empresa Mercatto Delícia
-    </p>
+      <p>
+        Acesse suas cotações para a empresa Mercatto Delícia
+      </p>
 
-    <input
+      <input
       id="cnpj"
       placeholder="CNPJ"
     >
 
-    <input
+      <input
       id="senha"
       type="password"
       placeholder="Senha"
     >
 
-    <button onclick="entrar()">
+      <button onclick="entrar()">
       Entrar
     </button>
 
+    </div>
+
   </div>
 
-</div>
+  <!-- APP -->
 
-<!-- APP -->
+  <div class="app" id="app">
 
-<div class="app" id="app">
+    <div class="top">
 
-  <div class="top">
+      <div class="top-flex">
 
-    <div class="top-flex">
+        <div>
 
-      <div>
+          <h1 id="nomeFornecedor">
+            Fornecedor
+          </h1>
 
-        <h1 id="nomeFornecedor">
-          Fornecedor
-        </h1>
+          <small id="infoFornecedor"></small>
 
-        <small id="infoFornecedor"></small>
+        </div>
 
-      </div>
+        <div class="top-actions">
 
-      <div class="top-actions">
-
-        <button
+          <button
           class="btn"
           onclick="carregarCotacoes()">
 
@@ -1165,7 +1139,7 @@ MENOR PREÇO DOS OUTROS FORNECEDORES
 
         </button>
 
-        <button
+          <button
           class="btn btn-red"
           onclick="sair()">
 
@@ -1173,32 +1147,27 @@ MENOR PREÇO DOS OUTROS FORNECEDORES
 
         </button>
 
+        </div>
+
       </div>
 
     </div>
 
+    <div class="container" id="listaCotacoes">
+    </div>
+
   </div>
 
-  <div
-    class="container"
-    id="listaCotacoes">
+  <!-- OVERLAY -->
+
+  <div class="overlay" id="overlay">
+
+    Processando...
+
   </div>
 
-</div>
-
-<!-- OVERLAY -->
-
-<div
-  class="overlay"
-  id="overlay">
-
-  Processando...
-
-</div>
-
-<script>
-
-const sb = supabase.createClient(
+  <script>
+    const sb = supabase.createClient(
   "https://dxkszikemntfusfyrzos.supabase.co",
   "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
 );
@@ -1700,7 +1669,6 @@ function renderCotacoes(cotacoes){
 
 
 
-
 /* ================= MENOR PREÇO DOS OUTROS FORNECEDORES ================= */
 
 function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
@@ -1728,6 +1696,7 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
   let statusTexto = "";
   let statusClasse = "";
   let diferencaTexto = "";
+  let mostrarPrecoConcorrente = true;
 
   if(meuPreco > 0){
 
@@ -1743,9 +1712,10 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
         "ganhando";
 
       diferencaTexto =
-        "Seu preço está " +
-        formatarReal(Math.abs(diferenca)) +
-        " abaixo do menor concorrente.";
+        "";
+
+      mostrarPrecoConcorrente =
+        false;
 
     }else if(meuPreco > menor.preco){
 
@@ -1758,7 +1728,10 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
       diferencaTexto =
         "Seu preço está " +
         formatarReal(Math.abs(diferenca)) +
-        " acima do menor concorrente.";
+        " acima.";
+
+      mostrarPrecoConcorrente =
+        true;
 
     }else{
 
@@ -1770,6 +1743,9 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
       diferencaTexto =
         "Seu preço está igual ao menor concorrente.";
+
+      mostrarPrecoConcorrente =
+        true;
 
     }
 
@@ -1784,6 +1760,9 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
     diferencaTexto =
       "Depois de digitar, o sistema mostra se você está ganhando ou perdendo.";
 
+    mostrarPrecoConcorrente =
+      true;
+
   }
 
   return `
@@ -1794,15 +1773,31 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
         <div class="menor-preco-label">
 
-          Menor valor dos outros fornecedores
+          Comparação com outros fornecedores
 
         </div>
 
-        <div class="menor-preco-fornecedor">
+        ${
+          mostrarPrecoConcorrente
+          ? `
 
-          ${escaparHtml(menor.nomeFornecedor)}
+            <div class="menor-preco-fornecedor">
 
-        </div>
+              ${escaparHtml(menor.nomeFornecedor)}
+
+            </div>
+
+          `
+          : `
+
+            <div class="menor-preco-fornecedor">
+
+              Você está com o melhor preço até agora
+
+            </div>
+
+          `
+        }
 
         <div class="comparacao-preco ${statusClasse}">
 
@@ -1818,18 +1813,33 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
       </div>
 
-      <div class="menor-preco-valor">
+      ${
+        mostrarPrecoConcorrente
+        ? `
 
-        ${formatarReal(menor.preco)}
+          <div class="menor-preco-valor">
 
-      </div>
+            ${formatarReal(menor.preco)}
+
+          </div>
+
+        `
+        : `
+
+          <div class="menor-preco-valor melhor-preco">
+
+            Melhor preço
+
+          </div>
+
+        `
+      }
 
     </div>
 
   `;
 
 }
-
 function calcularMenorPrecoOutrosFornecedores(item){
 
   const fornecedores =
@@ -2516,10 +2526,9 @@ function tocarSom(){
 
 
   
-</script>
-<script>
-
-window.addEventListener(
+  </script>
+  <script>
+    window.addEventListener(
   'load',
   () => {
 
@@ -2546,35 +2555,34 @@ window.addEventListener(
   }
 );
 
-</script>
+  </script>
 
-<div id="splash">
+  <div id="splash">
 
-  <div class="splash-bg"></div>
+    <div class="splash-bg"></div>
 
-  <div class="pulse"></div>
+    <div class="pulse"></div>
 
-  <div class="cart-loader">
+    <div class="cart-loader">
 
-    <div class="cart-line"></div>
+      <div class="cart-line"></div>
 
-    <div class="cart-line delay"></div>
+      <div class="cart-line delay"></div>
 
-    <div class="cart-line delay2"></div>
+      <div class="cart-line delay2"></div>
+
+    </div>
+
+    <h1>
+
+      Cotação Mercatto
+
+    </h1>
 
   </div>
 
-  <h1>
-
-    Cotação Mercatto
-
-  </h1>
-
-</div>
-
-<script>
-
-if ('serviceWorker' in navigator) {
+  <script>
+    if ('serviceWorker' in navigator) {
 
   navigator.serviceWorker
 
@@ -2590,12 +2598,11 @@ if ('serviceWorker' in navigator) {
 
 }
 
-</script>
+  </script>
 
-<audio
-  id="somNotify"
-  src="notificacao.mp3">
-</audio>
+  <audio id="somNotify" src="notificacao.mp3">
+  </audio>
 
 </body>
+
 </html>
