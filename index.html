@@ -1638,7 +1638,7 @@ function renderCotacoes(cotacoes){
 
               </div>
 
-              ${htmlMenorPrecoOutrosFornecedores(i)}
+            ${htmlMenorPrecoOutrosFornecedores(i, cache.preco_unitario)}
 
             </div>
 
@@ -1701,15 +1701,15 @@ function renderCotacoes(cotacoes){
 
 
 
-
-
-
 /* ================= MENOR PREÇO DOS OUTROS FORNECEDORES ================= */
 
-function htmlMenorPrecoOutrosFornecedores(item){
+function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
   const menor =
     calcularMenorPrecoOutrosFornecedores(item);
+
+  const meuPreco =
+    normalizarNumeroPreco(meuPrecoDigitado);
 
   if(!menor){
 
@@ -1722,6 +1722,67 @@ function htmlMenorPrecoOutrosFornecedores(item){
       </div>
 
     `;
+
+  }
+
+  let statusTexto = "";
+  let statusClasse = "";
+  let diferencaTexto = "";
+
+  if(meuPreco > 0){
+
+    const diferenca =
+      Number((meuPreco - menor.preco).toFixed(2));
+
+    if(meuPreco < menor.preco){
+
+      statusTexto =
+        "Você está ganhando";
+
+      statusClasse =
+        "ganhando";
+
+      diferencaTexto =
+        "Seu preço está " +
+        formatarReal(Math.abs(diferenca)) +
+        " abaixo do menor concorrente.";
+
+    }else if(meuPreco > menor.preco){
+
+      statusTexto =
+        "Você está perdendo";
+
+      statusClasse =
+        "perdendo";
+
+      diferencaTexto =
+        "Seu preço está " +
+        formatarReal(Math.abs(diferenca)) +
+        " acima do menor concorrente.";
+
+    }else{
+
+      statusTexto =
+        "Você está empatado";
+
+      statusClasse =
+        "empatado";
+
+      diferencaTexto =
+        "Seu preço está igual ao menor concorrente.";
+
+    }
+
+  }else{
+
+    statusTexto =
+      "Informe seu preço para comparar";
+
+    statusClasse =
+      "sem-preco";
+
+    diferencaTexto =
+      "Depois de digitar, o sistema mostra se você está ganhando ou perdendo.";
 
   }
 
@@ -1740,6 +1801,18 @@ function htmlMenorPrecoOutrosFornecedores(item){
         <div class="menor-preco-fornecedor">
 
           ${escaparHtml(menor.nomeFornecedor)}
+
+        </div>
+
+        <div class="comparacao-preco ${statusClasse}">
+
+          ${statusTexto}
+
+        </div>
+
+        <div class="comparacao-diferenca">
+
+          ${diferencaTexto}
 
         </div>
 
