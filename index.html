@@ -3,28 +3,28 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="
-    width=device-width,
-    initial-scale=1,
-    maximum-scale=1,
-    user-scalable=no
-  " />
-  <title>Portal do Fornecedor • Mercatto</title>
-  <link rel="manifest" href="manifest.json">
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  />
+
+  <title>Portal do Fornecedor • Mercatto</title>
+
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#020617">
 
   <link rel="apple-touch-icon" href="logo-192.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* =====================================================
-ROOT
-===================================================== */
-
     :root {
-
       --bg: #f3f6fb;
       --card: #ffffff;
       --line: #e2e8f0;
@@ -35,790 +35,587 @@ ROOT
       --red: #dc2626;
       --yellow: #ca8a04;
       --blue: #2563eb;
-
+      --orange: #f97316;
     }
 
-    /* =====================================================
-BASE
-===================================================== */
-
     * {
-
       margin: 0;
       padding: 0;
-
       box-sizing: border-box;
-
       font-family: Inter, sans-serif;
-
     }
 
     html {
-
       scroll-behavior: smooth;
-
     }
 
     body {
-
       background: var(--bg);
-
       color: var(--text);
-
       -webkit-font-smoothing: antialiased;
-
       text-rendering: optimizeLegibility;
-
+      overflow-x: hidden;
     }
 
-    /* =====================================================
-LOGIN
-===================================================== */
-
     .login {
-
       min-height: 100vh;
-
       display: flex;
-
       justify-content: center;
-
       align-items: center;
-
       padding: 24px;
-
-      background:
-        linear-gradient(135deg,
-          #020617,
-          #0f172a,
-          #1e293b);
-
+      background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
       position: relative;
-
       overflow: hidden;
-
     }
 
     .login::before {
-
       content: '';
-
       position: absolute;
-
       width: 700px;
       height: 700px;
-
       border-radius: 50%;
-
-      background:
-        radial-gradient(circle,
-          rgba(255, 255, 255, .06),
-          transparent 70%);
-
+      background: radial-gradient(circle, rgba(255, 255, 255, .06), transparent 70%);
       top: -320px;
       right: -200px;
-
     }
 
     .login-card {
-
       width: 100%;
       max-width: 420px;
-
-      background:
-        rgba(255, 255, 255, .96);
-
+      background: rgba(255, 255, 255, .96);
       backdrop-filter: blur(14px);
-
       border-radius: 28px;
-
       padding: 30px 24px;
-
       position: relative;
-
       z-index: 2;
-
-      box-shadow:
-        0 30px 70px rgba(0, 0, 0, .25);
-
+      box-shadow: 0 30px 70px rgba(0, 0, 0, .25);
     }
 
     .logo {
-
       width: 74px;
       height: 74px;
-
       border-radius: 22px;
-
-      background:
-        linear-gradient(135deg,
-          #020617,
-          #334155);
-
+      background: linear-gradient(135deg, #020617, #334155);
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
       margin-bottom: 20px;
-
     }
 
     .logo img {
-
       width: 46px;
-
       object-fit: contain;
-
     }
 
     .login-card h1 {
-
       font-size: 28px;
-
       font-weight: 900;
-
       color: #020617;
-
       margin-bottom: 8px;
-
     }
 
     .login-card p {
-
       font-size: 13px;
-
       color: #64748b;
-
       margin-bottom: 22px;
-
       line-height: 1.5;
-
     }
 
     .login-card input {
-
       width: 100%;
-
       height: 54px;
-
       border: none;
-
       border-radius: 16px;
-
       background: #f1f5f9;
-
       padding: 0 16px;
-
       outline: none;
-
       margin-bottom: 12px;
-
       font-size: 13px;
-
-      font-weight: 600;
-
+      font-weight: 700;
     }
 
     .login-card input:focus {
-
       background: white;
-
-      box-shadow:
-        0 0 0 4px rgba(37, 99, 235, .08);
-
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .08);
     }
 
     .login-card button {
-
       width: 100%;
-
       height: 56px;
-
       border: none;
-
       border-radius: 16px;
-
-      background:
-        linear-gradient(135deg,
-          #020617,
-          #1e293b);
-
+      background: linear-gradient(135deg, #020617, #1e293b);
       color: white;
-
       font-size: 14px;
-
       font-weight: 900;
-
       cursor: pointer;
-
     }
-
-    /* =====================================================
-APP
-===================================================== */
 
     .app {
       display: none;
+      min-height: 100vh;
     }
 
-    /* =====================================================
-TOP
-===================================================== */
-
     .top {
-
       position: sticky;
-
       top: 0;
-
       z-index: 999;
-
       background: white;
-
       border-bottom: 1px solid var(--line);
-
     }
 
     .top-flex {
-
       padding: 12px;
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       gap: 12px;
-
     }
 
     .top h1 {
-
       font-size: 18px;
-
       font-weight: 900;
-
       color: #020617;
-
       margin-bottom: 2px;
-
     }
 
     .top small {
-
       font-size: 11px;
-
       color: #64748b;
-
     }
-
-    /* =====================================================
-TOP ACTIONS
-===================================================== */
 
     .top-actions {
-
       display: flex;
-
       align-items: center;
-
       gap: 6px;
-
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    /* =====================================================
-BUTTONS
-===================================================== */
-
     .btn {
-
       height: 34px;
-
       padding: 0 12px;
-
       border: none;
-
       border-radius: 10px;
-
       background: #020617;
-
       color: white;
-
       font-size: 11px;
-
-      font-weight: 800;
-
+      font-weight: 900;
       cursor: pointer;
-
       transition: .15s;
-
+      white-space: nowrap;
     }
 
     .btn:hover {
-
       opacity: .92;
-
+      transform: translateY(-1px);
     }
 
     .btn-red {
-
       background: #dc2626;
-
     }
 
     .btn-light {
-
       background: #f1f5f9;
-
       color: #020617;
-
     }
-
-    /* =====================================================
-CONTAINER
-===================================================== */
 
     .container {
-
       padding: 10px;
-
       display: flex;
-
       flex-direction: column;
-
       gap: 10px;
-
+      padding-bottom: 80px;
     }
-
-    /* =====================================================
-CARD
-===================================================== */
 
     .card {
-
       background: white;
-
       border-radius: 18px;
-
       border: 1px solid var(--line);
-
       overflow: hidden;
-
+      box-shadow: 0 10px 26px rgba(15, 23, 42, .05);
     }
 
-    /* =====================================================
-CARD TOP
-===================================================== */
-
     .card-top {
-
       padding: 12px 14px;
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       gap: 10px;
-
       border-bottom: 1px solid var(--line);
-
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
     }
 
     .card-top h2 {
-
       font-size: 15px;
-
       font-weight: 900;
-
       color: #020617;
-
       margin-bottom: 3px;
-
     }
 
     .card-top small {
-
       font-size: 11px;
-
       color: #64748b;
-
     }
 
-    /* =====================================================
-STATUS
-===================================================== */
-
     .status {
-
-      padding: 5px 10px;
-
+      padding: 6px 10px;
       border-radius: 999px;
-
       font-size: 10px;
-
       font-weight: 900;
-
       text-transform: uppercase;
-
+      white-space: nowrap;
     }
 
     .ativa {
-
       background: #dcfce7;
-
       color: #166534;
-
     }
 
     .respondida {
-
       background: #fef3c7;
-
       color: #92400e;
-
     }
 
     .finalizada {
-
       background: #fee2e2;
-
       color: #991b1b;
-
     }
-
-    /* =====================================================
-LISTA
-===================================================== */
 
     .cotacao-lista {
-
       display: flex;
-
       flex-direction: column;
-
     }
 
-    /* =====================================================
-ITEM
-===================================================== */
-
     .item-cotacao {
-
       padding: 14px;
-
       border-bottom: 1px solid #edf2f7;
-
       background: white;
-
     }
 
     .item-cotacao:last-child {
-
       border-bottom: none;
-
     }
 
-    /* =====================================================
-TOPO ITEM
-===================================================== */
-
     .linha-topo {
-
       display: flex;
-
-      align-items: center;
-
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 10px;
-
       margin-bottom: 10px;
-
     }
 
     .produto {
-
       display: flex;
-
       align-items: center;
-
       flex-wrap: wrap;
-
       gap: 6px;
-
       font-size: 14px;
-
-      font-weight: 800;
-
+      font-weight: 900;
       color: #020617;
+      line-height: 1.35;
+    }
 
+    .produto-unidade {
+      font-weight: 900;
+      color: #2563eb;
+      text-transform: uppercase;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
     }
 
     .meta {
-
       font-size: 11px;
-
-      font-weight: 700;
-
+      font-weight: 800;
       color: #64748b;
-
       white-space: nowrap;
-
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 5px 8px;
+      border-radius: 999px;
     }
 
-    /* =====================================================
-INPUTS
-===================================================== */
+    .info-qtd {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .info-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 8px;
+      min-width: 0;
+    }
+
+    .info-box small {
+      display: block;
+      color: #64748b;
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .info-box strong {
+      display: block;
+      color: #020617;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     .linha-inputs {
-
       display: grid;
-
-      grid-template-columns:
-        100px 1fr;
-
+      grid-template-columns: 130px 1fr;
       gap: 8px;
+    }
 
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 9px;
+      font-weight: 900;
+      color: #2563eb;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
 
     .linha-inputs input {
-
       width: 100%;
-
-      height: 38px;
-
+      height: 42px;
       border: none;
-
       border-radius: 12px;
-
       background: #f1f5f9;
-
       padding: 0 12px;
-
       font-size: 12px;
-
-      font-weight: 700;
-
+      font-weight: 800;
       outline: none;
-
       color: #020617;
-
     }
 
     .linha-inputs input::placeholder {
-
       color: #94a3b8;
-
     }
 
     .linha-inputs input:focus {
-
       background: white;
-
-      box-shadow:
-        0 0 0 3px rgba(37, 99, 235, .08);
-
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
     }
 
     .money {
-
       text-align: right;
-
     }
 
     .readonly {
-
-      opacity: .7;
-
+      opacity: .70;
       cursor: not-allowed;
-
     }
 
-    /* =====================================================
-ACTIONS
-===================================================== */
+    .calculo-preview {
+      margin-top: 10px;
+      background: linear-gradient(135deg, #f8fafc, #ffffff);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .calc-item small {
+      display: block;
+      color: #64748b;
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .calc-item strong {
+      color: #020617;
+      font-size: 12px;
+      font-weight: 900;
+    }
 
     .actions {
-
       padding: 12px 14px;
-
       display: flex;
-
       justify-content: flex-end;
-
       gap: 8px;
-
       border-top: 1px solid var(--line);
-
+      background: #fafafa;
     }
-
-    /* =====================================================
-EMPTY
-===================================================== */
 
     .empty {
-
       background: white;
-
       border-radius: 18px;
-
       border: 1px solid var(--line);
-
       padding: 70px 20px;
-
       text-align: center;
-
       font-size: 14px;
-
-      font-weight: 700;
-
+      font-weight: 800;
       color: #64748b;
-
     }
 
-    /* =====================================================
-OVERLAY
-===================================================== */
+    .menor-preco-box {
+      margin-top: 10px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid #dbeafe;
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menor-preco-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .menor-preco-label {
+      font-size: 10px;
+      font-weight: 900;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .menor-preco-fornecedor {
+      font-size: 13px;
+      font-weight: 900;
+      color: #020617;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .menor-preco-valor {
+      font-size: 15px;
+      font-weight: 900;
+      color: #16a34a;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .menor-preco-vazio {
+      margin-top: 10px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+    }
+
+    .comparacao-preco {
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .comparacao-preco.ganhando {
+      color: #16a34a;
+    }
+
+    .comparacao-preco.perdendo {
+      color: #dc2626;
+    }
+
+    .comparacao-preco.empatado {
+      color: #ca8a04;
+    }
+
+    .comparacao-preco.sem-preco {
+      color: #64748b;
+    }
+
+    .comparacao-diferenca {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .melhor-preco {
+      color: #16a34a;
+    }
 
     .overlay {
-
       position: fixed;
-
       inset: 0;
-
-      background:
-        rgba(255, 255, 255, .55);
-
+      background: rgba(255, 255, 255, .72);
       backdrop-filter: blur(5px);
-
       display: none;
-
       justify-content: center;
-
       align-items: center;
-
-      z-index: 9999;
-
+      z-index: 9999999;
     }
 
-    .overlay::after {
+    .overlay-box {
+      background: #020617;
+      color: white;
+      border-radius: 18px;
+      padding: 18px 22px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.25);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 900;
+    }
 
-      content: '';
-
-      width: 68px;
-      height: 68px;
-
+    .spinner {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-
-      border: 5px solid #dbe3ec;
-
-      border-top-color: #020617;
-
+      border: 4px solid rgba(255,255,255,.25);
+      border-top-color: #fff;
       animation: spin .8s linear infinite;
-
     }
 
     @keyframes spin {
-
       to {
         transform: rotate(360deg);
       }
-
     }
-
-    /* =====================================================
-RESPONSIVO
-===================================================== */
-
-    @media(max-width:700px) {
-
-      .top-flex {
-
-        padding: 10px;
-
-      }
-
-      .top h1 {
-
-        font-size: 16px;
-
-      }
-
-      .linha-inputs {
-
-        grid-template-columns:
-          90px 1fr;
-
-      }
-
-      .btn {
-
-        height: 32px;
-
-        padding: 0 10px;
-
-        font-size: 10px;
-
-      }
-
-    }
-
-    /* =====================================================
-SPLASH
-===================================================== */
 
     #splash {
-
       position: fixed;
-
       inset: 0;
-
-      background:
-        linear-gradient(135deg,
-          #020617,
-          #071226,
-          #0f172a);
-
+      background: linear-gradient(135deg, #020617, #071226, #0f172a);
       z-index: 999999;
-
       display: flex;
-
       flex-direction: column;
-
       align-items: center;
-
       justify-content: center;
-
       overflow: hidden;
-
       transition: 1s;
-
     }
 
     .splash-bg {
-
       position: absolute;
-
       width: 900px;
       height: 900px;
-
       border-radius: 50%;
-
-      background:
-        radial-gradient(circle,
-          rgba(37, 99, 235, .18),
-          transparent 70%);
-
-      animation:
-        rotateBg 10s linear infinite;
-
+      background: radial-gradient(circle, rgba(37, 99, 235, .18), transparent 70%);
+      animation: rotateBg 10s linear infinite;
     }
 
     @keyframes rotateBg {
-
       from {
         transform: rotate(0deg);
       }
@@ -826,95 +623,55 @@ SPLASH
       to {
         transform: rotate(360deg);
       }
-
     }
 
     .pulse {
-
       position: absolute;
-
       width: 260px;
       height: 260px;
-
       border-radius: 50%;
-
       border: 2px solid rgba(37, 99, 235, .2);
-
-      animation:
-        pulseAnim 2s infinite;
-
+      animation: pulseAnim 2s infinite;
     }
 
     @keyframes pulseAnim {
-
       0% {
-
         transform: scale(.8);
         opacity: 0;
-
       }
 
       50% {
-
         opacity: 1;
-
       }
 
       100% {
-
         transform: scale(1.4);
         opacity: 0;
-
       }
-
     }
 
     .cart-loader {
-
       width: 120px;
       height: 120px;
-
       border-radius: 32px;
-
       border: 3px solid rgba(37, 99, 235, .35);
-
       display: flex;
-
       flex-direction: column;
-
       justify-content: center;
-
       align-items: center;
-
       backdrop-filter: blur(10px);
-
-      background:
-        rgba(255, 255, 255, .03);
-
-      box-shadow:
-        0 20px 60px rgba(37, 99, 235, .2);
-
+      background: rgba(255, 255, 255, .03);
+      box-shadow: 0 20px 60px rgba(37, 99, 235, .2);
       z-index: 2;
-
     }
 
     .cart-line {
-
       width: 52px;
       height: 8px;
-
       border-radius: 20px;
-
-      background:
-        linear-gradient(90deg,
-          #2563eb,
-          #60a5fa);
-
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
       margin: 6px 0;
-
-      animation:
-        lineMove 1s infinite;
-
+      animation: lineMove 1s infinite;
     }
 
     .delay {
@@ -926,146 +683,85 @@ SPLASH
     }
 
     @keyframes lineMove {
-
       0% {
-
         transform: translateX(-18px);
         opacity: .2;
-
       }
 
       50% {
-
         transform: translateX(18px);
         opacity: 1;
-
       }
 
       100% {
-
         transform: translateX(-18px);
         opacity: .2;
-
       }
-
     }
 
     #splash h1 {
-
       margin-top: 24px;
-
       font-size: 28px;
-
       font-weight: 900;
-
       color: white;
-
       letter-spacing: -1px;
-
     }
 
+    @media(max-width:700px) {
+      .top-flex {
+        padding: 10px;
+        align-items: flex-start;
+      }
 
-    /* =====================================================
-MENOR PREÇO DOS OUTROS FORNECEDORES
-===================================================== */
+      .top h1 {
+        font-size: 16px;
+      }
 
-    .menor-preco-box {
+      .top-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-      margin-top: 10px;
+      .btn {
+        height: 32px;
+        padding: 0 10px;
+        font-size: 10px;
+      }
 
-      border-radius: 14px;
+      .linha-inputs {
+        grid-template-columns: 110px 1fr;
+      }
 
-      padding: 10px 12px;
+      .info-qtd {
+        grid-template-columns: 1fr;
+      }
 
-      border: 1px solid #dbeafe;
+      .calculo-preview {
+        grid-template-columns: 1fr;
+      }
 
-      background:
-        linear-gradient(135deg,
-          #eff6ff,
-          #ffffff);
+      .linha-topo {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-      display: flex;
+      .actions {
+        flex-direction: column;
+      }
 
-      justify-content: space-between;
+      .actions .btn {
+        width: 100%;
+        height: 42px;
+      }
 
-      align-items: center;
+      .menor-preco-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-      gap: 10px;
-
-    }
-
-    .menor-preco-info {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 3px;
-
-      min-width: 0;
-
-    }
-
-    .menor-preco-label {
-
-      font-size: 10px;
-
-      font-weight: 900;
-
-      color: #2563eb;
-
-      text-transform: uppercase;
-
-      letter-spacing: .3px;
-
-    }
-
-    .menor-preco-fornecedor {
-
-      font-size: 13px;
-
-      font-weight: 900;
-
-      color: #020617;
-
-      white-space: nowrap;
-
-      overflow: hidden;
-
-      text-overflow: ellipsis;
-
-    }
-
-    .menor-preco-valor {
-
-      font-size: 16px;
-
-      font-weight: 1000;
-
-      color: #16a34a;
-
-      white-space: nowrap;
-
-    }
-
-    .menor-preco-vazio {
-
-      margin-top: 10px;
-
-      border-radius: 14px;
-
-      padding: 10px 12px;
-
-      background: #f8fafc;
-
-      border: 1px dashed #cbd5e1;
-
-      font-size: 11px;
-
-      font-weight: 800;
-
-      color: #64748b;
-
+      .menor-preco-valor {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -1073,46 +769,43 @@ MENOR PREÇO DOS OUTROS FORNECEDORES
 <body>
 
   <!-- LOGIN -->
-
   <div class="login" id="login">
 
     <div class="login-card">
 
       <div class="logo">
-
-        <img
-    src="logo-mercatto.png"
-  >
-
+        <img src="logo-mercatto.png">
       </div>
 
       <h1>Portal do Fornecedor</h1>
 
       <p>
-        Acesse suas cotações para a empresa Mercatto Delícia
+        Acesse suas cotações para a empresa Mercatto Delícia.
       </p>
 
       <input
-      id="cnpj"
-      placeholder="CNPJ"
-    >
+        id="cnpj"
+        placeholder="CNPJ"
+        inputmode="numeric"
+        autocomplete="off"
+      >
 
       <input
-      id="senha"
-      type="password"
-      placeholder="Senha"
-    >
+        id="senha"
+        type="password"
+        placeholder="Senha"
+        autocomplete="off"
+      >
 
       <button onclick="entrar()">
-      Entrar
-    </button>
+        Entrar
+      </button>
 
     </div>
 
   </div>
 
   <!-- APP -->
-
   <div class="app" id="app">
 
     <div class="top">
@@ -1120,32 +813,25 @@ MENOR PREÇO DOS OUTROS FORNECEDORES
       <div class="top-flex">
 
         <div>
-
-          <h1 id="nomeFornecedor">
-            Fornecedor
-          </h1>
-
+          <h1 id="nomeFornecedor">Fornecedor</h1>
           <small id="infoFornecedor"></small>
-
         </div>
 
         <div class="top-actions">
 
           <button
-          class="btn"
-          onclick="carregarCotacoes()">
-
-          Atualizar
-
-        </button>
+            class="btn"
+            onclick="carregarCotacoes()"
+          >
+            Atualizar
+          </button>
 
           <button
-          class="btn btn-red"
-          onclick="sair()">
-
-          Sair
-
-        </button>
+            class="btn btn-red"
+            onclick="sair()"
+          >
+            Sair
+          </button>
 
         </div>
 
@@ -1153,1554 +839,1376 @@ MENOR PREÇO DOS OUTROS FORNECEDORES
 
     </div>
 
-    <div class="container" id="listaCotacoes">
-    </div>
+    <div class="container" id="listaCotacoes"></div>
 
   </div>
 
   <!-- OVERLAY -->
-
   <div class="overlay" id="overlay">
+    <div class="overlay-box">
+      <div class="spinner"></div>
+      <div id="overlayTexto">Processando...</div>
+    </div>
+  </div>
 
-    Processando...
+  <!-- SPLASH -->
+  <div id="splash">
+
+    <div class="splash-bg"></div>
+    <div class="pulse"></div>
+
+    <div class="cart-loader">
+      <div class="cart-line"></div>
+      <div class="cart-line delay"></div>
+      <div class="cart-line delay2"></div>
+    </div>
+
+    <h1>Cotação Mercatto</h1>
 
   </div>
 
+  <audio id="somNotify" src="notificacao.mp3"></audio>
+
   <script>
     const sb = supabase.createClient(
-  "https://dxkszikemntfusfyrzos.supabase.co",
-  "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
-);
-
-let fornecedor = JSON.parse(
-  localStorage.getItem("fornecedor_logado")
-);
-
-let ultimoEvento = 0;
-
-let mapaFornecedores = {};
-
-if(fornecedor){
-  iniciar();
-}
-/* ================= LOGIN ================= */
-
-async function entrar(){
-
-  /* LIBERA ÁUDIO NO CLICK */
-
-  const audio =
-    document.getElementById(
-      'somNotify'
+      "https://dxkszikemntfusfyrzos.supabase.co",
+      "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
     );
 
-  try{
-
-    audio.muted = true;
-
-    await audio.play();
-
-    audio.pause();
-
-    audio.currentTime = 0;
-
-    audio.muted = false;
-
-    console.log(
-      'Áudio liberado'
+    let fornecedor = JSON.parse(
+      localStorage.getItem("fornecedor_logado")
     );
 
-  }catch(err){
-
-    console.log(
-      'Falha liberar áudio',
-      err
-    );
-
-  }
-
-  const cnpj = document
-    .getElementById("cnpj")
-    .value
-    .replace(/\D/g,"");
-
-  const senha = document
-    .getElementById("senha")
-    .value
-    .trim();
-
-  overlay(true);
-
-  const { data } = await sb
-
-    .from("fornecedores_mercatto")
-
-    .select("*")
-    .eq("ativo", true);
-
-  overlay(false);
-
-  const encontrado = (data || [])
-
-    .find(f => {
-
-      return (
-
-        String(f.cnpj || "")
-        .replace(/\D/g,"")
-
-        === cnpj
-
-        &&
-
-        String(f.senha || "")
-        .trim()
-
-        === senha
-
-      );
-
-    });
-
-  if(!encontrado){
-
-    alert(
-      "CNPJ ou senha inválidos"
-    );
-
-    return;
-  }
-
-  fornecedor = encontrado;
-
-  localStorage.setItem(
-    "fornecedor_logado",
-    JSON.stringify(fornecedor)
-  );
-
-  iniciar();
-}
-/* ================= INICIAR ================= */
-
-async function iniciar(){
-
-  document.getElementById("login")
-    .style.display = "none";
-
-  document.getElementById("app")
-    .style.display = "block";
-
-  document.getElementById("nomeFornecedor")
-    .innerText = fornecedor.nome;
-
-  document.getElementById("infoFornecedor")
-    .innerText = fornecedor.cnpj;
-
-  await carregarMapaFornecedores();
-
-  await carregarCotacoes();
-}
-
-/* ================= MAPA DE FORNECEDORES ================= */
-
-async function carregarMapaFornecedores(){
-
-  const { data, error } = await sb
-
-    .from("fornecedores_mercatto")
-
-    .select("id,nome,cnpj,contato");
-
-  if(error){
-
-    console.log(
-      "Erro ao carregar fornecedores",
-      error
-    );
-
-    mapaFornecedores = {};
-
-    return;
-  }
-
-  mapaFornecedores = {};
-
-  (data || []).forEach(f => {
-
-    mapaFornecedores[f.id] = {
-
-      id:f.id,
-
-      nome:
-        f.nome ||
-        f.contato ||
-        "Fornecedor",
-
-      cnpj:
-        f.cnpj || ""
-
-    };
-
-  });
-
-}
-
-
-
-
-
-
-
-
-
-  
-/* ================= COTAÇÕES ================= */
-
-async function carregarCotacoes(){
-
-  overlay(true);
-
-  const { data, error } = await sb
-
-    .from("cotacoes")
-
-    .select("*")
-
-    .order(
-      "data_cotacao",
-      { ascending:false }
-    );
-
-  overlay(false);
-
-  if(error){
-
-    console.log(error);
-
-    alert("Erro ao carregar");
-
-    return;
-  }
-
- const filtradas = (data || [])
-
-  .filter(c => {
-
-    /* NÃO MOSTRA FINALIZADAS */
-
-    if(
-      String(c.status || '')
-      .toUpperCase() === 'FINALIZADA'
-    ){
-      return false;
+    let ultimoEvento = 0;
+    let mapaFornecedores = {};
+    let realtimeIniciado = false;
+    let audioLiberado = false;
+
+    if(fornecedor){
+      iniciar();
     }
 
-    const itens =
-      c.itens_cotacao || [];
+    /* ================= LOGIN ================= */
 
-    return itens.some(i => {
+    async function entrar(){
 
-      return (
-        i.fornecedores || []
-      ).some(f =>
+      await liberarAudio();
 
-        f.fornecedor_id === fornecedor.id
+      const cnpj = document
+        .getElementById("cnpj")
+        .value
+        .replace(/\D/g,"");
 
+      const senha = document
+        .getElementById("senha")
+        .value
+        .trim();
+
+      if(!cnpj || !senha){
+        alert("Informe CNPJ e senha.");
+        return;
+      }
+
+      overlay(true, "Validando acesso...");
+
+      const { data, error } = await sb
+        .from("fornecedores_mercatto")
+        .select("*")
+        .eq("ativo", true);
+
+      overlay(false);
+
+      if(error){
+        console.log(error);
+        alert("Erro ao buscar fornecedor.");
+        return;
+      }
+
+      const encontrado = (data || [])
+        .find(f => {
+          return (
+            String(f.cnpj || "").replace(/\D/g,"") === cnpj
+            &&
+            String(f.senha || "").trim() === senha
+          );
+        });
+
+      if(!encontrado){
+        alert("CNPJ ou senha inválidos.");
+        return;
+      }
+
+      fornecedor = encontrado;
+
+      localStorage.setItem(
+        "fornecedor_logado",
+        JSON.stringify(fornecedor)
       );
 
-    });
+      iniciar();
 
-  });
+    }
 
-  renderCotacoes(filtradas);
-}
+    /* ================= INICIAR ================= */
 
-/* ================= RENDER ================= */
+    async function iniciar(){
 
-function renderCotacoes(cotacoes){
+      document.getElementById("login").style.display = "none";
+      document.getElementById("app").style.display = "block";
 
-  const lista =
-    document.getElementById(
-      "listaCotacoes"
-    );
+      document.getElementById("nomeFornecedor").innerText =
+        fornecedor.nome || "Fornecedor";
 
-  lista.innerHTML = "";
+      document.getElementById("infoFornecedor").innerText =
+        fornecedor.cnpj || "";
 
-  if(!cotacoes.length){
+      await carregarMapaFornecedores();
+      await carregarCotacoes();
 
-    lista.innerHTML = `
+      iniciarRealtime();
+      ativarNotificacoes();
 
-      <div class="empty">
+    }
 
-        Nenhuma cotação disponível
+    /* ================= MAPA FORNECEDORES ================= */
 
-      </div>
+    async function carregarMapaFornecedores(){
 
-    `;
+      const { data, error } = await sb
+        .from("fornecedores_mercatto")
+        .select("id,nome,cnpj,contato");
 
-    return;
-  }
+      if(error){
+        console.log("Erro ao carregar fornecedores", error);
+        mapaFornecedores = {};
+        return;
+      }
 
-  cotacoes.forEach(c => {
+      mapaFornecedores = {};
 
-    const itens =
-      c.itens_cotacao || [];
+      (data || []).forEach(f => {
+        mapaFornecedores[f.id] = {
+          id: f.id,
+          nome: f.nome || f.contato || "Fornecedor",
+          cnpj: f.cnpj || ""
+        };
+      });
 
-const bloqueada =
-  String(c.status || "")
-    .toUpperCase() === "FINALIZADA";
+    }
 
-    lista.innerHTML += `
+    /* ================= COTAÇÕES ================= */
 
-      <div class="card">
+    async function carregarCotacoes(){
 
-        <div class="card-top">
+      if(!fornecedor || !fornecedor.id){
+        return;
+      }
 
-          <div>
+      overlay(true, "Carregando cotações...");
 
-            <h2>
-              ${c.nome || "Cotação"}
-            </h2>
+      const { data, error } = await sb
+        .from("cotacoes")
+        .select("*")
+        .order("data_cotacao", { ascending:false });
 
+      overlay(false);
 
+      if(error){
+        console.log(error);
+        alert("Erro ao carregar cotações.");
+        return;
+      }
+
+      const filtradas = (data || [])
+        .filter(c => {
+
+          if(
+            String(c.status || "")
+              .toUpperCase() === "FINALIZADA"
+          ){
+            return false;
+          }
+
+          const itens = parseJsonArray(c.itens_cotacao);
+
+          return itens.some(i => {
+            return (i.fornecedores || [])
+              .some(f =>
+                String(f.fornecedor_id) === String(fornecedor.id)
+              );
+          });
+
+        });
+
+      renderCotacoes(filtradas);
+
+    }
+
+    /* ================= RENDER ================= */
+
+    function renderCotacoes(cotacoes){
+
+      const lista =
+        document.getElementById("listaCotacoes");
+
+      lista.innerHTML = "";
+
+      if(!cotacoes.length){
+
+        lista.innerHTML = `
+          <div class="empty">
+            Nenhuma cotação disponível
           </div>
+        `;
 
-          <div class="
-            status
+        return;
+      }
 
-            ${
-              c.status === "finalizada"
-              ? "finalizada"
+      cotacoes.forEach(c => {
 
-              : c.status === "respondida"
+        const itens =
+          parseJsonArray(c.itens_cotacao);
+
+        const bloqueada =
+          String(c.status || "")
+            .toUpperCase() === "FINALIZADA";
+
+        const statusClasse =
+          bloqueada
+            ? "finalizada"
+            : String(c.status || "").toLowerCase() === "respondida"
               ? "respondida"
+              : "ativa";
 
-              : "ativa"
-            }
-          ">
+        lista.innerHTML += `
 
-            ${(c.status || "ativa")
-              .toUpperCase()}
+          <div class="card">
 
-          </div>
+            <div class="card-top">
 
-        </div>
-
-      <div class="cotacao-lista">
-
-        ${itens.map((i,index)=>{
-
-          const meuFornecedor =
-
-            (i.fornecedores || [])
-
-            .find(f =>
-
-              f.fornecedor_id ===
-              fornecedor.id
-
-            );
-
-          if(!meuFornecedor)
-            return "";
-
-          const key =
-            "cot_"+c.id+"_"+index;
-
-         const cache = JSON.parse(
-
-  localStorage.getItem(key)
-
-  || JSON.stringify({
-
-    preco_embalagem:
-      meuFornecedor.preco_embalagem
-        ? Number(meuFornecedor.preco_embalagem)
-          .toLocaleString(
-            "pt-BR",
-            {
-              minimumFractionDigits:2,
-              maximumFractionDigits:2
-            }
-          )
-        : "",
-
-    obs:
-      meuFornecedor.observacao || ""
-
-  })
-
-);
-          return `
-
-            <div class="item-cotacao">
-
-              <div class="linha-topo">
-
-
-
-<div class="produto">
-
-  <span style="
-    font-weight:900;
-    color:#2563eb;
-    margin-right:6px;
-    text-transform:uppercase;
-  ">
-    ${i.unidade || "UN"}
-  </span>
-
-  ${i.produto}
-
-</div>
-
+              <div>
+                <h2>${escaparHtml(c.nome || "Cotação")}</h2>
+                <small>${formatarDataCotacao(c.data_cotacao)}</small>
               </div>
 
-              <div class="linha-inputs">
-
-                <input
-
-                  type="text"
-
-                  inputmode="decimal"
-
-                  autocomplete="off"
-
-                  class="
-                    input
-                    money
-                    ${bloqueada ? "readonly" : ""}
-                  "
-
-                 placeholder="Preço da caixa"
-
-                  value="${
-  value="${
-  cache.preco_embalagem || ""
-}"
-
-oninput="
-  formatarMoeda(
-    this,
-    '${key}'
-  )
-"
-
-                >
-
-                <input
-
-                  class="
-                    input
-                    ${bloqueada ? "readonly" : ""}
-                  "
-
-                  placeholder="Obs"
-
-                  value="${
-                    cache.obs || ""
-                  }"
-
-                  ${bloqueada ? "readonly" : ""}
-
-                  oninput="
-                    salvarLocal(
-                      '${key}',
-                      'obs',
-                      this.value
-                    )
-                  "
-
-                >
-
+              <div class="status ${statusClasse}">
+                ${(c.status || "ativa").toUpperCase()}
               </div>
-
-            ${htmlMenorPrecoOutrosFornecedores(i, cache.preco_embalagem)}
 
             </div>
 
-          `;
+            <div class="cotacao-lista">
 
-        }).join("")}
+              ${itens.map((i,index) => {
 
-      </div>
-        <div class="actions">
+                const meuFornecedor =
+                  (i.fornecedores || [])
+                    .find(f =>
+                      String(f.fornecedor_id) === String(fornecedor.id)
+                    );
+
+                if(!meuFornecedor){
+                  return "";
+                }
+
+                const key =
+                  "cot_" + c.id + "_" + index;
+
+                const cache = obterCacheItem(
+                  key,
+                  meuFornecedor
+                );
+
+                const qtdUnidades = obterQtdUnidades(i);
+                const qtdSolicitada = obterQtdSolicitada(i);
+                const precoUnitarioAtual = normalizarNumeroPreco(cache.preco_unitario);
+                const precoEmbalagemAtual = precoUnitarioAtual * qtdUnidades;
+                const precoTotalAtual = precoEmbalagemAtual * qtdSolicitada;
+
+                return `
+
+                  <div class="item-cotacao">
+
+                    <div class="linha-topo">
+
+                      <div class="produto">
+
+                        <span class="produto-unidade">
+                          ${escaparHtml(i.unidade || "UN")}
+                        </span>
+
+                        ${escaparHtml(i.produto || "Produto")}
+
+                      </div>
+
+                      <div class="meta">
+                        ${qtdSolicitada} ${escaparHtml(i.unidade || "UN")}
+                      </div>
+
+                    </div>
+
+                    <div class="info-qtd">
+
+                      <div class="info-box">
+                        <small>Solicitado</small>
+                        <strong>
+                          ${qtdSolicitada} ${escaparHtml(i.unidade || "UN")}
+                        </strong>
+                      </div>
+
+                      <div class="info-box">
+                        <small>Unidades por embalagem</small>
+                        <strong>
+                          ${qtdUnidades}
+                        </strong>
+                      </div>
+
+                      <div class="info-box">
+                        <small>Como preencher</small>
+                        <strong>
+                          Digite preço unitário
+                        </strong>
+                      </div>
+
+                    </div>
+
+                    <div class="linha-inputs">
+
+                      <div class="input-wrap">
+
+                        <label class="input-label">
+                          Preço unitário
+                        </label>
+
+                        <input
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          class="input money ${bloqueada ? "readonly" : ""}"
+                          placeholder="0,00"
+                          value="${escaparHtml(cache.preco_unitario || "")}"
+                          ${bloqueada ? "readonly" : ""}
+                          oninput="
+                            formatarMoeda(
+                              this,
+                              '${key}',
+                              '${c.id}',
+                              ${index}
+                            )
+                          "
+                        >
+
+                      </div>
+
+                      <div class="input-wrap">
+
+                        <label class="input-label">
+                          Observação
+                        </label>
+
+                        <input
+                          class="input ${bloqueada ? "readonly" : ""}"
+                          placeholder="Marca, prazo, detalhe..."
+                          value="${escaparHtml(cache.obs || "")}"
+                          ${bloqueada ? "readonly" : ""}
+                          oninput="
+                            salvarLocal(
+                              '${key}',
+                              'obs',
+                              this.value
+                            )
+                          "
+                        >
+
+                      </div>
+
+                    </div>
+
+                    <div
+                      class="calculo-preview"
+                      id="calc_${c.id}_${index}"
+                    >
+
+                      <div class="calc-item">
+                        <small>Preço unitário</small>
+                        <strong>
+                          ${formatarReal(precoUnitarioAtual)}
+                        </strong>
+                      </div>
+
+                      <div class="calc-item">
+                        <small>Preço embalagem</small>
+                        <strong>
+                          ${formatarReal(precoEmbalagemAtual)}
+                        </strong>
+                      </div>
+
+                      <div class="calc-item">
+                        <small>Total estimado</small>
+                        <strong>
+                          ${formatarReal(precoTotalAtual)}
+                        </strong>
+                      </div>
+
+                    </div>
+
+                    ${htmlMenorPrecoOutrosFornecedores(i, cache.preco_unitario)}
+
+                  </div>
+
+                `;
+
+              }).join("")}
+
+            </div>
+
+            <div class="actions">
+
+              ${
+                bloqueada
+                  ? `
+                    <div style="
+                      font-size:13px;
+                      font-weight:800;
+                      color:#dc2626;
+                    ">
+                      Cotação finalizada. Edição bloqueada.
+                    </div>
+                  `
+                  : `
+                    <button
+                      class="btn btn-light"
+                      onclick="limpar('${c.id}')"
+                    >
+                      Limpar
+                    </button>
+
+                    <button
+                      class="btn"
+                      onclick="enviar('${c.id}')"
+                    >
+                      Enviar Cotação
+                    </button>
+                  `
+              }
+
+            </div>
+
+          </div>
+
+        `;
+
+      });
+
+    }
+
+    function obterCacheItem(key, meuFornecedor){
+
+      const local =
+        localStorage.getItem(key);
+
+      if(local){
+        try {
+          return JSON.parse(local);
+        } catch(e) {}
+      }
+
+      return {
+        preco_unitario:
+          meuFornecedor.preco_unitario
+            ? Number(meuFornecedor.preco_unitario)
+              .toLocaleString(
+                "pt-BR",
+                {
+                  minimumFractionDigits:2,
+                  maximumFractionDigits:2
+                }
+              )
+            : "",
+
+        obs:
+          meuFornecedor.observacao || ""
+      };
+
+    }
+
+    /* ================= MENOR PREÇO ================= */
+
+    function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
+
+      const menor =
+        calcularMenorPrecoOutrosFornecedores(item);
+
+      const meuPreco =
+        normalizarNumeroPreco(meuPrecoDigitado);
+
+      if(!menor){
+
+        return `
+          <div class="menor-preco-vazio">
+            Ainda não existe preço lançado por outro fornecedor.
+          </div>
+        `;
+
+      }
+
+      let statusTexto = "";
+      let statusClasse = "";
+      let diferencaTexto = "";
+      let mostrarPrecoConcorrente = true;
+
+      if(meuPreco > 0){
+
+        const diferenca =
+          Number((meuPreco - menor.preco).toFixed(2));
+
+        if(meuPreco < menor.preco){
+
+          statusTexto = "Você está ganhando";
+          statusClasse = "ganhando";
+          diferencaTexto = "";
+          mostrarPrecoConcorrente = false;
+
+        }else if(meuPreco > menor.preco){
+
+          statusTexto = "Você está perdendo";
+          statusClasse = "perdendo";
+          diferencaTexto =
+            "Seu preço unitário está " +
+            formatarReal(Math.abs(diferenca)) +
+            " acima.";
+          mostrarPrecoConcorrente = true;
+
+        }else{
+
+          statusTexto = "Você está empatado";
+          statusClasse = "empatado";
+          diferencaTexto =
+            "Seu preço unitário está igual ao menor concorrente.";
+          mostrarPrecoConcorrente = true;
+
+        }
+
+      }else{
+
+        statusTexto = "Informe seu preço para comparar";
+        statusClasse = "sem-preco";
+        diferencaTexto =
+          "Digite o preço unitário do produto.";
+        mostrarPrecoConcorrente = true;
+
+      }
+
+      return `
+
+        <div class="menor-preco-box">
+
+          <div class="menor-preco-info">
+
+            <div class="menor-preco-label">
+              Comparação por preço unitário
+            </div>
+
+            ${
+              mostrarPrecoConcorrente
+                ? `
+                  <div class="menor-preco-fornecedor">
+                    ${escaparHtml(menor.nomeFornecedor)}
+                  </div>
+                `
+                : `
+                  <div class="menor-preco-fornecedor">
+                    Você está com o melhor preço até agora
+                  </div>
+                `
+            }
+
+            <div class="comparacao-preco ${statusClasse}">
+              ${statusTexto}
+            </div>
+
+            <div class="comparacao-diferenca">
+              ${diferencaTexto}
+            </div>
+
+          </div>
 
           ${
-            bloqueada
-
-            ? `
-
-              <div style="
-                font-size:13px;
-                font-weight:700;
-                color:#dc2626;
-              ">
-
-                Cotação finalizada.
-                Edição bloqueada.
-
-              </div>
-
-            `
-
-            : `
-
-              <button
-                class="btn btn-light"
-                onclick="limpar('${c.id}')">
-
-                Limpar
-
-              </button>
-
-              <button
-                class="btn"
-                onclick="enviar('${c.id}')">
-
-                Enviar Cotação
-
-              </button>
-
-            `
+            mostrarPrecoConcorrente
+              ? `
+                <div class="menor-preco-valor">
+                  ${formatarReal(menor.preco)}
+                </div>
+              `
+              : `
+                <div class="menor-preco-valor melhor-preco">
+                  Melhor preço
+                </div>
+              `
           }
 
         </div>
 
-      </div>
-
-    `;
-
-  });
-
-}
-
-
-
-function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
-
-  const menor =
-    calcularMenorPrecoOutrosFornecedores(item);
-
-  const precoEmbalagemDigitado =
-    normalizarNumeroPreco(meuPrecoDigitado);
-
-  const qtdEmbalagem = Number(
-    item.qtd_unidades ||
-    item.quantidade_embalagem ||
-    item.qtd_por_caixa ||
-    1
-  ) || 1;
-
-  const meuPrecoUnitario =
-    precoEmbalagemDigitado > 0
-      ? precoEmbalagemDigitado / qtdEmbalagem
-      : 0;
-
-  if(!menor){
-
-    return `
-
-      <div class="menor-preco-vazio">
-
-        Ainda não existe preço lançado por outro fornecedor.
-
-      </div>
-
-    `;
-
-  }
-
-  let statusTexto = "";
-  let statusClasse = "";
-  let diferencaTexto = "";
-  let mostrarPrecoConcorrente = true;
-
-  if(meuPrecoUnitario > 0){
-
-    const diferenca =
-      Number(
-        (
-          meuPrecoUnitario - menor.preco
-        ).toFixed(2)
-      );
-
-    if(meuPrecoUnitario < menor.preco){
-
-      statusTexto =
-        "Você está ganhando";
-
-      statusClasse =
-        "ganhando";
-
-      diferencaTexto =
-        "";
-
-      mostrarPrecoConcorrente =
-        false;
-
-    }else if(meuPrecoUnitario > menor.preco){
-
-      statusTexto =
-        "Você está perdendo";
-
-      statusClasse =
-        "perdendo";
-
-      diferencaTexto =
-        "Seu preço unitário está " +
-        formatarReal(Math.abs(diferenca)) +
-        " acima.";
-
-      mostrarPrecoConcorrente =
-        true;
-
-    }else{
-
-      statusTexto =
-        "Você está empatado";
-
-      statusClasse =
-        "empatado";
-
-      diferencaTexto =
-        "Seu preço está igual ao menor concorrente.";
-
-      mostrarPrecoConcorrente =
-        true;
+      `;
 
     }
 
-  }else{
+    function calcularMenorPrecoOutrosFornecedores(item){
 
-    statusTexto =
-      "Informe seu preço para comparar";
+      const fornecedores =
+        item.fornecedores || [];
 
-    statusClasse =
-      "sem-preco";
+      const outrosComPreco = fornecedores
 
-    diferencaTexto =
-      "Digite o preço da embalagem/caixa.";
+        .filter(f => {
 
-    mostrarPrecoConcorrente =
-      true;
+          if(
+            String(f.fornecedor_id) ===
+            String(fornecedor.id)
+          ){
+            return false;
+          }
 
-  }
+          const preco =
+            obterPrecoUnitarioFornecedor(f);
 
-  return `
+          return preco > 0;
 
-    <div class="menor-preco-box">
+        })
 
-      <div class="menor-preco-info">
+        .map(f => {
 
-        <div class="menor-preco-label">
+          const fornecedorCadastro =
+            mapaFornecedores[f.fornecedor_id] || {};
 
-          Comparação pelo preço unitário real
+          const nomeFornecedor =
+            f.fornecedor_nome ||
+            f.nome_fornecedor ||
+            f.nome ||
+            f.razao_social ||
+            fornecedorCadastro.nome ||
+            "Fornecedor não identificado";
 
-        </div>
+          return {
+            fornecedor_id: f.fornecedor_id,
+            nomeFornecedor,
+            preco: obterPrecoUnitarioFornecedor(f)
+          };
 
-        ${
-          mostrarPrecoConcorrente
-          ? `
+        })
 
-            <div class="menor-preco-fornecedor">
+        .sort((a,b) => a.preco - b.preco);
 
-              ${escaparHtml(menor.nomeFornecedor)}
+      return outrosComPreco[0] || null;
 
-            </div>
+    }
 
-          `
-          : `
-
-            <div class="menor-preco-fornecedor">
-
-              Você está com o melhor preço até agora
-
-            </div>
-
-          `
-        }
-
-        <div class="comparacao-preco ${statusClasse}">
-
-          ${statusTexto}
-
-        </div>
-
-        <div class="comparacao-diferenca">
-
-          ${diferencaTexto}
-
-        </div>
-
-      </div>
-
-      ${
-        mostrarPrecoConcorrente
-        ? `
-
-          <div class="menor-preco-valor">
-
-            ${formatarReal(menor.preco)}
-
-          </div>
-
-        `
-        : `
-
-          <div class="menor-preco-valor melhor-preco">
-
-            Melhor preço
-
-          </div>
-
-        `
-      }
-
-    </div>
-
-  `;
-
-}
-
-function calcularMenorPrecoOutrosFornecedores(item){
-
-  const fornecedores =
-    item.fornecedores || [];
-
-  const outrosComPreco = fornecedores
-
-    .filter(f => {
-
-      if(
-        String(f.fornecedor_id) ===
-        String(fornecedor.id)
-      ){
-        return false;
-      }
+    function obterPrecoUnitarioFornecedor(f){
 
       const precoUnitario =
-        obterPrecoUnitarioFornecedor(f);
+        normalizarNumeroPreco(f.preco_unitario);
 
-      return precoUnitario > 0;
-
-    })
-
-    .map(f => {
-
-      const fornecedorCadastro =
-        mapaFornecedores[
-          f.fornecedor_id
-        ] || {};
-
-      const nomeFornecedor =
-
-        f.fornecedor_nome ||
-
-        f.nome_fornecedor ||
-
-        f.nome ||
-
-        f.razao_social ||
-
-        fornecedorCadastro.nome ||
-
-        "Fornecedor não identificado";
-
-      return {
-
-        fornecedor_id:
-          f.fornecedor_id,
-
-        nomeFornecedor:
-          nomeFornecedor,
-
-        preco:
-          obterPrecoUnitarioFornecedor(f)
-
-      };
-
-    })
-
-    .sort((a,b) => {
-      return a.preco - b.preco;
-    });
-
-  return outrosComPreco[0] || null;
-
-}
-
-
-
-
-  function obterPrecoUnitarioFornecedor(f){
-
-  const precoUnitario =
-    normalizarNumeroPreco(
-      f.preco_unitario
-    );
-
-  if(precoUnitario > 0){
-    return precoUnitario;
-  }
-
-  const precoEmbalagem =
-    normalizarNumeroPreco(
-      f.preco_embalagem
-    );
-
-  const qtdEmbalagem =
-    normalizarNumeroPreco(
-      f.quantidade_embalagem
-    ) || 1;
-
-  if(precoEmbalagem > 0){
-    return precoEmbalagem / qtdEmbalagem;
-  }
-
-  return 0;
-
-}
-
-
-
-    
-
-function normalizarNumeroPreco(valor){
-
-  if(
-    valor === null ||
-    valor === undefined ||
-    valor === ""
-  ){
-    return 0;
-  }
-
-  if(typeof valor === "number"){
-
-    return Number(valor) || 0;
-
-  }
-
-  return Number(
-
-    String(valor)
-
-      .replace(/\s/g,"")
-
-      .replace(/\./g,"")
-
-      .replace(",",".")
-
-  ) || 0;
-
-}
-
-function formatarReal(valor){
-
-  return Number(valor || 0)
-
-    .toLocaleString(
-      "pt-BR",
-      {
-        style:"currency",
-        currency:"BRL"
+      if(precoUnitario > 0){
+        return precoUnitario;
       }
-    );
 
-}
+      const precoEmbalagem =
+        normalizarNumeroPreco(f.preco_embalagem);
 
-function escaparHtml(texto){
+      const qtdEmbalagem =
+        normalizarNumeroPreco(f.quantidade_embalagem) || 1;
 
-  return String(texto || "")
-
-    .replace(/&/g,"&amp;")
-
-    .replace(/</g,"&lt;")
-
-    .replace(/>/g,"&gt;")
-
-    .replace(/"/g,"&quot;")
-
-    .replace(/'/g,"&#039;");
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-  
-/* ================= LOCAL ================= */
-
-function salvarLocal(
-  key,
-  campo,
-  valor
-){
-
-  let obj = JSON.parse(
-    localStorage.getItem(key)
-    || "{}"
-  );
-
-  obj[campo] = valor;
-
-  localStorage.setItem(
-    key,
-    JSON.stringify(obj)
-  );
-
-}
-
-/* ================= ENVIAR ================= */
-
-/* ================= ENVIAR ================= */
-
-async function enviar(cotacaoId){
-
-  overlay(true);
-
-  const { data, error } = await sb
-    .from("cotacoes")
-    .select("*")
-    .eq("id", cotacaoId)
-    .single();
-
-  if(error){
-
-    overlay(false);
-
-    console.log(error);
-
-    alert("Erro ao carregar cotação.");
-
-    return;
-  }
-
-  let itens =
-    typeof data.itens_cotacao === "string"
-      ? JSON.parse(data.itens_cotacao || "[]")
-      : data.itens_cotacao || [];
-
-  let respondeuAlgumItem = false;
-
-  for(let i = 0; i < itens.length; i++){
-
-    const item = itens[i];
-
-    const fornecedorIndex =
-      (item.fornecedores || [])
-      .findIndex(f =>
-        String(f.fornecedor_id) === String(fornecedor.id)
-      );
-
-    if(fornecedorIndex === -1){
-      continue;
-    }
-
-    const key =
-      "cot_" + cotacaoId + "_" + i;
-
-    const cache = JSON.parse(
-      localStorage.getItem(key) || "{}"
-    );
-
-    /*
-      AGORA O VALOR DIGITADO É O PREÇO DA EMBALAGEM,
-      NÃO O PREÇO UNITÁRIO.
-    */
-
-    const precoEmbalagem = normalizarNumeroPreco(
-      cache.preco_embalagem ||
-      cache.preco_unitario ||
-      ""
-    );
-
-    if(!precoEmbalagem || precoEmbalagem <= 0){
-      continue;
-    }
-
-    const qtdEmbalagem = Number(
-      item.qtd_unidades ||
-      item.quantidade_embalagem ||
-      item.qtd_por_caixa ||
-      1
-    ) || 1;
-
-    const qtdSolicitada = Number(
-      item.qtd_solicitada ||
-      item.quantidade ||
-      item.comprar ||
-      0
-    ) || 0;
-
-    /*
-      PREÇO UNITÁRIO REAL:
-      Exemplo:
-      Caixa com 6 unidades custa R$ 120,00
-      Unitário real = 120 / 6 = R$ 20,00
-    */
-
-    const precoUnitario = Number(
-      (
-        precoEmbalagem / qtdEmbalagem
-      ).toFixed(4)
-    );
-
-    /*
-      TOTAL DA COTAÇÃO:
-      Se pediu 2 caixas de R$ 120,00
-      Total = 240,00
-    */
-
-    const precoTotal = Number(
-      (
-        precoEmbalagem * qtdSolicitada
-      ).toFixed(2)
-    );
-
-    item.fornecedores[fornecedorIndex] = {
-
-      ...item.fornecedores[fornecedorIndex],
-
-      fornecedor_id:
-        fornecedor.id,
-
-      fornecedor_nome:
-        fornecedor.nome,
-
-      preco_unitario:
-        precoUnitario,
-
-      quantidade_embalagem:
-        qtdEmbalagem,
-
-      preco_embalagem:
-        precoEmbalagem,
-
-      preco_total:
-        precoTotal,
-
-      observacao:
-        cache.obs || "",
-
-      respondido_em:
-        new Date().toISOString()
-
-    };
-
-    respondeuAlgumItem = true;
-
-  }
-
-  if(!respondeuAlgumItem){
-
-    overlay(false);
-
-    alert(
-      "Informe pelo menos um preço antes de enviar."
-    );
-
-    return;
-  }
-
-  const { error:updateError } = await sb
-    .from("cotacoes")
-    .update({
-
-      itens_cotacao:
-        itens,
-
-      atualizado_em:
-        new Date(),
-
-      status:
-        "respondida"
-
-    })
-    .eq("id", cotacaoId);
-
-  overlay(false);
-
-  if(updateError){
-
-    console.log(updateError);
-
-    alert(
-      "Erro ao enviar cotação."
-    );
-
-    return;
-  }
-
-  /*
-    Limpa cache local da cotação enviada
-    para não reenviar valor antigo depois.
-  */
-
-  Object.keys(localStorage)
-    .filter(k =>
-      k.startsWith("cot_" + cotacaoId + "_")
-    )
-    .forEach(k => {
-      localStorage.removeItem(k);
-    });
-
-  alert(
-    "Cotação enviada com sucesso."
-  );
-
-  carregarCotacoes();
-
-}
-/* ================= LIMPAR ================= */
-
-function limpar(cotacaoId){
-
-  Object.keys(localStorage)
-
-    .filter(k =>
-
-      k.startsWith(
-        "cot_"+cotacaoId+"_"
-      )
-
-    )
-
-    .forEach(k => {
-
-      localStorage.removeItem(k);
-
-    });
-
-  carregarCotacoes();
-}
-
-/* ================= SAIR ================= */
-
-function sair(){
-
-  localStorage.removeItem(
-    "fornecedor_logado"
-  );
-
-  location.reload();
-}
-
-/* ================= HELPERS ================= */
-
-function overlay(show){
-
-  document.getElementById("overlay")
-    .style.display =
-      show ? "flex" : "none";
-}
-
-function formatarData(data){
-
-  if(!data) return "-";
-
-  return new Date(data)
-    .toLocaleString("pt-BR");
-}
-
-function money(v){
-
-  if(!v) return '';
-
-  v = String(v)
-    .replace(/\D/g,'');
-
-  v = (Number(v) / 100)
-    .toLocaleString('pt-BR',{
-
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-
-    });
-
-  return v;
-
-}
-/* ================= REALTIME ================= */
-
-sb.channel("cotacoes_realtime")
-
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"cotacoes"
-  },
-
-  payload => {
-
-    const nova =
-      payload.new || {};
-
-    const antiga =
-      payload.old || {};
-
-    const itens =
-      nova.itens_cotacao || [];
-
-    /* VERIFICA SE É DO FORNECEDOR */
-
-    const pertenceAoFornecedor =
-
-      itens.some(i =>
-
-        (i.fornecedores || [])
-
-        .some(f =>
-
-          f.fornecedor_id ===
-          fornecedor.id
-
-        )
-
-      );
-
-    if(!pertenceAoFornecedor)
-      return;
-
-   carregarCotacoes();
-
-let titulo =
-  'Cotação atualizada';
-
-let mensagem =
-  'Existe uma nova movimentação';
-
-/* NOVA COTAÇÃO */
-
-if(payload.eventType === 'INSERT'){
-
-  titulo =
-    'Nova cotação';
-
-  mensagem =
-    'Você recebeu uma nova cotação';
-
-}
-
-/* STATUS ALTERADO */
-
-if(
-
-  antiga.status !==
-  nova.status
-
-){
-
-  titulo =
-    'Status atualizado';
-
-  mensagem =
-    'Cotação: ' +
-    String(
-      nova.status || ''
-    ).toUpperCase();
-
-}
-
-const agora = Date.now();
-
-if(
-
-  agora - ultimoEvento
-
-  > 3000
-
-){
-
-  tocarSom();
-
-  ultimoEvento = agora;
-
-}
-
-mostrarNotificacao(
-  titulo,
-  mensagem
-);
-
-    
-  }
-
-)
-
-.subscribe();
-
-
-function formatarMoeda(el,key){
-
-  let v = el.value || "";
-
-  v = v.replace(/\D/g,"");
-
-  if(!v){
-
-    el.value = "";
-
-    salvarLocal(
-      key,
-      "preco_embalagem",
-      ""
-    );
-
-    return;
-  }
-
-  v = (
-    Number(v) / 100
-  ).toLocaleString(
-    "pt-BR",
-    {
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    }
-  );
-
-  el.value = v;
-
-  salvarLocal(
-    key,
-    "preco_embalagem",
-    v
-  );
-
-}
-
-async function ativarNotificacoes(){
-
-  const perm = await Notification.requestPermission();
-
-  if(perm === 'granted'){
-
-    console.log('Notificações permitidas');
-
-  }
-
-}
-
-ativarNotificacoes();
-
-
-let audioLiberado = false;
-
-async function liberarAudio(){
-
-  if(audioLiberado)
-    return;
-
-  const audio =
-    document.getElementById(
-      'somNotify'
-    );
-
-  try{
-
-    audio.volume = 0;
-
-    await audio.play();
-
-    audio.pause();
-
-    audio.currentTime = 0;
-
-    audio.volume = 1;
-
-    audioLiberado = true;
-
-    console.log(
-      'Áudio liberado'
-    );
-
-  }catch(err){
-
-    console.log(
-      'Bloqueado:',
-      err
-    );
-
-  }
-
-}
-
-function tocarSom(){
-
-  const audio =
-    document.getElementById(
-      'somNotify'
-    );
-
-  if(!audio)
-    return;
-
-  audio.currentTime = 0;
-
-  audio.play()
-
-  .then(()=>{
-
-    console.log(
-      'Som tocando'
-    );
-
-  })
-
-  .catch(err => {
-
-    console.log(
-      'Erro áudio:',
-      err
-    );
-
-  });
-
-}
-  
-  
-  function mostrarNotificacao(
-  titulo,
-  mensagem
-){
-
-  if(
-    Notification.permission
-    !== 'granted'
-  ){
-    return;
-  }
-
-  navigator.serviceWorker.ready
-
-  .then(reg => {
-
-    reg.showNotification(
-      titulo,
-      {
-
-        body:mensagem,
-
-        icon:'logo-192.png',
-
-        badge:'logo-192.png',
-
-        vibrate:[
-
-          200,
-          100,
-          200
-
-        ],
-
-        tag:'cotacao-mercatto',
-
-        renotify:true
-
+      if(precoEmbalagem > 0){
+        return precoEmbalagem / qtdEmbalagem;
       }
-    );
 
-  });
+      return 0;
 
-}
+    }
 
+    /* ================= ENVIAR ================= */
 
+    async function enviar(cotacaoId){
 
+      overlay(true, "Enviando cotação...");
 
+      const { data, error } = await sb
+        .from("cotacoes")
+        .select("*")
+        .eq("id", cotacaoId)
+        .single();
 
+      if(error){
 
+        overlay(false);
+        console.log(error);
 
+        alert("Erro ao carregar cotação.");
+        return;
+      }
 
-  
-  </script>
-  <script>
-    window.addEventListener(
-  'load',
-  () => {
+      let itens =
+        parseJsonArray(data.itens_cotacao);
 
-    setTimeout(()=>{
+      let respondeuAlgumItem = false;
 
-      const splash =
-        document.getElementById(
-          'splash'
+      for(let i = 0; i < itens.length; i++){
+
+        const item = itens[i];
+
+        item.fornecedores =
+          item.fornecedores || [];
+
+        const fornecedorIndex =
+          item.fornecedores
+            .findIndex(f =>
+              String(f.fornecedor_id) === String(fornecedor.id)
+            );
+
+        if(fornecedorIndex === -1){
+          continue;
+        }
+
+        const key =
+          "cot_" + cotacaoId + "_" + i;
+
+        const cache = JSON.parse(
+          localStorage.getItem(key) || "{}"
         );
 
-      splash.style.opacity = '0';
+        /*
+          FORNECEDOR DIGITA PREÇO UNITÁRIO.
+        */
 
-      splash.style.pointerEvents =
-        'none';
+        const precoUnitario =
+          normalizarNumeroPreco(cache.preco_unitario || "");
 
-      setTimeout(()=>{
+        if(!precoUnitario || precoUnitario <= 0){
+          continue;
+        }
 
-        splash.remove();
+        const qtdEmbalagem =
+          obterQtdUnidades(item);
 
-      },1000);
+        const qtdSolicitada =
+          obterQtdSolicitada(item);
 
-    },2200);
+        const precoEmbalagem = Number(
+          (
+            precoUnitario * qtdEmbalagem
+          ).toFixed(2)
+        );
 
-  }
-);
+        const precoTotal = Number(
+          (
+            precoEmbalagem * qtdSolicitada
+          ).toFixed(2)
+        );
 
-  </script>
+        item.fornecedores[fornecedorIndex] = {
 
-  <div id="splash">
+          ...item.fornecedores[fornecedorIndex],
 
-    <div class="splash-bg"></div>
+          fornecedor_id:
+            fornecedor.id,
 
-    <div class="pulse"></div>
+          fornecedor_nome:
+            fornecedor.nome,
 
-    <div class="cart-loader">
+          preco_unitario:
+            precoUnitario,
 
-      <div class="cart-line"></div>
+          quantidade_embalagem:
+            qtdEmbalagem,
 
-      <div class="cart-line delay"></div>
+          preco_embalagem:
+            precoEmbalagem,
 
-      <div class="cart-line delay2"></div>
+          preco_total:
+            precoTotal,
 
-    </div>
+          observacao:
+            cache.obs || "",
 
-    <h1>
+          respondido_em:
+            new Date().toISOString()
 
-      Cotação Mercatto
+        };
 
-    </h1>
+        respondeuAlgumItem = true;
 
-  </div>
+      }
 
-  <script>
-    if ('serviceWorker' in navigator) {
+      if(!respondeuAlgumItem){
 
-  navigator.serviceWorker
+        overlay(false);
 
-    .register('/sw.js')
+        alert(
+          "Informe pelo menos um preço unitário antes de enviar."
+        );
 
-    .then(() => {
+        return;
+      }
 
-      console.log(
-        'PWA instalado'
+      const { error:updateError } = await sb
+        .from("cotacoes")
+        .update({
+          itens_cotacao: itens,
+          atualizado_em: new Date(),
+          status: "respondida"
+        })
+        .eq("id", cotacaoId);
+
+      overlay(false);
+
+      if(updateError){
+
+        console.log(updateError);
+
+        alert("Erro ao enviar cotação.");
+        return;
+      }
+
+      Object.keys(localStorage)
+        .filter(k =>
+          k.startsWith("cot_" + cotacaoId + "_")
+        )
+        .forEach(k => {
+          localStorage.removeItem(k);
+        });
+
+      alert("Cotação enviada com sucesso.");
+
+      carregarCotacoes();
+
+    }
+
+    /* ================= LOCAL ================= */
+
+    function salvarLocal(key, campo, valor){
+
+      let obj = JSON.parse(
+        localStorage.getItem(key) || "{}"
       );
 
-    });
+      obj[campo] = valor;
 
-}
+      localStorage.setItem(
+        key,
+        JSON.stringify(obj)
+      );
 
+    }
+
+    function limpar(cotacaoId){
+
+      const confirmar =
+        confirm("Deseja limpar os preços digitados desta cotação?");
+
+      if(!confirmar) return;
+
+      Object.keys(localStorage)
+        .filter(k =>
+          k.startsWith("cot_" + cotacaoId + "_")
+        )
+        .forEach(k => {
+          localStorage.removeItem(k);
+        });
+
+      carregarCotacoes();
+
+    }
+
+    /* ================= MOEDA ================= */
+
+    function formatarMoeda(el, key, cotacaoId, index){
+
+      let v = el.value || "";
+
+      v = v.replace(/\D/g,"");
+
+      if(!v){
+
+        el.value = "";
+
+        salvarLocal(
+          key,
+          "preco_unitario",
+          ""
+        );
+
+        atualizarPreviewCalculo(cotacaoId, index, 0);
+
+        return;
+      }
+
+      v = (
+        Number(v) / 100
+      ).toLocaleString(
+        "pt-BR",
+        {
+          minimumFractionDigits:2,
+          maximumFractionDigits:2
+        }
+      );
+
+      el.value = v;
+
+      salvarLocal(
+        key,
+        "preco_unitario",
+        v
+      );
+
+      atualizarPreviewCalculo(
+        cotacaoId,
+        index,
+        normalizarNumeroPreco(v)
+      );
+
+    }
+
+    function atualizarPreviewCalculo(cotacaoId, index, precoUnitario){
+
+      const box =
+        document.getElementById(
+          "calc_" + cotacaoId + "_" + index
+        );
+
+      if(!box){
+        return;
+      }
+
+      const key =
+        "cot_" + cotacaoId + "_" + index;
+
+      const itemCard =
+        box.closest(".item-cotacao");
+
+      /*
+        Como o preview completo depende do item original,
+        ele será refeito no próximo render. Aqui mantemos
+        atualização visual básica para não piscar a tela.
+      */
+
+      const atual =
+        box.querySelectorAll(".calc-item strong");
+
+      if(atual[0]){
+        atual[0].innerText =
+          formatarReal(precoUnitario);
+      }
+
+    }
+
+    /* ================= REALTIME ================= */
+
+    function iniciarRealtime(){
+
+      if(realtimeIniciado){
+        return;
+      }
+
+      realtimeIniciado = true;
+
+      sb.channel("cotacoes_realtime_fornecedor")
+        .on(
+          "postgres_changes",
+          {
+            event:"*",
+            schema:"public",
+            table:"cotacoes"
+          },
+          payload => {
+
+            if(!fornecedor || !fornecedor.id){
+              return;
+            }
+
+            const nova =
+              payload.new || {};
+
+            const antiga =
+              payload.old || {};
+
+            const itens =
+              parseJsonArray(nova.itens_cotacao);
+
+            const pertenceAoFornecedor =
+              itens.some(i =>
+                (i.fornecedores || [])
+                  .some(f =>
+                    String(f.fornecedor_id) === String(fornecedor.id)
+                  )
+              );
+
+            if(!pertenceAoFornecedor){
+              return;
+            }
+
+            carregarCotacoes();
+
+            let titulo =
+              "Cotação atualizada";
+
+            let mensagem =
+              "Existe uma nova movimentação.";
+
+            if(payload.eventType === "INSERT"){
+
+              titulo =
+                "Nova cotação";
+
+              mensagem =
+                "Você recebeu uma nova cotação.";
+
+            }
+
+            if(
+              antiga &&
+              nova &&
+              antiga.status !== nova.status
+            ){
+
+              titulo =
+                "Status atualizado";
+
+              mensagem =
+                "Cotação: " +
+                String(nova.status || "")
+                  .toUpperCase();
+
+            }
+
+            const agora = Date.now();
+
+            if(agora - ultimoEvento > 3000){
+
+              tocarSom();
+              ultimoEvento = agora;
+
+            }
+
+            mostrarNotificacao(
+              titulo,
+              mensagem
+            );
+
+          }
+        )
+        .subscribe();
+
+    }
+
+    /* ================= NOTIFICAÇÕES ================= */
+
+    async function ativarNotificacoes(){
+
+      if(!("Notification" in window)){
+        return;
+      }
+
+      if(Notification.permission === "default"){
+
+        try{
+          await Notification.requestPermission();
+        }catch(e){}
+
+      }
+
+    }
+
+    async function liberarAudio(){
+
+      if(audioLiberado){
+        return;
+      }
+
+      const audio =
+        document.getElementById("somNotify");
+
+      if(!audio){
+        return;
+      }
+
+      try{
+
+        audio.volume = 0;
+        audio.muted = true;
+
+        await audio.play();
+
+        audio.pause();
+        audio.currentTime = 0;
+
+        audio.muted = false;
+        audio.volume = 1;
+
+        audioLiberado = true;
+
+      }catch(err){
+        console.log("Áudio bloqueado:", err);
+      }
+
+    }
+
+    function tocarSom(){
+
+      const audio =
+        document.getElementById("somNotify");
+
+      if(!audio){
+        return;
+      }
+
+      audio.currentTime = 0;
+
+      audio.play()
+        .catch(err => {
+          console.log("Erro áudio:", err);
+        });
+
+    }
+
+    function mostrarNotificacao(titulo, mensagem){
+
+      if(!("Notification" in window)){
+        return;
+      }
+
+      if(Notification.permission !== "granted"){
+        return;
+      }
+
+      if(
+        "serviceWorker" in navigator &&
+        navigator.serviceWorker.ready
+      ){
+
+        navigator.serviceWorker.ready
+          .then(reg => {
+
+            reg.showNotification(
+              titulo,
+              {
+                body: mensagem,
+                icon: "logo-192.png",
+                badge: "logo-192.png",
+                vibrate: [200, 100, 200],
+                tag: "cotacao-mercatto",
+                renotify: true
+              }
+            );
+
+          })
+          .catch(() => {});
+
+      }else{
+
+        new Notification(
+          titulo,
+          {
+            body: mensagem,
+            icon: "logo-192.png"
+          }
+        );
+
+      }
+
+    }
+
+    /* ================= SAIR ================= */
+
+    function sair(){
+
+      localStorage.removeItem(
+        "fornecedor_logado"
+      );
+
+      location.reload();
+
+    }
+
+    /* ================= HELPERS ================= */
+
+    function overlay(show, msg = "Processando..."){
+
+      document.getElementById("overlay")
+        .style.display =
+          show ? "flex" : "none";
+
+      const texto =
+        document.getElementById("overlayTexto");
+
+      if(texto){
+        texto.innerText = msg;
+      }
+
+    }
+
+    function parseJsonArray(valor){
+
+      if(Array.isArray(valor)){
+        return valor;
+      }
+
+      if(typeof valor === "string"){
+
+        try{
+          const parsed = JSON.parse(valor || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        }catch(e){
+          return [];
+        }
+
+      }
+
+      return [];
+
+    }
+
+    function obterQtdUnidades(item){
+
+      return Number(
+        item.qtd_unidades ||
+        item.quantidade_embalagem ||
+        item.qtd_por_caixa ||
+        1
+      ) || 1;
+
+    }
+
+    function obterQtdSolicitada(item){
+
+      return Number(
+        item.qtd_solicitada ||
+        item.quantidade ||
+        item.comprar ||
+        item.qtd ||
+        0
+      ) || 0;
+
+    }
+
+    function normalizarNumeroPreco(valor){
+
+      if(
+        valor === null ||
+        valor === undefined ||
+        valor === ""
+      ){
+        return 0;
+      }
+
+      if(typeof valor === "number"){
+        return Number(valor) || 0;
+      }
+
+      return Number(
+        String(valor)
+          .replace(/\s/g,"")
+          .replace(/[R$]/g,"")
+          .replace(/\./g,"")
+          .replace(",",".")
+      ) || 0;
+
+    }
+
+    function formatarReal(valor){
+
+      return Number(valor || 0)
+        .toLocaleString(
+          "pt-BR",
+          {
+            style:"currency",
+            currency:"BRL"
+          }
+        );
+
+    }
+
+    function formatarDataCotacao(data){
+
+      if(!data){
+        return "-";
+      }
+
+      try{
+
+        return new Date(data + "T12:00:00")
+          .toLocaleDateString(
+            "pt-BR",
+            {
+              timeZone:"America/Bahia",
+              day:"2-digit",
+              month:"2-digit",
+              year:"numeric"
+            }
+          );
+
+      }catch(e){
+        return data;
+      }
+
+    }
+
+    function escaparHtml(texto){
+
+      return String(texto || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+    }
+
+    /* ================= SPLASH ================= */
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        setTimeout(() => {
+
+          const splash =
+            document.getElementById("splash");
+
+          if(!splash){
+            return;
+          }
+
+          splash.style.opacity = "0";
+          splash.style.pointerEvents = "none";
+
+          setTimeout(() => {
+
+            if(splash){
+              splash.remove();
+            }
+
+          }, 1000);
+
+        }, 1600);
+
+      }
+    );
+
+    /* ================= SERVICE WORKER ================= */
+
+    if("serviceWorker" in navigator){
+
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then(() => {
+          console.log("PWA instalado");
+        })
+        .catch(err => {
+          console.log("Erro SW:", err);
+        });
+
+    }
   </script>
 
-  <audio id="somNotify" src="notificacao.mp3">
-  </audio>
-
 </body>
-
 </html>
