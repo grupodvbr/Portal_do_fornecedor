@@ -783,12 +783,14 @@
         Acesse suas cotações para a empresa Mercatto Delícia.
       </p>
 
-      <input
-        id="cnpj"
-        placeholder="CNPJ"
-        inputmode="numeric"
-        autocomplete="off"
-      >
+<input
+  id="cnpj"
+  placeholder="CPF ou CNPJ"
+  inputmode="numeric"
+  autocomplete="off"
+  maxlength="18"
+  oninput="mascaraCpfCnpj(this)"
+>
 
       <input
         id="senha"
@@ -888,6 +890,47 @@
       iniciar();
     }
 
+
+
+
+
+
+
+function mascaraCpfCnpj(el){
+
+  let v = String(el.value || "").replace(/\D/g, "");
+
+  if(v.length <= 11){
+
+    v = v
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+  }else{
+
+    v = v
+      .slice(0, 14)
+      .replace(/^(\d{2})(\d)/, "$1.$2")
+      .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+      .replace(/\.(\d{3})(\d)/, ".$1/$2")
+      .replace(/(\d{4})(\d)/, "$1-$2");
+
+  }
+
+  el.value = v;
+}
+
+
+
+
+
+
+
+
+
+
+    
     /* ================= LOGIN ================= */
 
     async function entrar(){
@@ -905,7 +948,7 @@
         .trim();
 
       if(!cnpj || !senha){
-        alert("Informe CNPJ e senha.");
+        alert("Informe CPF/CNPJ e senha.");
         return;
       }
 
@@ -934,7 +977,7 @@
         });
 
       if(!encontrado){
-        alert("CNPJ ou senha inválidos.");
+       alert("CPF/CNPJ ou senha inválidos.");
         return;
       }
 
