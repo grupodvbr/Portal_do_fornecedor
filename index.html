@@ -1506,22 +1506,30 @@ function renderCotacoes(cotacoes){
           const key =
             "cot_"+c.id+"_"+index;
 
-          const cache = JSON.parse(
+         const cache = JSON.parse(
 
-            localStorage.getItem(key)
+  localStorage.getItem(key)
 
-            || JSON.stringify({
+  || JSON.stringify({
 
-              preco_unitario:
-                meuFornecedor.preco_unitario || "",
+    preco_embalagem:
+      meuFornecedor.preco_embalagem
+        ? Number(meuFornecedor.preco_embalagem)
+          .toLocaleString(
+            "pt-BR",
+            {
+              minimumFractionDigits:2,
+              maximumFractionDigits:2
+            }
+          )
+        : "",
 
-              obs:
-                meuFornecedor.observacao || ""
+    obs:
+      meuFornecedor.observacao || ""
 
-            })
+  })
 
-          );
-
+);
           return `
 
             <div class="item-cotacao">
@@ -1566,17 +1574,16 @@ function renderCotacoes(cotacoes){
                   placeholder="0,00"
 
                   value="${
-                    cache.preco_unitario || ""
-                  }"
+  value="${
+  cache.preco_embalagem || ""
+}"
 
-                  ${bloqueada ? "readonly" : ""}
-
-                  oninput="
-                    formatarMoeda(
-                      this,
-                      '${key}'
-                    )
-                  "
+oninput="
+  formatarMoeda(
+    this,
+    '${key}'
+  )
+"
 
                 >
 
@@ -2009,160 +2016,205 @@ function salvarLocal(
 
 /* ================= ENVIAR ================= */
 
+/* ================= ENVIAR ================= */
+
 async function enviar(cotacaoId){
 
   overlay(true);
 
-  const { data } = await sb
-
+  const { data, error } = await sb
     .from("cotacoes")
-
     .select("*")
-
     .eq("id", cotacaoId)
-
     .single();
 
-  let itens =
-    data.itens_cotacao || [];
+  if(error){
 
-  for(let i=0; i<itens.length; i++){
+    overlay(false);
+
+    console.log(error);
+
+    alert("Erro ao carregar cotação.");
+
+    return;
+  }
+
+  let itens =
+    typeof data.itens_cotacao === "string"
+      ? JSON.parse(data.itens_cotacao || "[]")
+      : data.itens_cotacao || [];
+
+  let respondeuAlgumItem = false;
+
+  for(let i = 0; i < itens.length; i++){
 
     const item = itens[i];
 
     const fornecedorIndex =
-
       (item.fornecedores || [])
-
       .findIndex(f =>
-
-        f.fornecedor_id ===
-        fornecedor.id
-
+        String(f.fornecedor_id) === String(fornecedor.id)
       );
 
-    if(fornecedorIndex === -1)
+    if(fornecedorIndex === -1){
       continue;
+    }
 
     const key =
-      "cot_"+cotacaoId+"_"+i;
+      "cot_" + cotacaoId + "_" + i;
 
     const cache = JSON.parse(
-      localStorage.getItem(key)
-      || "{}"
+      localStorage.getItem(key) || "{}"
     );
 
-if(
-  !cache.preco_unitario
-){
-  continue;
-}
+    /*
+      AGORA O VALOR DIGITADO É O PREÇO DA EMBALAGEM,
+      NÃO O PREÇO UNITÁRIO.
+    */
 
-const precoUnit = Number(
+    const precoEmbalagem = normalizarNumeroPreco(
+      cache.preco_embalagem ||
+      cache.preco_unitario ||
+      ""
+    );
 
-  String(
-    cache.preco_unitario || '0'
-  )
+    if(!precoEmbalagem || precoEmbalagem <= 0){
+      continue;
+    }
 
-  .replace(/\s/g,'')
-  .replace(/\./g,'')
-  .replace(',','.')
+    const qtdEmbalagem = Number(
+      item.qtd_unidades ||
+      item.quantidade_embalagem ||
+      item.qtd_por_caixa ||
+      1
+    ) || 1;
 
-) || 0;
+    const qtdSolicitada = Number(
+      item.qtd_solicitada ||
+      item.quantidade ||
+      item.comprar ||
+      0
+    ) || 0;
 
-/* QUANTIDADE EMBALAGEM */
+    /*
+      PREÇO UNITÁRIO REAL:
+      Exemplo:
+      Caixa com 6 unidades custa R$ 120,00
+      Unitário real = 120 / 6 = R$ 20,00
+    */
 
-const qtdEmbalagem = Number(
+    const precoUnitario = Number(
+      (
+        precoEmbalagem / qtdEmbalagem
+      ).toFixed(4)
+    );
 
-  item.qtd_unidades ||
+    /*
+      TOTAL DA COTAÇÃO:
+      Se pediu 2 caixas de R$ 120,00
+      Total = 240,00
+    */
 
-  item.quantidade_embalagem ||
+    const precoTotal = Number(
+      (
+        precoEmbalagem * qtdSolicitada
+      ).toFixed(2)
+    );
 
-  1
+    item.fornecedores[fornecedorIndex] = {
 
-);
+      ...item.fornecedores[fornecedorIndex],
 
-/* QUANTIDADE SOLICITADA */
+      fornecedor_id:
+        fornecedor.id,
 
-const qtdSolicitada = Number(
-  item.qtd_solicitada || 0
-);
+      fornecedor_nome:
+        fornecedor.nome,
 
-/* PREÇO EMBALAGEM */
+      preco_unitario:
+        precoUnitario,
 
-const precoEmbalagem = Number(
+      quantidade_embalagem:
+        qtdEmbalagem,
 
-  (
-    precoUnit *
-    qtdEmbalagem
-  ).toFixed(2)
+      preco_embalagem:
+        precoEmbalagem,
 
-);
+      preco_total:
+        precoTotal,
 
-/* TOTAL */
+      observacao:
+        cache.obs || "",
 
-const precoTotal = Number(
+      respondido_em:
+        new Date().toISOString()
 
-  (
-    precoEmbalagem *
-    qtdSolicitada
-  ).toFixed(2)
+    };
 
-);
+    respondeuAlgumItem = true;
 
-item.fornecedores[
-  fornecedorIndex
-] = {
-
-  ...item.fornecedores[
-    fornecedorIndex
-  ],
-
-  preco_unitario:
-    precoUnit,
-
-  quantidade_embalagem:
-    qtdEmbalagem,
-
-  preco_embalagem:
-    precoEmbalagem,
-
-  preco_total:
-    precoTotal,
-
-  observacao:
-    cache.obs || "",
-
-  respondido_em:
-    new Date().toISOString()
-
-};
-    
   }
 
-  await sb
+  if(!respondeuAlgumItem){
 
+    overlay(false);
+
+    alert(
+      "Informe pelo menos um preço antes de enviar."
+    );
+
+    return;
+  }
+
+  const { error:updateError } = await sb
     .from("cotacoes")
-
     .update({
 
-      itens_cotacao:itens,
-      atualizado_em:new Date(),
-      status:"respondida"
+      itens_cotacao:
+        itens,
+
+      atualizado_em:
+        new Date(),
+
+      status:
+        "respondida"
 
     })
-
     .eq("id", cotacaoId);
 
   overlay(false);
 
+  if(updateError){
+
+    console.log(updateError);
+
+    alert(
+      "Erro ao enviar cotação."
+    );
+
+    return;
+  }
+
+  /*
+    Limpa cache local da cotação enviada
+    para não reenviar valor antigo depois.
+  */
+
+  Object.keys(localStorage)
+    .filter(k =>
+      k.startsWith("cot_" + cotacaoId + "_")
+    )
+    .forEach(k => {
+      localStorage.removeItem(k);
+    });
+
   alert(
-    "Cotação enviada com sucesso"
+    "Cotação enviada com sucesso."
   );
 
   carregarCotacoes();
-}
 
+}
 /* ================= LIMPAR ================= */
 
 function limpar(cotacaoId){
