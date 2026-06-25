@@ -1446,8 +1446,9 @@ function renderCotacoes(cotacoes){
     const itens =
       c.itens_cotacao || [];
 
-    const bloqueada =
-      c.status === "finalizada";
+const bloqueada =
+  String(c.status || "")
+    .toUpperCase() === "FINALIZADA";
 
     lista.innerHTML += `
 
@@ -1571,7 +1572,7 @@ function renderCotacoes(cotacoes){
                     ${bloqueada ? "readonly" : ""}
                   "
 
-                  placeholder="0,00"
+                 placeholder="Preço da caixa"
 
                   value="${
   value="${
@@ -1614,7 +1615,7 @@ oninput="
 
               </div>
 
-            ${htmlMenorPrecoOutrosFornecedores(i, cache.preco_unitario)}
+            ${htmlMenorPrecoOutrosFornecedores(i, cache.preco_embalagem)}
 
             </div>
 
@@ -1676,15 +1677,25 @@ oninput="
 
 
 
-/* ================= MENOR PREÇO DOS OUTROS FORNECEDORES ================= */
-
 function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
   const menor =
     calcularMenorPrecoOutrosFornecedores(item);
 
-  const meuPreco =
+  const precoEmbalagemDigitado =
     normalizarNumeroPreco(meuPrecoDigitado);
+
+  const qtdEmbalagem = Number(
+    item.qtd_unidades ||
+    item.quantidade_embalagem ||
+    item.qtd_por_caixa ||
+    1
+  ) || 1;
+
+  const meuPrecoUnitario =
+    precoEmbalagemDigitado > 0
+      ? precoEmbalagemDigitado / qtdEmbalagem
+      : 0;
 
   if(!menor){
 
@@ -1705,12 +1716,16 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
   let diferencaTexto = "";
   let mostrarPrecoConcorrente = true;
 
-  if(meuPreco > 0){
+  if(meuPrecoUnitario > 0){
 
     const diferenca =
-      Number((meuPreco - menor.preco).toFixed(2));
+      Number(
+        (
+          meuPrecoUnitario - menor.preco
+        ).toFixed(2)
+      );
 
-    if(meuPreco < menor.preco){
+    if(meuPrecoUnitario < menor.preco){
 
       statusTexto =
         "Você está ganhando";
@@ -1724,7 +1739,7 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
       mostrarPrecoConcorrente =
         false;
 
-    }else if(meuPreco > menor.preco){
+    }else if(meuPrecoUnitario > menor.preco){
 
       statusTexto =
         "Você está perdendo";
@@ -1733,7 +1748,7 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
         "perdendo";
 
       diferencaTexto =
-        "Seu preço está " +
+        "Seu preço unitário está " +
         formatarReal(Math.abs(diferenca)) +
         " acima.";
 
@@ -1765,7 +1780,7 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
       "sem-preco";
 
     diferencaTexto =
-      "Depois de digitar, o sistema mostra se você está ganhando ou perdendo.";
+      "Digite o preço da embalagem/caixa.";
 
     mostrarPrecoConcorrente =
       true;
@@ -1780,7 +1795,7 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
         <div class="menor-preco-label">
 
-          Comparação com outros fornecedores
+          Comparação pelo preço unitário real
 
         </div>
 
@@ -1847,6 +1862,7 @@ function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
   `;
 
 }
+
 function calcularMenorPrecoOutrosFornecedores(item){
 
   const fornecedores =
@@ -1863,12 +1879,10 @@ function calcularMenorPrecoOutrosFornecedores(item){
         return false;
       }
 
-      const preco =
-        normalizarNumeroPreco(
-          f.preco_unitario
-        );
+      const precoUnitario =
+        obterPrecoUnitarioFornecedor(f);
 
-      return preco > 0;
+      return precoUnitario > 0;
 
     })
 
@@ -1902,23 +1916,55 @@ function calcularMenorPrecoOutrosFornecedores(item){
           nomeFornecedor,
 
         preco:
-          normalizarNumeroPreco(
-            f.preco_unitario
-          )
+          obterPrecoUnitarioFornecedor(f)
 
       };
 
     })
 
     .sort((a,b) => {
-
       return a.preco - b.preco;
-
     });
 
   return outrosComPreco[0] || null;
 
 }
+
+
+
+
+  function obterPrecoUnitarioFornecedor(f){
+
+  const precoUnitario =
+    normalizarNumeroPreco(
+      f.preco_unitario
+    );
+
+  if(precoUnitario > 0){
+    return precoUnitario;
+  }
+
+  const precoEmbalagem =
+    normalizarNumeroPreco(
+      f.preco_embalagem
+    );
+
+  const qtdEmbalagem =
+    normalizarNumeroPreco(
+      f.quantidade_embalagem
+    ) || 1;
+
+  if(precoEmbalagem > 0){
+    return precoEmbalagem / qtdEmbalagem;
+  }
+
+  return 0;
+
+}
+
+
+
+    
 
 function normalizarNumeroPreco(valor){
 
@@ -2398,18 +2444,18 @@ mostrarNotificacao(
 
 function formatarMoeda(el,key){
 
-  let v = el.value || '';
+  let v = el.value || "";
 
-  v = v.replace(/\D/g,'');
+  v = v.replace(/\D/g,"");
 
   if(!v){
 
-    el.value = '';
+    el.value = "";
 
     salvarLocal(
       key,
-      'preco_unitario',
-      ''
+      "preco_embalagem",
+      ""
     );
 
     return;
@@ -2418,7 +2464,7 @@ function formatarMoeda(el,key){
   v = (
     Number(v) / 100
   ).toLocaleString(
-    'pt-BR',
+    "pt-BR",
     {
       minimumFractionDigits:2,
       maximumFractionDigits:2
@@ -2429,7 +2475,7 @@ function formatarMoeda(el,key){
 
   salvarLocal(
     key,
-    'preco_unitario',
+    "preco_embalagem",
     v
   );
 
