@@ -9,7 +9,7 @@
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   />
 
-  <title>Portal do Fornecedor • Mercatto</title>
+  <title>Sistema OTTO Cotações</title>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#020617">
@@ -804,6 +804,7 @@
     .quote-head-main{min-width:0}
     .quote-title-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
     .quote-title{font-size:15px;font-weight:900;color:#020617;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .quote-company{display:inline-flex;align-items:center;padding:4px 8px;border-radius:8px;background:#eaf2ff;color:#1d4ed8;font-size:8px;font-weight:950;letter-spacing:.045em;text-transform:uppercase;white-space:nowrap}
     .quote-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;color:#64748b;font-size:10px;font-weight:700}
     .quote-progress-wrap{margin-top:11px;display:flex;align-items:center;gap:10px}
     .quote-progress{height:7px;flex:1;max-width:420px;border-radius:999px;background:#e8eef5;overflow:hidden}
@@ -1029,10 +1030,10 @@
         <img src="logo-mercatto.png">
       </div>
 
-      <h1>Portal do Fornecedor</h1>
+      <h1>Sistema OTTO Cotações</h1>
 
       <p>
-        Acesse suas cotações para a empresa Mercatto Delícia.
+        Acesse as cotações das empresas atendidas pelo Sistema OTTO.
       </p>
 
 <input
@@ -1097,8 +1098,8 @@
 
     <section class="workspace" aria-label="Resumo das cotações">
       <div class="welcome-panel">
-        <div class="welcome-kicker">Portal do Fornecedor</div>
-        <div class="welcome-title">Suas cotações, organizadas para responder mais rápido.</div>
+        <div class="welcome-kicker">Sistema OTTO Cotações</div>
+        <div class="welcome-title">Suas cotações, organizadas por empresa para responder mais rápido.</div>
         <div class="welcome-copy">Abra somente a cotação que deseja preencher. Seus preços continuam salvos neste aparelho até o envio.</div>
         <div class="summary-grid">
           <div class="summary-mini"><small>Cotações</small><strong id="resumoCotacoes">0</strong></div>
@@ -1142,7 +1143,7 @@
     </div>
 
     <h1>Sistemas OTTO</h1>
-    <p style="position:relative;z-index:2;margin-top:8px;color:#94a3b8;font-size:12px;font-weight:700;letter-spacing:.04em;">Portal do Fornecedor</p>
+    <p style="position:relative;z-index:2;margin-top:8px;color:#94a3b8;font-size:12px;font-weight:700;letter-spacing:.04em;">Sistema OTTO Cotações</p>
 
   </div>
 
@@ -1442,7 +1443,7 @@ function mascaraCpfCnpj(el){
       lista.innerHTML="";
 
       if(!cotacoes.length){
-        lista.innerHTML='<div class="empty"><strong>Nenhuma cotação encontrada</strong><span>Tente outro filtro ou aguarde uma nova solicitação do Mercatto.</span></div>';
+        lista.innerHTML='<div class="empty"><strong>Nenhuma cotação encontrada</strong><span>Tente outro filtro ou aguarde uma nova solicitação.</span></div>';
         return;
       }
 
@@ -1507,6 +1508,7 @@ function mascaraCpfCnpj(el){
           <button class="quote-head" type="button" onclick="alternarCotacao('${c.id}')" aria-expanded="${aberta}">
             <div class="quote-head-main">
               <div class="quote-title-row">
+                <span class="quote-company">${escaparHtml(c.empresa || (itensFornecedor[0]&&itensFornecedor[0].item.empresa) || "Empresa")}</span>
                 <span class="quote-title">${escaparHtml(c.nome||"Cotação")}</span>
               </div>
               <div class="quote-meta">
