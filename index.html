@@ -160,50 +160,77 @@
       position: sticky;
       top: 0;
       z-index: 999;
-      background: white;
-      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      border-bottom: 1px solid rgba(226,232,240,.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 8px 30px rgba(15,23,42,.055);
     }
 
     .top-flex {
-      padding: 12px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 13px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+    }
+
+    .top-flex > div:first-child{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
     }
 
     .top h1 {
-      font-size: 18px;
+      font-size: 17px;
+      line-height:1.2;
       font-weight: 900;
       color: #020617;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      letter-spacing:-.02em;
     }
 
     .top small {
-      font-size: 11px;
+      font-size: 10px;
       color: #64748b;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: nowrap;
       justify-content: flex-end;
+      flex:0 0 auto;
     }
 
     .btn {
-      height: 34px;
-      padding: 0 12px;
-      border: none;
-      border-radius: 10px;
-      background: #020617;
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: linear-gradient(135deg,#0f172a,#1e293b);
       color: white;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
       cursor: pointer;
-      transition: .15s;
+      transition: .18s ease;
       white-space: nowrap;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      box-shadow:0 7px 18px rgba(15,23,42,.11);
     }
 
     .btn:hover {
@@ -212,7 +239,45 @@
     }
 
     .btn-red {
-      background: #dc2626;
+      background: #fff;
+      color:#b91c1c;
+      border-color:#fecaca;
+      box-shadow:none;
+    }
+
+    .top-actions .btn:first-child{
+      background:linear-gradient(135deg,#0f172a,#2563eb);
+      min-width:104px;
+    }
+
+    .top-actions .btn-red{
+      min-width:76px;
+    }
+
+    .top-actions .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 22px rgba(15,23,42,.13);
+    }
+
+    .top-actions .btn-red:hover{
+      background:#fff5f5;
+      border-color:#fca5a5;
+      box-shadow:0 8px 18px rgba(185,28,28,.07);
+    }
+
+    .btn-icon{
+      width:20px;
+      height:20px;
+      border-radius:7px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.13);
+      font-size:12px;
+      line-height:1;
+    }
+
+    .btn-red .btn-icon{
+      background:#fee2e2;
     }
 
     .btn-light {
@@ -566,10 +631,11 @@
     }
 
     .overlay-box {
-      background: #020617;
+      background: linear-gradient(135deg,#020617,#172554);
       color: white;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 18px 22px;
+      border:1px solid rgba(255,255,255,.08);
       box-shadow: 0 24px 80px rgba(0,0,0,.25);
       display: flex;
       align-items: center;
@@ -808,24 +874,42 @@
 
     @media(max-width:700px) {
       .top-flex {
-        padding: 10px;
-        align-items: flex-start;
+        padding: 10px 12px;
+        align-items: center;
+        gap:8px;
+      }
+
+      .top-flex > div:first-child{
+        flex:1 1 auto;
+        min-width:0;
       }
 
       .top h1 {
-        font-size: 16px;
+        font-size: 15px;
+      }
+
+      .top small{
+        font-size:9px;
       }
 
       .top-actions {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap:nowrap;
+        gap:6px;
       }
 
-      .btn {
-        height: 32px;
+      .top-actions .btn {
+        height: 36px;
         padding: 0 10px;
-        font-size: 10px;
+        font-size: 9px;
+        min-width:0;
+        border-radius:11px;
       }
+
+      .top-actions .btn:first-child{min-width:88px}
+      .top-actions .btn-red{min-width:62px}
+      .btn-icon{width:18px;height:18px;font-size:10px}
 
       .linha-inputs {
         grid-template-columns: 110px 1fr;
@@ -924,14 +1008,16 @@
             class="btn"
             onclick="carregarCotacoes()"
           >
-            Atualizar
+            <span class="btn-icon" aria-hidden="true">↻</span>
+            <span>Atualizar</span>
           </button>
 
           <button
             class="btn btn-red"
             onclick="sair()"
           >
-            Sair
+            <span class="btn-icon" aria-hidden="true">↪</span>
+            <span>Sair</span>
           </button>
 
         </div>
@@ -986,7 +1072,8 @@
       <div class="cart-line delay2"></div>
     </div>
 
-    <h1>Cotação Mercatto</h1>
+    <h1>Sistemas OTTO</h1>
+    <p style="position:relative;z-index:2;margin-top:8px;color:#94a3b8;font-size:12px;font-weight:700;letter-spacing:.04em;">Portal do Fornecedor</p>
 
   </div>
 
@@ -1176,7 +1263,7 @@ function mascaraCpfCnpj(el){
         lista.innerHTML = '<div class="loading-skeleton"></div><div class="loading-skeleton"></div>';
       }
 
-      overlay(true, "Carregando cotações...");
+      overlay(true, "Sistemas OTTO • Carregando cotações...");
 
       const { data, error } = await sb
         .from("cotacoes")
