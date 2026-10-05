@@ -914,6 +914,33 @@
       .actions .btn{width:100%!important;height:37px!important}
     }
 
+    .referencia-preco{
+      margin:7px 0 0 34px;
+      padding:7px 9px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border:1px solid #dbe7f5;
+      border-radius:10px;
+      background:#f8fbff;
+    }
+    .referencia-valor{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+    .referencia-valor span{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#64748b}
+    .referencia-valor strong{font-size:12px;font-weight:950;color:#0f172a}
+    .referencia-preco p{margin:0;font-size:8px;font-weight:800;line-height:1.3;text-align:right;color:#64748b}
+    .referencia-preco.melhorar{background:#fffaf2;border-color:#fde3b4}
+    .referencia-preco.melhorar .referencia-valor strong{color:#b45309}
+    .referencia-preco.competitivo{background:#f5fcf7;border-color:#ccebd6}
+    .referencia-preco.competitivo .referencia-valor strong{color:#15803d}
+    .referencia-preco.sem-preco{border-style:dashed;background:#fafbfc}
+    @media(max-width:760px){
+      .referencia-preco{margin:6px 0 0;padding:6px 8px;gap:8px}
+      .referencia-preco p{font-size:7.5px;max-width:58%}
+      .referencia-valor strong{font-size:11px}
+      .referencia-valor span{font-size:7px}
+    }
+
     @media(max-width:700px) {
       .top-flex {
         padding: 10px 12px;
@@ -1471,15 +1498,7 @@ function mascaraCpfCnpj(el){
                     oninput="salvarLocal('${key}','obs',this.value)">
                 </div>
               </div>
-              <details class="item-secondary">
-                <summary>Ver cálculo e comparação de preço</summary>
-                <div class="calculo-preview" id="calc_${c.id}_${index}">
-                  <div class="calc-item"><small>Preço unitário</small><strong>${formatarReal(precoUnitarioAtual)}</strong></div>
-                  <div class="calc-item"><small>Preço embalagem</small><strong>${formatarReal(precoEmbalagemAtual)}</strong></div>
-                  <div class="calc-item"><small>Total estimado</small><strong>${formatarReal(precoTotalAtual)}</strong></div>
-                </div>
-                ${htmlMenorPrecoOutrosFornecedores(i,cache.preco_unitario)}
-              </details>
+              ${htmlMenorPrecoOutrosFornecedores(i,cache.preco_unitario)}
             </div>
           `;
         }).join("") : "";
@@ -1571,121 +1590,44 @@ function mascaraCpfCnpj(el){
 
     function htmlMenorPrecoOutrosFornecedores(item, meuPrecoDigitado){
 
-      const menor =
-        calcularMenorPrecoOutrosFornecedores(item);
-
-      const meuPreco =
-        normalizarNumeroPreco(meuPrecoDigitado);
+      const menor = calcularMenorPrecoOutrosFornecedores(item);
+      const meuPreco = normalizarNumeroPreco(meuPrecoDigitado);
 
       if(!menor){
-
         return `
-          <div class="menor-preco-vazio">
-            Ainda não existe preço lançado por outro fornecedor.
+          <div class="referencia-preco sem-preco">
+            <div class="referencia-valor">
+              <span>Menor preço atual</span>
+              <strong>Aparecerá aqui</strong>
+            </div>
+            <p>Assim que houver outra oferta para este produto.</p>
           </div>
         `;
-
       }
 
-      let statusTexto = "";
-      let statusClasse = "";
-      let diferencaTexto = "";
-      let mostrarPrecoConcorrente = true;
+      let classe = "";
+      let mensagem = "Use esta referência e informe sua melhor condição.";
 
-      if(meuPreco > 0){
-
-        const diferenca =
-          Number((meuPreco - menor.preco).toFixed(2));
-
-        if(meuPreco < menor.preco){
-
-          statusTexto = "Você está ganhando";
-          statusClasse = "ganhando";
-          diferencaTexto = "";
-          mostrarPrecoConcorrente = false;
-
-        }else if(meuPreco > menor.preco){
-
-          statusTexto = "Você está perdendo";
-          statusClasse = "perdendo";
-          diferencaTexto =
-            "Seu preço unitário está " +
-            formatarReal(Math.abs(diferenca)) +
-            " acima.";
-          mostrarPrecoConcorrente = true;
-
-        }else{
-
-          statusTexto = "Você está empatado";
-          statusClasse = "empatado";
-          diferencaTexto =
-            "Seu preço unitário está igual ao menor concorrente.";
-          mostrarPrecoConcorrente = true;
-
-        }
-
-      }else{
-
-        statusTexto = "Informe seu preço para comparar";
-        statusClasse = "sem-preco";
-        diferencaTexto =
-          "Digite o preço unitário do produto.";
-        mostrarPrecoConcorrente = true;
-
+      if(meuPreco > 0 && meuPreco > menor.preco){
+        classe = "melhorar";
+        mensagem = "Se conseguir uma condição melhor, você pode ajustar seu preço antes de enviar.";
+      }else if(meuPreco > 0 && meuPreco < menor.preco){
+        classe = "competitivo";
+        mensagem = "Seu preço está competitivo neste momento.";
+      }else if(meuPreco > 0 && meuPreco === menor.preco){
+        classe = "empatado";
+        mensagem = "Seu preço está no mesmo nível da menor oferta atual.";
       }
 
       return `
-
-        <div class="menor-preco-box">
-
-          <div class="menor-preco-info">
-
-            <div class="menor-preco-label">
-              Comparação por preço unitário
-            </div>
-
-            ${
-              mostrarPrecoConcorrente
-                ? `
-                  <div class="menor-preco-fornecedor">
-                    ${escaparHtml(menor.nomeFornecedor)}
-                  </div>
-                `
-                : `
-                  <div class="menor-preco-fornecedor">
-                    Você está com o melhor preço até agora
-                  </div>
-                `
-            }
-
-            <div class="comparacao-preco ${statusClasse}">
-              ${statusTexto}
-            </div>
-
-            <div class="comparacao-diferenca">
-              ${diferencaTexto}
-            </div>
-
+        <div class="referencia-preco ${classe}">
+          <div class="referencia-valor">
+            <span>Menor preço atual</span>
+            <strong>${formatarReal(menor.preco)}</strong>
           </div>
-
-          ${
-            mostrarPrecoConcorrente
-              ? `
-                <div class="menor-preco-valor">
-                  ${formatarReal(menor.preco)}
-                </div>
-              `
-              : `
-                <div class="menor-preco-valor melhor-preco">
-                  Melhor preço
-                </div>
-              `
-          }
-
+          <p>${mensagem}</p>
         </div>
-
       `;
-
     }
 
     function calcularMenorPrecoOutrosFornecedores(item){
